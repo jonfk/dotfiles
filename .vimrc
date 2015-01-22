@@ -85,7 +85,7 @@ autocmd FileType py setlocal shiftwidth=8 tabstop=8 softtabstop=8 expandtab
 
 
 " Powerline stuff
-let g:Powerline_symbols = 'compatible'
+" let g:Powerline_symbols = 'compatible'
 
 " tell Vim to always put a status line in, even if there is only one
 " window
