@@ -96,7 +96,7 @@ call pathogen#infect()
 call pathogen#helptags()
 
 " To use Solarized-colors
-let g:solarized_termcolors=256
+let g:solarized_termcolors=16
 colorscheme solarized
 set background=dark
 
@@ -104,9 +104,11 @@ if has('gui_running')
     if has("gui_win32")
         set guifont=Consolas:h11:cANSI
     endif
+    let g:solarized_termcolors=256
 else
     " For set term to use 256 colors
     set term=xterm-256color
+    let g:solarized_termcolors=16
 endif
 
 " Haskell Mode
