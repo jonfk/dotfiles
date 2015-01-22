@@ -80,9 +80,9 @@
 
 ;; Bootstrap Packages to be installed
 (defvar my-packages
-  '(zenburn-theme minimap evil evil-leader auto-complete company go-mode
+  '(zenburn-theme evil evil-leader auto-complete company go-mode paredit
                   ;;auctex clojure-mode
-		  ;;magit paredit projectile volatile-highlights
+		  ;;magit paredit projectile volatile-highlights minimap
                   ;;rainbow-mode deft
 		  )
   "A list of packages to ensure are installed at launch.")
@@ -119,8 +119,6 @@
 (require 'evil-leader)
 (evil-leader/set-leader ",")
 (evil-leader/set-key
-  "mm" 'minimap-create
-  "mk" 'minimap-kill
   "ev" '(lambda () (interactive)(find-file "~/.emacs"))
   "so" '(lambda () (interactive) (eval-buffer))
   "xc" 'ask-before-closing
@@ -155,5 +153,5 @@
 
 ;; go-mode
 (setq exec-path (cons "/usr/local/go/bin" exec-path))
-;;(add-to-list 'exec-path "/home/jon/Code/go/bin")
+(add-to-list 'exec-path "/home/jon/Code/go/bin")
 (add-hook 'before-save-hook 'gofmt-before-save)
