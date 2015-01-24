@@ -83,7 +83,6 @@ autocmd FileType py setlocal shiftwidth=8 tabstop=8 softtabstop=8 expandtab
 " Copied to get file encoding and bomb
 "set statusline=%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
 
-
 " Powerline stuff
 " let g:Powerline_symbols = 'compatible'
 
@@ -94,22 +93,6 @@ set laststatus=2
 " To use Pathogen plugin
 call pathogen#infect()
 call pathogen#helptags()
-
-" To use Solarized-colors
-let g:solarized_termcolors=16
-colorscheme solarized
-set background=dark
-
-if has('gui_running')
-    if has("gui_win32")
-        set guifont=Consolas:h11:cANSI
-    endif
-    let g:solarized_termcolors=256
-else
-    " For set term to use 256 colors
-    set term=xterm-256color
-    let g:solarized_termcolors=16
-endif
 
 " Haskell Mode
 " use ghc functionality for haskell files
