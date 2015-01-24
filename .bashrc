@@ -139,5 +139,8 @@ export PATH=$PATH:$GOPATH/bin
 # Repo tools stuff
 export PATH=$PATH:$HOME/bin/depot_tools
 
+# Typesafe activator
+export PATH=$PATH:${HOME}/Downloads/activator-1.2.10-minimal/
+
 # OPAM configuration
 . /home/jon/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
