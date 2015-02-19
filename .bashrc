@@ -144,3 +144,6 @@ export PATH=$PATH:${HOME}/Downloads/activator-1.2.10-minimal/
 
 # OPAM configuration
 . /home/jon/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+
+# Nim lang
+export PATH=$PATH:${HOME}/Code/nim/Nim/bin
