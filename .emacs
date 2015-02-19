@@ -80,7 +80,7 @@
 
 ;; Bootstrap Packages to be installed
 (defvar my-packages
-  '(zenburn-theme evil evil-leader auto-complete company go-mode paredit
+  '(zenburn-theme evil evil-leader auto-complete company go-mode paredit haskell-mode
                   ;;auctex clojure-mode
 		  ;;magit paredit projectile volatile-highlights minimap
                   ;;rainbow-mode deft
@@ -155,3 +155,9 @@
 (setq exec-path (cons "/usr/local/go/bin" exec-path))
 (add-to-list 'exec-path "/home/jon/Code/go/bin")
 (add-hook 'before-save-hook 'gofmt-before-save)
+
+;; haskell-mode
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
