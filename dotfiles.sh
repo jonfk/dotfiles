@@ -35,6 +35,8 @@ update () {
     rsync -va ~/dotfiles/.vim ~/.vim
 
     rsync -va ~/dotfiles/.vimrc ~/.vimrc
+
+    rsync -va ~/dotfiles/dotfiles.sh ~/bin/dotfiles.sh
 }
 
 push () {
@@ -45,6 +47,8 @@ push () {
     rsync -va ~/.vim ~/dotfiles/.vim
 
     rsync -va ~/.vimrc ~/dotfiles/.vimrc
+
+    rsync -va ~/bin/dotfiles.sh ~/dotfiles/dotfiles.sh
 }
 
 difference () {
@@ -55,6 +59,8 @@ difference () {
     # diff ~/dotfiles/.vim ~/.vim
 
     diff ~/dotfiles/.vimrc ~/.vimrc
+
+    diff ~/dotfiles/dotfiles.sh ~/bin/dotfiles.sh
 }
 
 while getopts "h?upd" opt; do
