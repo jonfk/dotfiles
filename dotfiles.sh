@@ -44,7 +44,7 @@ push () {
 
     rsync -va ~/.bashrc ~/dotfiles/.bashrc
 
-    rsync -va ~/.vim ~/dotfiles/.vim
+    # rsync -va ~/.vim/ ~/dotfiles/.vim/
 
     rsync -va ~/.vimrc ~/dotfiles/.vimrc
 
