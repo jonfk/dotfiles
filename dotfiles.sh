@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-#set -x
+set -x
 
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
@@ -27,10 +27,10 @@ OPTIONS:
 EOF
 }
 
-EMACSDOT="~/dotfiles/emacs/.emacs"
-BASHDOT="~/dotfiles/bash/.bashrc"
-VIMDOT="~/dotfiles/vim"
-AWESOMEDOT="~/dotfiles/awesome/rc.lua"
+EMACSDOT=~/dotfiles/emacs/.emacs
+BASHDOT=~/dotfiles/bash/.bashrc
+VIMDOT=~/dotfiles/vim
+AWESOMEDOT=~/dotfiles/awesome/rc.lua
 
 update () {
     rsync -va $EMACSDOT ~/.emacs
@@ -41,6 +41,7 @@ update () {
 
     rsync -va $VIMDOT/.vimrc ~/.vimrc
 
+    mkdir -p ~/.config/awesome
     rsync -va $AWESOMEDOT ~/.config/awesome/rc.lua
 
     rsync -va ~/dotfiles/dotfiles.sh ~/bin/dotfiles.sh
