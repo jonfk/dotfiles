@@ -27,38 +27,49 @@ OPTIONS:
 EOF
 }
 
+EMACSDOT="~/dotfiles/emacs/.emacs"
+BASHDOT="~/dotfiles/bash/.bashrc"
+VIMDOT="~/dotfiles/vim"
+AWESOMEDOT="~/dotfiles/awesome/rc.lua"
+
 update () {
-    rsync -va ~/dotfiles/.emacs ~/.emacs
+    rsync -va $EMACSDOT ~/.emacs
 
-    rsync -va ~/dotfiles/.bashrc ~/.bashrc
+    rsync -va $BASHDOT ~/.bashrc
 
-    rsync -va ~/dotfiles/.vim ~/.vim
+    rsync -va $VIMDOT/.vim ~/.vim
 
-    rsync -va ~/dotfiles/.vimrc ~/.vimrc
+    rsync -va $VIMDOT/.vimrc ~/.vimrc
+
+    rsync -va $AWESOMEDOT ~/.config/awesome/rc.lua
 
     rsync -va ~/dotfiles/dotfiles.sh ~/bin/dotfiles.sh
 }
 
 push () {
-    rsync -va ~/.emacs ~/dotfiles/.emacs
+    rsync -va ~/.emacs $EMACSDOT
 
-    rsync -va ~/.bashrc ~/dotfiles/.bashrc
+    rsync -va ~/.bashrc $BASHDOT
 
     # rsync -va ~/.vim/ ~/dotfiles/.vim/
 
-    rsync -va ~/.vimrc ~/dotfiles/.vimrc
+    rsync -va ~/.vimrc $VIMDOT/.vimrc
+
+    rsync -va ~/.config/awesome/rc.lua $AWESOMEDOT
 
     rsync -va ~/bin/dotfiles.sh ~/dotfiles/dotfiles.sh
 }
 
 difference () {
-    diff ~/dotfiles/.emacs ~/.emacs
+    diff $EMACSDOT ~/.emacs
 
-    diff ~/dotfiles/.bashrc ~/.bashrc
+    diff $BASHDOT ~/.bashrc
 
     # diff ~/dotfiles/.vim ~/.vim
 
-    diff ~/dotfiles/.vimrc ~/.vimrc
+    diff $VIMDOT/.vimrc ~/.vimrc
+
+    diff $AWESOMEDOT ~/.config/awesome/rc.lua
 
     diff ~/dotfiles/dotfiles.sh ~/bin/dotfiles.sh
 }
