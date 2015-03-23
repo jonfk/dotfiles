@@ -108,9 +108,6 @@
 ;; Add elpa packages to load-path
 (add-to-list 'load-path "~/.emacs.d/elpa/")
 
-;; Minimap
-(require 'minimap)
-
 ;; Evil
 (require 'evil)
 (evil-mode 1)
