@@ -136,6 +136,9 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/Code/go
 export PATH=$PATH:$GOPATH/bin
 
+## Cabal stuff
+export PATH=$PATH:/home/jon/.cabal/bin
+
 # Repo tools stuff
 export PATH=$PATH:$HOME/bin/depot_tools
 
