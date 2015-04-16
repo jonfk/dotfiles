@@ -73,7 +73,7 @@ autocmd FileType java setlocal shiftwidth=4 softtabstop=4 expandtab
 autocmd FileType py setlocal shiftwidth=8 tabstop=8 softtabstop=8 expandtab
 
 " Set colorscheme
-let colorscheme=desert
+colorscheme desert
 
 
 " At least let yourself know what mode you're in
