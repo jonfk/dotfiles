@@ -72,19 +72,38 @@ autocmd FileType hs setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType java setlocal shiftwidth=4 softtabstop=4 expandtab
 autocmd FileType py setlocal shiftwidth=8 tabstop=8 softtabstop=8 expandtab
 
-" Set colorscheme
-let colorscheme=desert
 
+" PRE POWERLINE
 
 " At least let yourself know what mode you're in
-set showmode
+"set showmode
 " Set the status line the way I like it
-set stl=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%b][0x%B]%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\
+"set stl=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%b][0x%B]%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\
 
 " Copied to get file encoding and bomb
-set statusline=%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
+"set statusline=%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
 
+" Powerline stuff
+" let g:Powerline_symbols = 'compatible'
 
 " tell Vim to always put a status line in, even if there is only one
 " window
 set laststatus=2
+
+" To use Pathogen plugin
+call pathogen#infect()
+call pathogen#helptags()
+
+" Haskell Mode
+" use ghc functionality for haskell files
+au Bufenter *.hs compiler ghc
+" configure browser for haskell_doc.vim
+let g:haddoc_browser = "/usr/bin/google-chrome"
+let g:ghc = "/usr/bin/ghc"
+
+"CtrlP
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+let g:ctrlp_map = '<C-P>'
+let g:ctrlp_cmd = '<CtrlP>'
+nmap <silent> <leader>p :CtrlP<cr>
+nmap <silent> <leader>pb :CtrlPBuffer<cr>
