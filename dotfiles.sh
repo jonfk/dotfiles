@@ -37,9 +37,7 @@ update () {
 
     rsync -va $BASHDOT ~/.bashrc
 
-    # rsync -va $VIMDOT/.vim ~/.vim
-
-    # rsync -va $VIMDOT/.vimrc ~/.vimrc
+    rsync -va $VIMDOT/.vimrc ~/.vimrc
 
     mkdir -p ~/.config/awesome
     rsync -va $AWESOMEDOT ~/.config/awesome/rc.lua
@@ -52,9 +50,7 @@ push () {
 
     rsync -va ~/.bashrc $BASHDOT
 
-    # rsync -va ~/.vim/ ~/dotfiles/.vim/
-
-    # rsync -va ~/.vimrc $VIMDOT/.vimrc
+    rsync -va ~/.vimrc $VIMDOT/.vimrc
 
     rsync -va ~/.config/awesome/rc.lua $AWESOMEDOT
 
@@ -66,9 +62,7 @@ difference () {
 
     diff $BASHDOT ~/.bashrc
 
-    # diff ~/dotfiles/.vim ~/.vim
-
-    # diff $VIMDOT/.vimrc ~/.vimrc
+    diff $VIMDOT/.vimrc ~/.vimrc
 
     diff $AWESOMEDOT ~/.config/awesome/rc.lua
 
