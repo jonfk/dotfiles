@@ -137,7 +137,7 @@ export GOPATH=$HOME/Code/go
 export PATH=$PATH:$GOPATH/bin
 
 ## Cabal stuff
-export PATH=$PATH:/home/jon/.cabal/bin
+export PATH=$PATH:$HOME/.cabal/bin
 
 # Repo tools stuff
 export PATH=$PATH:$HOME/bin/depot_tools
@@ -146,7 +146,7 @@ export PATH=$PATH:$HOME/bin/depot_tools
 export PATH=$PATH:${HOME}/Downloads/activator-1.2.10-minimal/
 
 # OPAM configuration
-. /home/jon/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+. $HOME/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
 # Nim lang
 export PATH=$PATH:${HOME}/Code/nim/Nim/bin
