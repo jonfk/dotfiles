@@ -33,8 +33,8 @@ set lazyredraw
 
 
 " Show Line numbers on the left side
-set number
-set numberwidth=1
+"set number
+"set numberwidth=1
 
 " Enable enhanced command-line completion. Presumes you have compiled
 " with +wildmenu.  See :help 'wildmenu'
