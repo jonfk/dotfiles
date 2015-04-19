@@ -137,7 +137,8 @@ export GOPATH=$HOME/Code/go
 export PATH=$PATH:$GOPATH/bin
 
 ## Cabal stuff
-export PATH=$PATH:$HOME/.cabal/bin
+export PATH=$HOME/.cabal/bin:$PATH
+export PATH=.cabal-sandbox/bin:$PATH
 
 # Repo tools stuff
 export PATH=$PATH:$HOME/bin/depot_tools
