@@ -125,6 +125,10 @@ alias em='emacs'
 alias emc='emacsclient'
 alias ee='emacs -nw'
 
+## Set default Editor
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
 export PATH=~/bin:$PATH
 
 ### Added by the Heroku Toolbelt
