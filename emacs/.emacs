@@ -80,7 +80,7 @@
 
 ;; Bootstrap Packages to be installed
 (defvar my-packages
-  '(zenburn-theme evil evil-leader auto-complete company go-mode paredit haskell-mode
+  '(zenburn-theme evil evil-leader auto-complete company go-mode paredit haskell-mode elm-mode
                   adoc-mode
                   ;;auctex clojure-mode
 		  ;;magit paredit projectile volatile-highlights minimap
