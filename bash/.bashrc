@@ -157,6 +157,8 @@ export PATH=$PATH:${HOME}/Downloads/activator-1.2.10-minimal/
 export PATH=$PATH:${HOME}/Code/nim/Nim/bin
 
 # omsignal tools
-export PATH="$HOME/Applications/poseidon/bin":$PATH
+export PATH=$PATH:$HOME/Applications/poseidon/bin
+export PATH=$PATH:$HOME/Applications/open-data-exporter/bin
 
-export PATH="$HOME/Applications/open-data-exporter/bin":$PATH
+# training-log-analysis tools
+export PATH=$PATH:$HOME/Code/projects/training-log-analysis/bin
