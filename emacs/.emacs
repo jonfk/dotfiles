@@ -47,10 +47,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-
- ;; Show column number (This will show both line and column in '()')
  '(column-number-mode t)
  '(cua-mode t nil (cua-base))
+ '(package-selected-packages
+   (quote
+    (rust-mode lua-mode web-mode zenburn-theme yaml-mode scala-mode2 processing-mode paredit haskell-mode go-mode evil-leader elm-mode company auto-complete adoc-mode)))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 
@@ -73,17 +74,18 @@
 
 ;; Marmelade Package Repository
 (require 'package)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+;;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
 
 ;; Bootstrap Packages to be installed
 (defvar my-packages
-  '(zenburn-theme evil evil-leader auto-complete company go-mode paredit haskell-mode elm-mode
+  '(zenburn-theme evil evil-leader auto-complete company paredit
                   adoc-mode
+                  go-mode haskell-mode elm-mode web-mode
                   ;;auctex clojure-mode
-		  ;;magit paredit projectile volatile-highlights minimap
+		  ;;magit projectile volatile-highlights minimap
                   ;;rainbow-mode deft
 		  )
   "A list of packages to ensure are installed at launch.")
@@ -159,3 +161,18 @@
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; web-mode
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.js[x]?\\'" . web-mode))
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
+(add-hook 'web-mode-hook  'my-web-mode-hook)
