@@ -121,9 +121,11 @@ alias mmm='mvn clean install'
 alias karf='cd target;tar xf distribution.opendaylight-karaf-1.5.0-SNAPSHOT.tar.gz;cd ..;./target/distribution.opendaylight-karaf-1.5.0-SNAPSHOT/bin/karaf'
 alias kraf='mmm;karf'
 
+# emacs
 alias em='emacs'
 alias emc='emacsclient'
 alias ee='emacs -nw'
+alias E="SUDO_EDITOR=\"emacsclient\" sudo -e"
 
 ## Set default Editor
 export VISUAL=vim
@@ -140,9 +142,13 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/Code/go
 export PATH=$PATH:$GOPATH/bin
 
-## Cabal stuff
+## Haskell stuff
 export PATH=$HOME/.cabal/bin:$PATH
 export PATH=.cabal-sandbox/bin:$PATH
+
+export PATH=$HOME/.local/bin:$PATH
+
+eval "$(stack --bash-completion-script "$(which stack)")"
 
 # Repo tools stuff
 export PATH=$PATH:$HOME/bin/depot_tools
