@@ -71,17 +71,17 @@
 (when window-system
   (global-set-key (kbd "C-x C-c") 'ask-before-closing))
 
-;; Marmelade Package Repository
 (require 'package)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+;;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
 
 ;; Bootstrap Packages to be installed
 (defvar my-packages
-  '(zenburn-theme evil evil-leader auto-complete company go-mode paredit haskell-mode elm-mode
-                  adoc-mode lua-mode web-mode
+  '(zenburn-theme evil evil-leader auto-complete company paredit
+                  adoc-mode
+                  lua-mode web-mode go-mode haskell-mode elm-mode
                   ;;auctex clojure-mode
 		  ;;magit paredit projectile volatile-highlights minimap
                   ;;rainbow-mode deft
@@ -159,3 +159,6 @@
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+
+;; web-mode
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
