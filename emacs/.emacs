@@ -81,7 +81,7 @@
 (defvar my-packages
   '(zenburn-theme evil evil-leader auto-complete company paredit
                   adoc-mode
-                  lua-mode web-mode go-mode haskell-mode elm-mode
+                  lua-mode web-mode go-mode haskell-mode elm-mode rust-mode
                   ;;auctex clojure-mode
 		  ;;magit paredit projectile volatile-highlights minimap
                   ;;rainbow-mode deft
