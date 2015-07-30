@@ -92,7 +92,7 @@ diffEmacs homeDir =
     diffFile (homeDir ++ "/dotfiles/emacs/.emacs") (homeDir ++ "/.emacs")
 
 diffAwesome homeDir =
-    diffFile (homeDir ++ "/dotfiles/awesome/rc.lua") (homeDir ++ "/.config/awesome/rc.lua")
+    diffFile (homeDir ++ "/dotfiles/awesome/.config/awesome/rc.lua") (homeDir ++ "/.config/awesome/rc.lua")
 
 diffBash homeDir =
     diffFile (homeDir ++ "/dotfiles/bash/.bashrc") (homeDir ++ "/.bashrc")
