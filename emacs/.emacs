@@ -157,13 +157,13 @@
 
 ;; go-mode
 (setq exec-path (cons "/usr/local/go/bin" exec-path))
-(add-to-list 'exec-path "~/Code/go/bin")
+(add-to-list 'exec-path (expand-file-name "~/Code/go/bin"))
 (add-hook 'before-save-hook 'gofmt-before-save)
 
 (add-hook 'go-mode-hook 'company-mode)
 (add-hook 'go-mode-hook (lambda ()
-  (set (make-local-variable 'company-backends) '(company-go))
-  (company-mode)))
+                          (set (make-local-variable 'company-backends) '(company-go))
+                          (company-mode)))
 
 ;; haskell-mode
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
@@ -178,8 +178,8 @@
 (setq exec-path (cons "~/bin" exec-path))
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 ;; Set path to racer binary
-(setq racer-cmd "~/bin/racer")
-(setq racer-rust-src-path "/Users/jonfk/Code/rust/rust/src/")
+(setq racer-cmd (expand-file-name "~/bin/racer"))
+(setq racer-rust-src-path (expand-file-name "~/Code/rust/rust/src/"))
 (add-hook 'rust-mode-hook #'racer-mode)
 (add-hook 'racer-mode-hook #'eldoc-mode)
 ;; http://bassam.co/emacs/2015/08/24/rust-with-emacs/
