@@ -80,7 +80,7 @@
 
 ;; Bootstrap Packages to be installed
 (defvar my-packages
-  '(zenburn-theme evil evil-leader auto-complete company paredit
+  '(zenburn-theme evil evil-leader company paredit
                   adoc-mode
                   company-go
                   lua-mode web-mode go-mode haskell-mode elm-mode rust-mode
@@ -131,10 +131,6 @@
 
 ;;Zenburn Theme
 (load-theme 'zenburn t)
-
-;; Auto-complete
-(require 'auto-complete)
-(global-auto-complete-mode t)
 
 ;; company-mode
 (add-hook 'after-init-hook 'global-company-mode)
