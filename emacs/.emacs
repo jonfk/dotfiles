@@ -51,7 +51,7 @@
  '(cua-mode t nil (cua-base))
  '(package-selected-packages
    (quote
-    (company-go zenburn-theme yaml-mode web-mode scala-mode2 rust-mode processing-mode paredit lua-mode haskell-mode go-mode evil-leader elm-mode company auto-complete adoc-mode)))
+    (company-racer racer company-go zenburn-theme yaml-mode web-mode scala-mode2 rust-mode processing-mode paredit lua-mode haskell-mode go-mode evil-leader elm-mode company auto-complete adoc-mode)))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 
@@ -82,8 +82,9 @@
 (defvar my-packages
   '(zenburn-theme evil evil-leader company paredit
                   adoc-mode
-                  company-go
-                  lua-mode web-mode go-mode haskell-mode elm-mode rust-mode
+                  go-mode company-go
+                  lua-mode web-mode  haskell-mode elm-mode
+                  rust-mode racer company-racer
                   ;;auctex clojure-mode
 		  ;;magit paredit projectile volatile-highlights minimap
                   ;;rainbow-mode deft
@@ -135,6 +136,8 @@
 ;; company-mode
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-backends '((company-capf company-dabbrev-code company-files)))
+;; Reduce the time after which the company auto completion popup opens
+(setq company-idle-delay 0.2)
 
 
 
@@ -170,6 +173,39 @@
 
 ;; web-mode
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+;; rust-mode
+(setq exec-path (cons "~/bin" exec-path))
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+;; Set path to racer binary
+(setq racer-cmd "~/bin/racer")
+(setq racer-rust-src-path "/Users/jonfk/Code/rust/rust/src/")
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'racer-mode-hook #'eldoc-mode)
+;; http://bassam.co/emacs/2015/08/24/rust-with-emacs/
+(add-hook 'rust-mode-hook (lambda ()
+                            (set (make-local-variable 'company-backends) '(company-racer))
+                            (company-mode)
+                            (setenv "RUST_SRC_PATH" racer-rust-src-path)
+                            (evil-leader/set-key
+                              "." #'racer-find-definition)
+                            ))
+
+;; (add-hook 'rust-mode-hook
+;;           (lambda ()
+;;              ;; Enable racer
+;;              (racer-activate)
+;;              ;; Hook in racer with eldoc to provide documentation
+;;              (racer-turn-on-eldoc)
+;;              ;; Use flycheck-rust in rust-mode
+;;              ;; (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+;;              ;; Use company-racer in rust mode
+;;              (set (make-local-variable 'company-backends) '(company-racer))
+;;              ;; Key binding to jump to method definition
+;;              (local-set-key (kbd "M-.") #'racer-find-definition)
+;;              ;; Key binding to auto complete and indent
+;;              (local-set-key (kbd "TAB") #'racer-complete-or-indent)))
+
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
