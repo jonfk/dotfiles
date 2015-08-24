@@ -151,7 +151,7 @@
 
 ;; go-mode
 (setq exec-path (cons "/usr/local/go/bin" exec-path))
-(add-to-list 'exec-path "/home/jon/Code/go/bin")
+(add-to-list 'exec-path "~/Code/go/bin")
 (add-hook 'before-save-hook 'gofmt-before-save)
 
 ;; haskell-mode
