@@ -47,10 +47,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-
- ;; Show column number (This will show both line and column in '()')
  '(column-number-mode t)
  '(cua-mode t nil (cua-base))
+ '(package-selected-packages
+   (quote
+    (company-go zenburn-theme yaml-mode web-mode scala-mode2 rust-mode processing-mode paredit lua-mode haskell-mode go-mode evil-leader elm-mode company auto-complete adoc-mode)))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 
@@ -81,6 +82,7 @@
 (defvar my-packages
   '(zenburn-theme evil evil-leader auto-complete company paredit
                   adoc-mode
+                  company-go
                   lua-mode web-mode go-mode haskell-mode elm-mode rust-mode
                   ;;auctex clojure-mode
 		  ;;magit paredit projectile volatile-highlights minimap
@@ -134,6 +136,11 @@
 (require 'auto-complete)
 (global-auto-complete-mode t)
 
+;; company-mode
+(add-hook 'after-init-hook 'global-company-mode)
+(setq company-backends '((company-capf company-dabbrev-code company-files)))
+
+
 
 ;; Comment and uncomment region or line
 (defun comment-or-uncomment-region-or-line ()
@@ -154,6 +161,11 @@
 (add-to-list 'exec-path "~/Code/go/bin")
 (add-hook 'before-save-hook 'gofmt-before-save)
 
+(add-hook 'go-mode-hook 'company-mode)
+(add-hook 'go-mode-hook (lambda ()
+  (set (make-local-variable 'company-backends) '(company-go))
+  (company-mode)))
+
 ;; haskell-mode
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
@@ -162,3 +174,10 @@
 
 ;; web-mode
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
