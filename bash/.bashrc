@@ -140,9 +140,13 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/Code/go
 export PATH=$PATH:$GOPATH/bin
 
-## Cabal stuff
+## Haskell stuff
 export PATH=$HOME/.cabal/bin:$PATH
 export PATH=.cabal-sandbox/bin:$PATH
+
+# where stack install binaries
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.stack/programs/x86_64-linux/ghc-7.8.4/bin:$PATH
 
 # Repo tools stuff
 export PATH=$PATH:$HOME/bin/depot_tools
