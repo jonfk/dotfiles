@@ -144,6 +144,9 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$HOME/.cabal/bin:$PATH
 export PATH=.cabal-sandbox/bin:$PATH
 
+## Rust lang stuff
+export RUST_SRC_PATH=$HOME/Code/rust/rust/src
+
 # where stack install binaries
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/.stack/programs/x86_64-linux/ghc-7.8.4/bin:$PATH
