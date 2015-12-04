@@ -19,6 +19,7 @@
 ;; Go to buffer: C-x b
 ;; Kill Buffer: C-x k
 ;; ISearch: C-s
+;; Go to tag: M-.
 ")
 
 
@@ -127,6 +128,7 @@
   "b"  'switch-to-buffer
   "k"  'kill-buffer
   "\\" 'indent-region
+  "t"  'find-tag
   )
 (global-evil-leader-mode)
 
