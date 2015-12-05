@@ -154,9 +154,6 @@ export PATH=$HOME/.stack/programs/x86_64-linux/ghc-7.8.4/bin:$PATH
 # Repo tools stuff
 export PATH=$PATH:$HOME/bin/depot_tools
 
-# Typesafe activator
-export PATH=$PATH:${HOME}/Downloads/activator-1.2.10-minimal/
-
 # OPAM configuration
 . $HOME/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
@@ -169,3 +166,5 @@ export PATH=$PATH:$HOME/Applications/open-data-exporter/bin
 
 # training-log-analysis tools
 export PATH=$PATH:$HOME/Code/projects/training-log-analysis/bin
+
+alias omfleet_clean='omfleet vm halt && omfleet vm up && omfleet unit start open-infra:latest'
