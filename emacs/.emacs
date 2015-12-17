@@ -52,7 +52,7 @@
  '(cua-mode t nil (cua-base))
  '(package-selected-packages
    (quote
-    (company-racer racer company-go zenburn-theme yaml-mode web-mode scala-mode2 rust-mode processing-mode paredit lua-mode haskell-mode go-mode evil-leader elm-mode company auto-complete adoc-mode)))
+    (matlab-mode company-racer racer company-go zenburn-theme yaml-mode web-mode scala-mode2 rust-mode processing-mode paredit lua-mode haskell-mode go-mode evil-leader elm-mode company auto-complete adoc-mode)))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 
@@ -84,7 +84,7 @@
   '(zenburn-theme evil evil-leader company paredit
                   adoc-mode
                   go-mode company-go
-                  lua-mode web-mode  haskell-mode elm-mode
+                  lua-mode web-mode  haskell-mode elm-mode matlab-mode
                   rust-mode racer company-racer
                   ;;auctex clojure-mode
 		  ;;magit paredit projectile volatile-highlights minimap
@@ -175,6 +175,9 @@
 
 ;; web-mode
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+;; Customize default Javascript mode
+(setq js-indent-level 2)
 
 ;; rust-mode
 (setq exec-path (cons "~/bin" exec-path))
