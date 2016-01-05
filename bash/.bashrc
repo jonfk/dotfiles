@@ -146,6 +146,7 @@ export PATH=.cabal-sandbox/bin:$PATH
 
 ## Rust lang stuff
 export RUST_SRC_PATH=$HOME/Code/rust/rust/src
+export PATH=$PATH:$HOME/.multirust/toolchains/stable/cargo/bin
 
 # where stack install binaries
 export PATH=$HOME/.local/bin:$PATH
