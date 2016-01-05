@@ -175,6 +175,9 @@
 
 ;; web-mode
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.nunjucks?\\'" . web-mode))
+(setq web-mode-markup-indent-offset 2)
+
 
 ;; Customize default Javascript mode
 (setq js-indent-level 2)
