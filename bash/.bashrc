@@ -113,13 +113,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export MAVEN_OPTS='-Xmx1048m -XX:MaxPermSize=512m'
-export ODL_USERNAME=jfokkan
-export JAVA_HOME='/usr/lib/jvm/java-7-openjdk-amd64'
-
 alias mmm='mvn clean install'
-alias karf='cd target;tar xf distribution.opendaylight-karaf-1.5.0-SNAPSHOT.tar.gz;cd ..;./target/distribution.opendaylight-karaf-1.5.0-SNAPSHOT/bin/karaf'
-alias kraf='mmm;karf'
 
 alias em='emacs'
 alias emc='emacsclient'
