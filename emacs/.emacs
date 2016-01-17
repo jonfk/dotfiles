@@ -82,7 +82,7 @@
 ;; Bootstrap Packages to be installed
 (defvar my-packages
   '(zenburn-theme evil evil-leader company paredit
-                  adoc-mode
+                  adoc-mode yaml-mode
                   go-mode company-go
                   lua-mode web-mode  haskell-mode elm-mode matlab-mode
                   rust-mode racer company-racer
