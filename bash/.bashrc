@@ -163,3 +163,5 @@ export PATH=$PATH:$HOME/Applications/open-data-exporter/bin
 export PATH=$PATH:$HOME/Code/projects/training-log-analysis/bin
 
 alias omfleet_clean='omfleet vm halt && omfleet vm up && omfleet unit start open-infra:latest'
+
+alias gs='git status'
