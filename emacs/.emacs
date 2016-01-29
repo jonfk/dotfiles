@@ -177,11 +177,17 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.nunjucks?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . web-mode))
-(setq web-mode-markup-indent-offset 2)
-
+(add-to-list 'auto-mode-alist '("\\.json?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
+(add-hook 'web-mode-hook (lambda ()
+                           (setq web-mode-markup-indent-offset 2)
+                           (setq web-mode-code-indent-offset 2)
+                           (company-mode)
+                           ))
 
 ;; Customize default Javascript mode
 (setq js-indent-level 2)
+
 
 ;; rust-mode
 (setq exec-path (cons "~/bin" exec-path))
@@ -222,3 +228,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'dired-find-alternate-file 'disabled nil)
