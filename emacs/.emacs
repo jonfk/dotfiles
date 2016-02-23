@@ -169,10 +169,12 @@
 ;; go-mode
 (setq exec-path (cons "/usr/local/go/bin" exec-path))
 (add-to-list 'exec-path (expand-file-name "~/Code/go/bin"))
-(add-hook 'before-save-hook 'gofmt-before-save)
 
 (add-hook 'go-mode-hook 'company-mode)
 (add-hook 'go-mode-hook (lambda ()
+                          (setq gofmt-command "goimports")
+                          (add-hook 'before-save-hook 'gofmt-before-save)
+
                           (set (make-local-variable 'company-backends) '(company-go))
                           (company-mode)))
 
