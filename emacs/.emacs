@@ -20,6 +20,7 @@
 ;; Kill Buffer: C-x k
 ;; ISearch: C-s
 ;; Go to tag: M-.
+;; Dired: * m: mark file
 ")
 
 
@@ -81,12 +82,13 @@
 
 ;; Bootstrap Packages to be installed
 (defvar my-packages
-  '(zenburn-theme evil evil-leader company paredit
+  '(zenburn-theme evil evil-leader company paredit perspective
                   adoc-mode yaml-mode
                   go-mode company-go
                   lua-mode web-mode  haskell-mode elm-mode matlab-mode
                   rust-mode racer company-racer
-                  ;;auctex clojure-mode
+                  auctex company-auctex
+                  ;;clojure-mode
 		  ;;magit paredit projectile volatile-highlights minimap
                   ;;rainbow-mode deft
 		  )
@@ -129,6 +131,13 @@
   "k"  'kill-buffer
   "\\" 'indent-region
   "t"  'find-tag
+  "ps" 'persp-switch
+  "pc" 'persp-kill
+  "pn" 'persp-next
+  "pp" 'persp-prev
+  "pk" 'persp-remove-buffer
+  "pa" 'persp-add-buffer
+  "pA" 'persp-set-buffer
   )
 (global-evil-leader-mode)
 
@@ -229,3 +238,6 @@
  ;; If there is more than one, they won't work right.
  )
 (put 'dired-find-alternate-file 'disabled nil)
+
+;; perspective mode
+(persp-mode)
