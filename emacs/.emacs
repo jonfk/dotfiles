@@ -53,7 +53,7 @@
  '(cua-mode t nil (cua-base))
  '(package-selected-packages
    (quote
-    (matlab-mode company-racer racer company-go zenburn-theme yaml-mode web-mode scala-mode2 rust-mode processing-mode paredit lua-mode haskell-mode go-mode evil-leader elm-mode company auto-complete adoc-mode)))
+    (matlab-mode racer company-go zenburn-theme yaml-mode web-mode scala-mode2 rust-mode processing-mode paredit lua-mode haskell-mode go-mode evil-leader elm-mode company auto-complete adoc-mode)))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 
@@ -115,6 +115,13 @@
 ;; Add elpa packages to load-path
 (add-to-list 'load-path "~/.emacs.d/elpa/")
 
+;; Configure PATH for various packages (rust-mode, etc)
+(setq exec-path (cons "~/bin" exec-path))
+(setq exec-path (cons "~/.cargo/bin/" exec-path))
+(setq exec-path (cons "/usr/local/go/bin" exec-path))
+(add-to-list 'exec-path (expand-file-name "~/Code/go/bin"))
+
+
 ;; Evil
 (require 'evil)
 (evil-mode 1)
@@ -167,9 +174,6 @@
 ;; Language Specific
 
 ;; go-mode
-(setq exec-path (cons "/usr/local/go/bin" exec-path))
-(add-to-list 'exec-path (expand-file-name "~/Code/go/bin"))
-
 (add-hook 'go-mode-hook 'company-mode)
 (add-hook 'go-mode-hook (lambda ()
                           (setq gofmt-command "goimports")
@@ -201,20 +205,22 @@
 
 
 ;; rust-mode
-(setq exec-path (cons "~/bin" exec-path))
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 ;; Set path to racer binary
-(setq racer-cmd (expand-file-name "~/bin/racer"))
-(setq racer-rust-src-path (expand-file-name "~/Code/rust/rust/src/"))
+(setq racer-cmd (expand-file-name "~/.cargo/bin/racer"))
+(setq racer-rust-src-path (expand-file-name "~/Code/rust/rust-src/src/"))
 (add-hook 'rust-mode-hook #'racer-mode)
 (add-hook 'racer-mode-hook #'eldoc-mode)
-;; http://bassam.co/emacs/2015/08/24/rust-with-emacs/
+(add-hook 'racer-mode-hook #'company-mode)
+(setq company-tooltip-align-annotations t)
+(setq rust-format-on-save t)
+(setq rust-rustfmt-bin "~/.cargo/bin/rustfmt")
 (add-hook 'rust-mode-hook (lambda ()
-                            (set (make-local-variable 'company-backends) '(company-racer))
                             (company-mode)
                             (setenv "RUST_SRC_PATH" racer-rust-src-path)
                             (evil-leader/set-key
                               "." #'racer-find-definition)
+                            (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
                             ))
 
 ;; (add-hook 'rust-mode-hook
