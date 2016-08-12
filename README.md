@@ -3,6 +3,7 @@ dotfiles
 
 Quick install
 ```bash
+# install gnu stow
 ./init.sh
 ```
 
@@ -22,7 +23,8 @@ But you can override the default behavior and symlink files to another location 
 
 ### Zsh
 - [Prezto](https://github.com/sorin-ionescu/prezto)
-Notes on config files [Link](http://zshwiki.org/home/config/files):
+Notes on config files: [Link](http://zshwiki.org/home/config/files)
+My Fork: https://github.com/jonfk/prezto
 
 ### Rust
 - install rust https://www.rustup.rs/
@@ -35,3 +37,6 @@ Notes on config files [Link](http://zshwiki.org/home/config/files):
 - Create Go Path dir: `mkdir -p $HOME/Code/go/src`
 - Install [gocode](https://github.com/nsf/gocode): `go get -u github.com/nsf/gocode`
 - Install [goimport](https://github.com/bradfitz/goimports): `go get golang.org/x/tools/cmd/goimports`
+
+### Git annex
+- install git annex
