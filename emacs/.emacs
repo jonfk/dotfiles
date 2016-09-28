@@ -121,6 +121,8 @@
 (setq exec-path (cons "/usr/local/go/bin" exec-path))
 (add-to-list 'exec-path (expand-file-name "~/Code/go/bin"))
 
+;; Line numbers
+(add-hook 'prog-mode-hook 'linum-mode)
 
 ;; Evil
 (require 'evil)
