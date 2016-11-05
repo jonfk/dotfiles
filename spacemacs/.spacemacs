@@ -37,11 +37,11 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     ;; auto-completion
-     ;; better-defaults
+     auto-completion
      emacs-lisp
      ;; git
      markdown
+     themes-megapack
      org
      (shell :variables
             shell-default-height 30
@@ -52,6 +52,7 @@ values."
      sql
      rust
      html
+     javascript
      ;; version-control
      )
    ;; List of additional packages that will be installed without being
