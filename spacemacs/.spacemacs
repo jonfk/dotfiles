@@ -36,13 +36,11 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     helm
-     auto-completion
      ;; git
      ;; version-control
-     markdown
+     helm
+     auto-completion
      themes-megapack
-     org
      selectric
      xkcd
 
@@ -52,6 +50,9 @@ values."
      spell-checking
      syntax-checking
 
+     markdown
+     org
+     asciidoc
      (go :variables go-tab-width 4)
      sql
      rust
