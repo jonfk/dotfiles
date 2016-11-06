@@ -38,22 +38,26 @@ values."
      ;; ----------------------------------------------------------------
      helm
      auto-completion
-     emacs-lisp
      ;; git
+     ;; version-control
      markdown
      themes-megapack
      org
+     selectric
+     xkcd
+
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
      spell-checking
      syntax-checking
+
      (go :variables go-tab-width 4)
      sql
      rust
      html
      javascript
-     ;; version-control
+     emacs-lisp
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
