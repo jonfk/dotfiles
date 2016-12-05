@@ -53,6 +53,7 @@ values."
      markdown
      org
      asciidoc
+     csv
      (go :variables go-tab-width 4)
      sql
      rust
