@@ -1,0 +1,8 @@
+[user]
+	name = Jonathan Fok kan
+	email = jfokkan@gmail.com
+[core]
+	editor = vim
+[alias]
+	review = "!f(){ git fetch $1 pull/$2/head;git checkout FETCH_HEAD;}; f"
+	shove = "!f(){ git push --force-with-lease $1 $2;}; f"
