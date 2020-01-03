@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-stow emacs -t $HOME
 stow bash -t $HOME
 stow vim -t $HOME
 stow shell -t $HOME
+stow spacemacs -t $HOME
 touch $HOME/.env_priv
