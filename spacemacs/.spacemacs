@@ -328,6 +328,10 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (global-company-mode)
   (push '("\\.js\\'" . react-mode) auto-mode-alist)
+  (defun notesdir ()
+    "Invoke `neotree-dir' on ~/Code/2020-notes"
+    (interactive)
+    (neotree-dir "~/Code/2020-notes"))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
