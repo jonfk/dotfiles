@@ -19,8 +19,10 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 # Allows zsh completion to fix case and allow case-insensitive matching
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
-bindkey ";5C" forward-word
-bindkey ";5D" backward-word
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+bindkey "^A" beginning-of-line
+bindkey "^E" end-of-line
 
 if command -v pazi &>/dev/null; then
 	eval "$(pazi init zsh)" # or 'bash'
@@ -39,3 +41,7 @@ mkcdir ()
 	mkdir -p -- "$1" &&
 	cd -P -- "$1"
 }
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/jonfk/.sdkman"
+[[ -s "/home/jonfk/.sdkman/bin/sdkman-init.sh" ]] && source "/home/jonfk/.sdkman/bin/sdkman-init.sh"
