@@ -10,5 +10,7 @@ alias gls="git log --topo-order --stat --pretty=format:\"${_git_log_medium_forma
 alias youtubedl="sudo docker run --rm --user $UID:$GID -v $PWD:/downloads jonfk/youtube-dl"
 
 export PATH=$PATH:/usr/local/go/bin:~/go/bin
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
 export EDITOR="vim"
 export VISUAL="code"

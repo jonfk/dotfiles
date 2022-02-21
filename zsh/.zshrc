@@ -9,7 +9,7 @@ antigen theme denysdovhan/spaceship-prompt
 
 antigen apply
 
-alias ls='ls --color=auto'
+alias ls='ls -G'
 alias open='wslview'
 
 # zsh-autosuggest
