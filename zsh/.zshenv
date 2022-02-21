@@ -1,5 +1,10 @@
-source "$HOME/.cargo/env"
-source "/home/jonfk/.sdkman/bin/sdkman-init.sh"
+if command cargo > /dev/null; then
+    source "$HOME/.cargo/env"
+fi
+
+if command sdk > /dev/null; then
+    source "/home/jonfk/.sdkman/bin/sdkman-init.sh"
+fi
 
 alias gs="git status"
 alias gco="git checkout"
@@ -9,8 +14,14 @@ _git_log_brief_format='%C(green)%h%C(reset) %s%n%C(blue)(%ar by %an)%C(red)%d%C(
 alias gls="git log --topo-order --stat --pretty=format:\"${_git_log_medium_format}\""
 alias youtubedl="sudo docker run --rm --user $UID:$GID -v $PWD:/downloads jonfk/youtube-dl"
 
-export PATH=$PATH:/usr/local/go/bin:~/go/bin
-export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+if command go > /dev/null; then
+    export PATH=$PATH:/usr/local/go/bin:~/go/bin
+fi
+
+if [[ `uname` == "Darwin" ]]; then
+    export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+fi
+
 
 export EDITOR="vim"
 export VISUAL="code"
