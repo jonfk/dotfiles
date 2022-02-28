@@ -31,7 +31,7 @@ if command -v pazi &> /dev/null; then
 fi
 
 if command -v cmdq &> /dev/null; then
-	eval "$(cmdq generate zsh)"
+	eval "$(cmdq generate-completion zsh)"
 fi
 
 zstyle ':completion:*' accept-exact '*(N)'
