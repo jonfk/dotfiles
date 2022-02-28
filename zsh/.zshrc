@@ -26,8 +26,12 @@ bindkey "^E" end-of-line
 
 [[ -s "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
-if command -v pazi &>/dev/null; then
+if command -v pazi &> /dev/null; then
 	eval "$(pazi init zsh)" # or 'bash'
+fi
+
+if command -v cmdq &> /dev/null; then
+	eval "$(cmdq generate zsh)"
 fi
 
 zstyle ':completion:*' accept-exact '*(N)'
