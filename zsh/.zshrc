@@ -30,10 +30,6 @@ if command -v pazi &> /dev/null; then
 	eval "$(pazi init zsh)" # or 'bash'
 fi
 
-if command -v cmdq &> /dev/null; then
-	eval "$(cmdq generate-completion zsh)"
-fi
-
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 
