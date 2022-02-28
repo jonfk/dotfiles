@@ -24,6 +24,10 @@ bindkey "^[[1;5D" backward-word
 bindkey "^A" beginning-of-line
 bindkey "^E" end-of-line
 
+if command cargo &> /dev/null; then
+    source "$HOME/.cargo/env"
+fi
+
 if command -v pazi &>/dev/null; then
 	eval "$(pazi init zsh)" # or 'bash'
 fi
