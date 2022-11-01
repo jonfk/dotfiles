@@ -14,6 +14,10 @@ if [[ `uname` == "Darwin" ]]; then
     export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 fi
 
+if [ -d "$HOME/.bin" ]; then
+    export PATH=$PATH:"$HOME/.bin"
+fi
+
 ytdlp() {
     yt-dlp $1 -o "$2 %(title)s [%(id)s].%(ext)s"
 }
