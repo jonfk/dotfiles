@@ -30,6 +30,10 @@ if command -v pazi &> /dev/null; then
 	eval "$(pazi init zsh)" # or 'bash'
 fi
 
+if command -v fnm &> /dev/null; then
+	eval "$(fnm env --use-on-cd)"
+fi
+
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 
