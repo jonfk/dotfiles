@@ -10,7 +10,9 @@ antigen theme spaceship-prompt/spaceship-prompt
 antigen apply
 
 alias ls='ls -G'
-alias open='wslview'
+if [[ ! -a /usr/bin/open ]]; then
+	alias open='wslview'
+fi
 
 # zsh-autosuggest
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
