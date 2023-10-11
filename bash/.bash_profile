@@ -5,4 +5,4 @@ source .env_priv
 export SDKMAN_DIR="/Users/jonfk_/.sdkman"
 [[ -s "/Users/jonfk_/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/jonfk_/.sdkman/bin/sdkman-init.sh"
 
-export PATH="$HOME/.cargo/bin:$PATH"
+. "$HOME/.cargo/env"
