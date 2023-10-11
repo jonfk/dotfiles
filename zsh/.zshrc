@@ -14,6 +14,8 @@ if [[ ! -a /usr/bin/open ]]; then
 	alias open='wslview'
 fi
 
+export PATH=/usr/local/bin:$PATH
+
 # zsh-autosuggest
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
