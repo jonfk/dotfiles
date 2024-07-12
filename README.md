@@ -7,36 +7,38 @@ Quick install
 ./init.sh
 ```
 
-Files can be synced using stow.
-
-To install emacs config
-```bash
-$ stow emacs
-```
+Dotfiles are installed using stow. stow installs the dotfiles by creating symlinks into the target directory based on the structure in the dotfiles directory. 
 
 By default the stow command will create symlinks for files in the parent directory of where you execute the command.
-So my dotfiles setup assumes this repo is located in the root of your home directory `~/dotfiles`.
 
 But you can override the default behavior and symlink files to another location with the -t (target) argument flag.
 
+So my dotfiles setup assumes this repo is located in the root of your home directory `~/dotfiles`.
+
 ## Dependencies
 
+### Dotfiles
+
+- gnu stow
+
 ### Zsh
-- [Prezto](https://github.com/sorin-ionescu/prezto)
-Notes on config files: [Link](http://zshwiki.org/home/config/files)
-My Fork: https://github.com/jonfk/prezto
+
+- [Antidote](https://github.com/mattmc3/antidote): zsh plugin manager
+- 
+
+### CLI Utilities
+
+- 
 
 ### Rust
+
 - install rust https://www.rustup.rs/
-- https://github.com/phildawes/racer
-- clone rust source: `git clone git@github.com:rust-lang/rust.git $HOME/Code/rust/rust-src`
-- rust-fmt: `cargo install rustfmt`
+- rustfmt: Is now a component in rustup and can be installed using `rustup component add rustfmt`
+    - See [rustup book/components](https://rust-lang.github.io/rustup/concepts/components.html) for all components.
 
 ### Go
+
 - Download and install Go `tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz`
 - Create Go Path dir: `mkdir -p $HOME/Code/go/src`
 - Install [gocode](https://github.com/nsf/gocode): `go get -u github.com/nsf/gocode`
 - Install [goimport](https://github.com/bradfitz/goimports): `go get golang.org/x/tools/cmd/goimports`
-
-### Git annex
-- install git annex
