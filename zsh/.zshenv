@@ -6,8 +6,8 @@ _git_log_brief_format='%C(green)%h%C(reset) %s%n%C(blue)(%ar by %an)%C(red)%d%C(
 alias gls="git log --topo-order --stat --pretty=format:\"${_git_log_medium_format}\""
 alias youtubedl="sudo docker run --rm --user $UID:$GID -v $PWD:/downloads jonfk/youtube-dl"
 
-if command go &> /dev/null; then
-    export PATH=$PATH:/usr/local/go/bin:~/go/bin
+if [ -d "/usr/local/go" ]; then
+    export PATH=$PATH:/usr/local/go/bin
 fi
 
 if [[ `uname` == "Darwin" ]]; then
