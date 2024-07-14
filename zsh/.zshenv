@@ -25,3 +25,4 @@ ytdlp() {
 
 export EDITOR="vim"
 export VISUAL="code"
+. "$HOME/.cargo/env"

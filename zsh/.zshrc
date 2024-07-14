@@ -1,13 +1,17 @@
-source ~/.bin/antigen.zsh
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
-antigen bundle git
-# antigen bundle command-not-found
-# antigen bundle zsh-users/zsh-autosuggestions
-# antigen bundle zsh-users/zsh-completions
+# Clone antidote if necessary.
+if [[ ! -e .bin/antidote ]]; then
+  mkdir -p .bin/antidote && git clone https://github.com/mattmc3/antidote.git .bin/antidote
+fi
 
-antigen theme spaceship-prompt/spaceship-prompt
-
-antigen apply
+source ~/.bin/antidote/antidote.zsh
+antidote load
 
 alias ls='ls -G'
 if [[ ! -a /usr/bin/open ]]; then
@@ -30,10 +34,7 @@ bindkey "^E" end-of-line
 
 [[ -s "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
-if command -v pazi &> /dev/null; then
-	eval "$(pazi init zsh)" # or 'bash'
-fi
-
+# https://github.com/Schniz/fnm
 if command -v fnm &> /dev/null; then
 	eval "$(fnm env --use-on-cd)"
 fi
@@ -55,3 +56,12 @@ mkcdir ()
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+autoload -Uz compinit && compinit
+
+source <(fzf --zsh)
