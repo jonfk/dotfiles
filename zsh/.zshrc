@@ -6,8 +6,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # Clone antidote if necessary.
-if [[ ! -e .bin/antidote ]]; then
-  mkdir -p .bin/antidote && git clone https://github.com/mattmc3/antidote.git .bin/antidote
+if [[ ! -e "$HOME/.bin/antidote" ]]; then
+  mkdir -p "$HOME/.bin/antidote" && git clone https://github.com/mattmc3/antidote.git "$HOME/.bin/antidote"
 fi
 
 source ~/.bin/antidote/antidote.zsh
@@ -65,3 +65,5 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 autoload -Uz compinit && compinit
 
 source <(fzf --zsh)
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
