@@ -28,7 +28,17 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 
 ### CLI Utilities
 
-- 
+- fzf
+- fd
+- ripgrep
+- fnm
+
+### Editors
+
+- neovim
+    - [astronvim](https://astronvim.com/)
+    - [kickstart](https://github.com/nvim-lua/kickstart.nvim)
+- neovide: a cross platform neovim GUI
 
 ### Rust
 
