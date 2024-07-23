@@ -5,6 +5,7 @@ _git_log_oneline_format='%C(green)%h%C(reset) %s%C(red)%d%C(reset)%n'
 _git_log_brief_format='%C(green)%h%C(reset) %s%n%C(blue)(%ar by %an)%C(red)%d%C(reset)%n'
 alias gls="git log --topo-order --stat --pretty=format:\"${_git_log_medium_format}\""
 alias youtubedl="sudo docker run --rm --user $UID:$GID -v $PWD:/downloads jonfk/youtube-dl"
+alias astrovide="NVIM_APPNAME=\"astronvim\" neovide --fork"
 
 if [ -d "/usr/local/go" ]; then
     export PATH=$PATH:/usr/local/go/bin
