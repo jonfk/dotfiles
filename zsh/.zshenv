@@ -19,6 +19,10 @@ if [ -d "$HOME/.bin" ]; then
     export PATH=$PATH:"$HOME/.bin"
 fi
 
+if [ -d "/opt/nvim-linux64/bin/" ]; then
+    export PATH=$PATH:"/opt/nvim-linux64/bin/"
+fi
+
 ytdlp() {
     yt-dlp $1 -o "$2 %(title)s [%(id)s].%(ext)s"
 }

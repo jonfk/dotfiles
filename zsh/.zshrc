@@ -64,6 +64,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 autoload -Uz compinit && compinit
 
-source <(fzf --zsh)
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if [ -f ~/.fzf.zsh ]; then 
+	source ~/.fzf.zsh
+else
+	source <(fzf --zsh)
+fi
