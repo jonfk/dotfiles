@@ -52,3 +52,8 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 - Create Go Path dir: `mkdir -p $HOME/Code/go/src`
 - Install [gocode](https://github.com/nsf/gocode): `go get -u github.com/nsf/gocode`
 - Install [goimport](https://github.com/bradfitz/goimports): `go get golang.org/x/tools/cmd/goimports`
+
+### MacOS Utilities
+
+- [Hidden Bar](https://github.com/dwarvesf/hidden) toggle hide menu bar items.
+
