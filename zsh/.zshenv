@@ -11,6 +11,10 @@ if [ -d "/usr/local/go" ]; then
     export PATH=$PATH:/usr/local/go/bin
 fi
 
+if [ -d "$HOME/go/bin" ]; then
+    export PATH=$PATH:"$HOME/go/bin"
+fi
+
 if [[ `uname` == "Darwin" ]]; then
     export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 fi
