@@ -158,7 +158,7 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 7
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -743,7 +743,7 @@ require("lazy").setup({
 
 					-- If you prefer more traditional completion keymaps,
 					-- you can uncomment the following lines
-					--['<CR>'] = cmp.mapping.confirm { select = true },
+					--["<CR>"] = cmp.mapping.confirm({ select = true }),
 					--['<Tab>'] = cmp.mapping.select_next_item(),
 					--['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
@@ -902,6 +902,11 @@ require("lazy").setup({
 		version = "*",
 		dependencies = "nvim-tree/nvim-web-devicons",
 		opts = {},
+	},
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
 	},
 
 	-- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
