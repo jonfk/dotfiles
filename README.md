@@ -33,6 +33,10 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 - ripgrep
 - fnm
 
+#### Tmux
+
+- [Tmux Yank](https://github.com/tmux-plugins/tmux-yank): Plugin to copy to system clipboard
+
 ### Editors
 
 - neovim
@@ -56,4 +60,5 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 ### MacOS Utilities
 
 - [Hidden Bar](https://github.com/dwarvesf/hidden) toggle hide menu bar items.
+- [reattach-to-user-namespace](https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard): Used for [tmux-yank](https://github.com/tmux-plugins/tmux-yank)
 
