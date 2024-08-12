@@ -76,11 +76,17 @@ vim.opt.scrolloff = 7
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
+--
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+vim.keymap.set("i", "jj", "<Esc>")
+
+-- Buffer Keymaps
+vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Delete buffer" })
+vim.keymap.set("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
-vim.keymap.set("i", "jj", "<Esc>")
 
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
@@ -203,6 +209,7 @@ require("lazy").setup({
 				{ "<leader>s", group = "[S]earch" },
 				{ "<leader>w", group = "[W]orkspace" },
 				{ "<leader>t", group = "[T]oggle" },
+				{ "<leader>b", group = "[B]uffers" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
 			})
 		end,
@@ -347,25 +354,6 @@ require("lazy").setup({
 			{ "Bilal2453/luvit-meta", lazy = true },
 		},
 		config = function()
-			-- Brief aside: **What is LSP?**
-			--
-			-- LSP is an initialism you've probably heard, but might not understand what it is.
-			--
-			-- LSP stands for Language Server Protocol. It's a protocol that helps editors
-			-- and language tooling communicate in a standardized fashion.
-			--
-			-- In general, you have a "server" which is some tool built to understand a particular
-			-- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
-			-- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-			-- processes that communicate with some "client" - in this case, Neovim!
-			--
-			-- LSP provides Neovim with features like:
-			--  - Go to definition
-			--  - Find references
-			--  - Autocompletion
-			--  - Symbol Search
-			--  - and more!
-			--
 			-- Thus, Language Servers are external tools that must be installed separately from
 			-- Neovim. This is where `mason` and related plugins come into play.
 			--
@@ -492,7 +480,7 @@ require("lazy").setup({
 					-- clangd = {},
 					gopls = {},
 					-- pyright = {},
-					-- rust_analyzer = {},
+					rust_analyzer = {},
 					-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 					--
 					-- Some languages (like typescript) have entire language plugins that can be useful:
@@ -500,8 +488,14 @@ require("lazy").setup({
 					--
 					-- But for many setups, the LSP (`tsserver`) will work just fine
 					-- tsserver = {},
-					--
 
+					jsonls = {
+						settings = {
+							json = {
+								validate = { enable = true },
+							},
+						},
+					},
 					lua_ls = {
 						-- cmd = {...},
 						-- filetypes = { ...},
@@ -581,7 +575,8 @@ require("lazy").setup({
 				--
 				-- You can use a sub-list to tell conform to run *until* a formatter
 				-- is found.
-				-- javascript = { { "prettierd", "prettier" } },
+				rust = { "rustfmt", lsp_format = "fallback" },
+				javascript = { { "prettierd", "prettier" } },
 			},
 		},
 	},
@@ -812,6 +807,11 @@ require("lazy").setup({
 
 	-- My Plugins
 	{
+		"pmizio/typescript-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+		opts = {},
+	},
+	{
 		"akinsho/bufferline.nvim",
 		version = "*",
 		dependencies = "nvim-tree/nvim-web-devicons",
@@ -843,9 +843,22 @@ require("lazy").setup({
 		"akinsho/toggleterm.nvim",
 		version = "*",
 		config = {
-
 			vim.keymap.set("n", "<leader>tt", "<cmd>ToggleTerm<cr>", { desc = "ToggleTerm Terminal" }),
 		},
+	},
+	{
+		"stevearc/oil.nvim",
+		opts = {},
+		-- Optional dependencies
+		dependencies = { { "echasnovski/mini.icons", opts = {} } },
+		-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+		config = {
+			vim.keymap.set("n", "<leader>ee", "<cmd>Oil<cr>", { desc = "Open Oil" }),
+		},
+	},
+	{
+		"numToStr/Comment.nvim",
+		opts = {},
 	},
 
 	-- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
