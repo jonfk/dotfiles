@@ -417,6 +417,8 @@ require("lazy").setup({
 					--  For example, in C this would take you to the header.
 					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
+					vim.keymap.set("i", "<c-s>", vim.lsp.buf.signature_help)
+
 					-- The following two autocommands are used to highlight references of the
 					-- word under your cursor when your cursor rests there for a little while.
 					--    See `:help CursorHold` for information about when this is executed
@@ -600,12 +602,12 @@ require("lazy").setup({
 					-- `friendly-snippets` contains a variety of premade snippets.
 					--    See the README about individual language/framework/plugin snippets:
 					--    https://github.com/rafamadriz/friendly-snippets
-					-- {
-					--   'rafamadriz/friendly-snippets',
-					--   config = function()
-					--     require('luasnip.loaders.from_vscode').lazy_load()
-					--   end,
-					-- },
+					{
+						"rafamadriz/friendly-snippets",
+						config = function()
+							require("luasnip.loaders.from_vscode").lazy_load()
+						end,
+					},
 				},
 			},
 			"saadparwaiz1/cmp_luasnip",
@@ -846,18 +848,23 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"stevearc/oil.nvim",
+		"numToStr/Comment.nvim",
 		opts = {},
+	},
+	{
+		"stevearc/oil.nvim",
+		opts = {
+			view_options = {
+				show_hidden = true,
+			},
+		},
 		-- Optional dependencies
 		dependencies = { { "echasnovski/mini.icons", opts = {} } },
 		-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
-		config = function()
+		config = function(_, opts)
+			require("oil").setup(opts)
 			vim.keymap.set("n", "<leader>ee", "<cmd>Oil<cr>", { desc = "Open Oil" })
 		end,
-	},
-	{
-		"numToStr/Comment.nvim",
-		opts = {},
 	},
 
 	-- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
