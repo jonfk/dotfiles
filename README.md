@@ -62,3 +62,40 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 - [Hidden Bar](https://github.com/dwarvesf/hidden) toggle hide menu bar items.
 - [reattach-to-user-namespace](https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard): Used for [tmux-yank](https://github.com/tmux-plugins/tmux-yank)
 
+## Other Setup
+
+### MacOS
+
+#### Create custom shortcuts to focus on windows
+
+[Original Source](https://www.reddit.com/r/MacOS/comments/j2472l/hotkey_for_switching_focus_to_specific_apps/)
+
+Steps:
+
+1. Open Automator create a new "Quick Action" (if you're looking at docs that say "Service", this appears to just be a name change around 10.6).
+2. Select "no input" from any application in the new window
+3. From the left-hand side, select run Applescript*1
+4. Type in your Applescript (See below)
+5. Save your automation.
+6. Go to privacy and security and add automator onto the approved accessibility list
+7. Go into keyboard shortcuts and navigate to services, your automator action should be there I believe under general.
+8. Enable the action and select a hotkey.*2
+
+Notes:
+
+1. Many references I started with set me about converting my Applescript into an application. While I would ideally like to do this, I simply was unable to get it to work this way. If anyone knows how please let me know.
+2. There are very few system-wide keyboard shortcuts that aren't already in use, and there's not really any good feedback to let you know if you're using one that's already in use besides things not really working. I would recommend a shift+option+command modifier plus a key. *DO NOT USE THE CONTROL KEY AS A MODIFIER** This is a trap I fell into because it turns out that anytime Applescript is executed with the control key held down, it will automatically show the startup options (which is not what you want for this to work).
+
+```
+on run {input, parameters}
+	tell application "Google Chrome" to activate
+end run
+```
+
+```
+on run {input, parameters}
+	tell application "iTerm" to activate
+end run
+```
+
+
