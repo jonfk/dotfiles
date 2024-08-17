@@ -2,6 +2,10 @@ local wezterm = require("wezterm")
 
 local config = wezterm.config_builder()
 
+local is_windows = function()
+	return wezterm.target_triple:find("windows") ~= nil
+end
+
 -- config.color_scheme = ""
 
 config.font = wezterm.font({ family = "Hack Nerd Font" })
@@ -24,10 +28,24 @@ config.window_frame = {
 	font_size = 11,
 }
 
-config.hide_tab_bar_if_only_one_tab = true
+if !is_windows() then
+	config.hide_tab_bar_if_only_one_tab = true
+end
 
-local is_windows = function()
-	return wezterm.target_triple:find("windows") ~= nil
+if is_windows() then
+config.wsl_domains = {
+  {
+    -- The name of this specific domain.  Must be unique amonst all types
+    -- of domain in the configuration file.
+    name = 'WSL:Ubuntu-20.04',
+
+    -- The name of the distribution.  This identifies the WSL distribution.
+    -- It must match a valid distribution from your `wsl -l -v` output in
+    -- order for the domain to be useful.
+    distribution = 'Ubuntu',
+  },
+}
+config.default_domain = 'WSL:Ubuntu-20.04'
 end
 
 return config
