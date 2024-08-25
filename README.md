@@ -61,6 +61,9 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 
 - [Hidden Bar](https://github.com/dwarvesf/hidden) toggle hide menu bar items.
 - [reattach-to-user-namespace](https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard): Used for [tmux-yank](https://github.com/tmux-plugins/tmux-yank)
+- [Aerospace](https://github.com/nikitabobko/AeroSpace) Lightning fast TWM for OSX with virtualized workspaces
+    - [JankyBorders](https://github.com/FelixKratz/JankyBorders) Highlights the currently focussed window
+- [SketchyBar](https://github.com/FelixKratz/SketchyBar) A status bar replacement #todo. Not currently using.
 
 ## Other Setup
 
@@ -98,4 +101,13 @@ on run {input, parameters}
 end run
 ```
 
+#### Allow moving windows while dragging any part of the window
+
+From [AeroSpace Readme](https://github.com/nikitabobko/AeroSpace?tab=readme-ov-file#tip-of-the-day)
+
+```
+defaults write -g NSWindowShouldDragOnGesture -bool true
+```
+
+> Now, you can move windows by holding ctrl+cmd and dragging any part of the window (not necessarily the window title)
 
