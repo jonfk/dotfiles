@@ -74,6 +74,8 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 7
 
+vim.api.nvim_set_option_value("colorcolumn", "119", {})
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 --
@@ -843,7 +845,8 @@ require("lazy").setup({
 	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
-		config = function()
+		config = function(_, opts)
+			require("toggleterm").setup(opts)
 			vim.keymap.set("n", "<leader>tt", "<cmd>ToggleTerm<cr>", { desc = "ToggleTerm Terminal" })
 		end,
 	},
@@ -863,7 +866,7 @@ require("lazy").setup({
 		-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
 		config = function(_, opts)
 			require("oil").setup(opts)
-			vim.keymap.set("n", "<leader>ee", "<cmd>Oil<cr>", { desc = "Open Oil" })
+			vim.keymap.set("n", "<leader>e", "<cmd>Oil<cr>", { desc = "Open Oil" })
 		end,
 	},
 
