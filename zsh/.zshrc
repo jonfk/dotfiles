@@ -39,8 +39,8 @@ if command -v fnm &> /dev/null; then
 	eval "$(fnm env --use-on-cd)"
 fi
 
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
+# zstyle ':completion:*' accept-exact '*(N)'
+# zstyle ':completion:*' use-cache on
 
 precmd() {
 	# sets the tab title to current dir

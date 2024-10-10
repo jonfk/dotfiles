@@ -7,4 +7,4 @@ ohmyzsh/ohmyzsh path:plugins/git    # https://github.com/ohmyzsh/ohmyzsh/tree/ma
 
 # completion plugins
 zsh-users/zsh-autosuggestions
-marlonrichert/zsh-autocomplete
+#marlonrichert/zsh-autocomplete
