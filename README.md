@@ -64,6 +64,7 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 - [Aerospace](https://github.com/nikitabobko/AeroSpace) Lightning fast TWM for OSX with virtualized workspaces
     - [JankyBorders](https://github.com/FelixKratz/JankyBorders) Highlights the currently focussed window
 - [SketchyBar](https://github.com/FelixKratz/SketchyBar) A status bar replacement #todo. Not currently using.
+- [Maccy](https://github.com/p0deje/Maccy) Clipboard manager
 
 ## Other Setup
 
