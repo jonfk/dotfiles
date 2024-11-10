@@ -1,0 +1,18 @@
+modmap:
+  - name: CapsLock to Ctrl
+    remap: 
+      CAPSLOCK: CTRL_L
+  - name: MS Keys
+    remap: 
+      ALT_L: CTRL_L
+      WIN_L: ALT_L
+      CTRL_L: WIN_L
+    device:
+      only: ['event2', 'event3']
+  - name: Magic Keyboard 1
+    remap:
+      WIN_L: CTRL_L
+      CTRL_L: WIN_L
+    device:
+      only: ['Jonathan Fok Kan’s Keyboard']
+keymap:
