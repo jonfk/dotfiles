@@ -13,7 +13,7 @@ fi
 source ~/.bin/antidote/antidote.zsh
 antidote load
 
-alias ls='ls -G'
+alias ls='eza'
 if [[ ! -a /usr/bin/open ]]; then
 	alias open='wslview'
 fi
