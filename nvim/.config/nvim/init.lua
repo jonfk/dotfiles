@@ -329,6 +329,8 @@ require("lazy").setup({
 		end,
 	},
 
+	{ "nvim-java/nvim-java" },
+
 	{ -- LSP Configuration & Plugins
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -480,9 +482,23 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				-- clangd = {},
+				jdtls = {
+					settings = {
+						java = {
+							home = "/Users/jonfk/.sdkman/candidates/java/21.0.5-tem",
+							configuration = {
+								runtimes = {
+									{
+										name = "JavaSE-21",
+										path = "/Users/jonfk/.sdkman/candidates/java/21.0.5-tem",
+										default = true,
+									},
+								},
+							},
+						},
+					},
+				},
 				gopls = {},
-				-- pyright = {},
 				rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				--
@@ -514,6 +530,7 @@ require("lazy").setup({
 					},
 				},
 			}
+			require("java").setup()
 			-- Ensure the servers and tools above are installed
 			--  To check the current status of installed tools and/or manually install
 			--  other tools, you can run
@@ -538,6 +555,7 @@ require("lazy").setup({
 						-- by the server configuration above. Useful when disabling
 						-- certain features of an LSP (for example, turning off formatting for tsserver)
 						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+
 						require("lspconfig")[server_name].setup(server)
 					end,
 				},
