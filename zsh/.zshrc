@@ -19,6 +19,7 @@ if [[ ! -a /usr/bin/open ]]; then
 fi
 
 export PATH=/usr/local/bin:$PATH
+export PATH=~/.local/bin:$PATH
 
 # zsh-autosuggest
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
