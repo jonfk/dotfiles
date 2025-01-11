@@ -8,11 +8,11 @@ modmap:
       WIN_L: ALT_L
       CTRL_L: WIN_L
     device:
-      only: ['event2', 'event3']
+      only: 'Logitech MX Keys'
   - name: Magic Keyboard 1
     remap:
       WIN_L: CTRL_L
       CTRL_L: WIN_L
     device:
-      only: ['Jonathan Fok Kan’s Keyboard']
+      only: ['Jonathan Fok Kan’s Keyboard', 'Apple Inc. Magic Keyboard']
 keymap:

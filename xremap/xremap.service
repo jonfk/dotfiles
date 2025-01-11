@@ -7,7 +7,7 @@ Type=simple
 # Run as root
 User=root
 # The actual command with full paths
-ExecStart=/usr/local/bin/xremap /home/jonfk/dotfiles/xremap/config.yml --device 'Logitech MX Keys' --device event18
+ExecStart=/usr/local/bin/xremap /home/jonfk/dotfiles/xremap/config.yml --device 'Logitech MX Keys' --device event18 --device 'Apple Inc. Magic Keyboard'
 # Restart on failure
 Restart=on-failure
 # Wait 5 seconds before restart
