@@ -24,7 +24,7 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 ### Zsh
 
 - [Antidote](https://github.com/mattmc3/antidote): zsh plugin manager
-- 
+- tmux
 
 ### CLI Utilities
 
@@ -32,6 +32,7 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 - fd
 - ripgrep
 - fnm
+- eza: ls replacement `cargo install eza`
 
 #### Tmux
 
