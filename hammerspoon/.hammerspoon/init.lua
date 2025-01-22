@@ -1,10 +1,24 @@
+-- Define your app shortcuts
+local appShortcuts = {
+	{ "1", "Google Chrome" },
+	{ "2", "ghostty" },
+}
 
-require "clipboard"
+-- Create shortcuts for each app
+for _, shortcut in ipairs(appShortcuts) do
+	local key, app = table.unpack(shortcut)
+	hs.hotkey.bind({ "cmd", "alt" }, key, function()
+		hs.application.launchOrFocus(app)
+	end)
+end
 
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, "W", function()
-    hs.notify.new({title="Hammerspoon", informativeText="Hello World"}):send()
-end)
+-- Create a window filter to watch for window focus changes
+local windowFilter = hs.window.filter.new()
 
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, "H", function()
-    hs.caffeinate.lockScreen()
+windowFilter:subscribe(hs.window.filter.windowFocused, function(window)
+	if window then
+		local frame = window:frame()
+		local center = hs.geometry.point(frame.x + frame.w / 2, frame.y + frame.h / 2)
+		hs.mouse.absolutePosition(center)
+	end
 end)
