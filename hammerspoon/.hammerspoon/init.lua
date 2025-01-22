@@ -18,7 +18,18 @@ local windowFilter = hs.window.filter.new()
 windowFilter:subscribe(hs.window.filter.windowFocused, function(window)
 	if window then
 		local frame = window:frame()
-		local center = hs.geometry.point(frame.x + frame.w / 2, frame.y + frame.h / 2)
-		hs.mouse.absolutePosition(center)
+		local currentMousePos = hs.mouse.absolutePosition()
+
+		-- Check if the cursor is already within the window frame
+		local isInWindow = currentMousePos.x >= frame.x
+			and currentMousePos.x <= frame.x + frame.w
+			and currentMousePos.y >= frame.y
+			and currentMousePos.y <= frame.y + frame.h
+
+		-- Only move the cursor if it's not already in the window
+		if not isInWindow then
+			local center = hs.geometry.point(frame.x + frame.w / 2, frame.y + frame.h / 2)
+			hs.mouse.absolutePosition(center)
+		end
 	end
 end)
