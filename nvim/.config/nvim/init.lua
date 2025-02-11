@@ -507,6 +507,7 @@ require("lazy").setup({
 				--
 				-- But for many setups, the LSP (`tsserver`) will work just fine
 				-- tsserver = {},
+				ts_ls = {},
 
 				jsonls = {
 					settings = {
