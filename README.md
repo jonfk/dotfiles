@@ -66,6 +66,7 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
     - [JankyBorders](https://github.com/FelixKratz/JankyBorders) Highlights the currently focussed window
 - [SketchyBar](https://github.com/FelixKratz/SketchyBar) A status bar replacement #todo. Not currently using.
 - [Maccy](https://github.com/p0deje/Maccy) Clipboard manager
+- [Touch-Tab](https://github.com/ris58h/Touch-Tab?tab=readme-ov-file) Switch apps with trackpad gestures
 
 ## Other Setup
 
