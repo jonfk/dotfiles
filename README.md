@@ -33,6 +33,9 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 - ripgrep
 - fnm
 - eza: ls replacement `cargo install eza`
+- bat
+    - on Ubuntu: sudo apt install bat && ln -s /usr/bin/batcat ~/.local/bin/bat
+- llmcat
 
 #### Tmux
 
