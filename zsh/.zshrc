@@ -40,6 +40,10 @@ if command -v fnm &> /dev/null; then
 	eval "$(fnm env --use-on-cd)"
 fi
 
+if command -v mise &> /dev/null; then
+	eval "$(~/.local/bin/mise activate zsh)"
+fi
+
 # zstyle ':completion:*' accept-exact '*(N)'
 # zstyle ':completion:*' use-cache on
 
