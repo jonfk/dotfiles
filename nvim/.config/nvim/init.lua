@@ -790,6 +790,7 @@ require("lazy").setup({
 				"bash",
 				"c",
 				"diff",
+				"gitcommit",
 				"html",
 				"lua",
 				"luadoc",
