@@ -16,3 +16,34 @@ modmap:
     device:
       only: ['Jonathan Fok Kan’s Keyboard', 'Apple Inc. Magic Keyboard']
 keymap:
+  - name: Magic Keyboard Special Mappings
+    device:
+      only: ['Jonathan Fok Kan’s Keyboard', 'Apple Inc. Magic Keyboard']
+    remap:
+      WIN_R-KEY_D: SHIFT-9  # Maps right Win + D to (
+      WIN_R-KEY_F: SHIFT-0  # Maps right Win + F to )
+      WIN_R-KEY_C: SHIFT-MINUS  # Maps right Win + C to {
+      WIN_R-KEY_V: SHIFT-EQUAL  # Maps right Win + V to }
+      WIN_R-KEY_A: MINUS  # Maps right Win + A to [
+      WIN_R-KEY_S: EQUAL  # Maps right Win + S to ]
+      WIN_R-E: SHIFT-E
+      WIN_R-W: SHIFT-W
+      WIN_R-Q: SHIFT-Q
+      WIN_R-H: SHIFT-6
+      WIN_R-J: SHIFT-7
+      WIN_R-K: SHIFT-8
+      WIN_R-L: LEFTBRACE
+      WIN_R-Z: SHIFT-Z
+      WIN_R-BACKSLASH: SHIFT-BACKSLASH
+      # Number row mappings
+      WIN_R-GRAVE: SHIFT-GRAVE  # ~
+      WIN_R-1: SHIFT-1          # !
+      WIN_R-2: SHIFT-2          # @
+      WIN_R-3: SHIFT-3          # #
+      WIN_R-4: SHIFT-4          # $
+      WIN_R-5: SHIFT-5          # %
+      WIN_R-6: SHIFT-6          # ^
+      WIN_R-7: SHIFT-7          # &
+      WIN_R-8: SHIFT-8          # *
+      WIN_R-9: SHIFT-9          # (
+      WIN_R-0: SHIFT-0          # )
