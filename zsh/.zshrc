@@ -13,6 +13,7 @@ fi
 source ~/.bin/antidote/antidote.zsh
 antidote load
 
+alias tn='tmux new -s'
 alias ls='eza'
 if [[ ! -a /usr/bin/open ]]; then
 	alias open='wslview'
