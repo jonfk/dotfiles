@@ -71,6 +71,7 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 - [SketchyBar](https://github.com/FelixKratz/SketchyBar) A status bar replacement #todo. Not currently using.
 - [Maccy](https://github.com/p0deje/Maccy) Clipboard manager
 - [Touch-Tab](https://github.com/ris58h/Touch-Tab?tab=readme-ov-file) Switch apps with trackpad gestures
+- [AltTab](https://alt-tab-macos.netlify.app/) Window switching app. Has potential for creating shortcuts to windows
 
 ## Other Setup
 
