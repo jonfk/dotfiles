@@ -34,6 +34,7 @@ keymap:
       WIN_R-K: SHIFT-8
       WIN_R-L: LEFTBRACE
       WIN_R-Z: SHIFT-Z
+      WIN_R-SEMICOLON: RIGHTBRACE
       WIN_R-BACKSLASH: SHIFT-BACKSLASH
       # Number row mappings
       WIN_R-GRAVE: SHIFT-GRAVE  # ~
@@ -47,3 +48,4 @@ keymap:
       WIN_R-8: SHIFT-8          # *
       WIN_R-9: SHIFT-9          # (
       WIN_R-0: SHIFT-0          # )
+

@@ -5,6 +5,7 @@ xremap remappings for linux
 
 ## QWERTY Base layer
 
+```
 ┌─────┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───────┐
 │ `   │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │ 9 │ 0 │ - │ = │ BKSP  │
 ├─────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─────┤
@@ -16,9 +17,11 @@ xremap remappings for linux
 ├──────┬───┴┬──┴──┬┴───┴───┴───┴───┴───┴──┬┴───┴┬──┴─┬────────┤
 │ LWIN │LALT│ LCTL│          SPACE        │ RCTL│RALT│ Arrows │
 └──────┴────┴─────┴───────────────────────┴─────┴────┴────────┘
+```
 
 ## Dvorak Base layer
 
+```
 ┌─────┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───────┐
 │ `   │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │ 9 │ 0 │ [ │ ] │ BKSP  │
 ├─────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─────┤
@@ -30,9 +33,10 @@ xremap remappings for linux
 ├──────┬───┴┬──┴──┬┴───┴───┴───┴───┴───┴──┬┴───┴┬──┴─┬────────┤
 │ LWIN │LALT│ LCTL│          SPACE        │ RCTL│RALT│ Arrows │
 └──────┴────┴─────┴───────────────────────┴─────┴────┴────────┘
+```
 
 ## Dvorak Symbol layer
-
+```
 ┌─────┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───────┐
 │     │ ! │ @ │ # │ $ │ % │ ^ │ & │ * │ ( │ ) │ { │ } │ BKSP  │
 ├─────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─────┤
@@ -44,6 +48,7 @@ xremap remappings for linux
 ├──────┬───┴┬──┴──┬┴───┴───┴───┴───┴───┴──┬┴───┴┬──┴─┬────────┤
 │ LWIN │LALT│ LCTL│          SPACE        │ RCTL│RALT│ Arrows │
 └──────┴────┴─────┴───────────────────────┴─────┴────┴────────┘
+```
 
 The idea of the symbol layer is to map some of the special characters that I find hard to type for some reason.
 I can't exactly explain why but moving my right pinky and ring finger is hard and I often mistype those symbols. In 
