@@ -42,7 +42,11 @@ if command -v fnm &> /dev/null; then
 fi
 
 if command -v mise &> /dev/null; then
-	eval "$(~/.local/bin/mise activate zsh)"
+	eval "$(mise activate zsh)"
+fi
+
+if [ -f ~/.zsh/functions/git.zsh ]; then 
+	source ~/.zsh/functions/git.zsh
 fi
 
 # zstyle ':completion:*' accept-exact '*(N)'
@@ -75,3 +79,4 @@ if [ -f ~/.fzf.zsh ]; then
 else
 	source <(fzf --zsh)
 fi
+

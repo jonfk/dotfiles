@@ -1,0 +1,107 @@
+
+function ghpr() {
+  if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    echo "Usage: ghpr"
+    echo ""
+    echo "Opens GitHub pull requests associated with recent commits."
+    echo ""
+    echo "This function:"
+    echo "  1. Searches the last 100 commits for messages ending with '(#number)'"
+    echo "  2. Shows the 10 most recent matches using fzf"
+    echo "  3. Extracts the PR number and opens it in your browser"
+    echo ""
+    echo "Requirements:"
+    echo "  - Must be run inside a git repository"
+    echo "  - Repository must have a GitHub remote named 'origin'"
+    echo "  - fzf must be installed (https://github.com/junegunn/fzf)"
+    echo ""
+    echo "Options:"
+    echo "  -h, --help    Display this help message"
+    return 0
+  fi
+
+  # Check if we're in a git repository
+  if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+    echo "Error: Not in a git repository."
+    return 1
+  fi
+
+  # Extract the remote URL (assuming origin)
+  local remote_url=$(git remote get-url origin 2>/dev/null)
+  if [[ -z "$remote_url" ]]; then
+    echo "Error: No 'origin' remote found."
+    return 1
+  fi
+
+  # Check if the remote is a GitHub repository
+  if [[ ! "$remote_url" =~ github\.com ]]; then
+    echo "Error: Remote is not a GitHub repository."
+    return 1
+  fi
+
+  # Extract owner and repo name from the remote URL using sed
+  local owner_repo=""
+  
+  # Handle SSH URL format: git@github.com:owner/repo.git
+  if [[ "$remote_url" == git@github.com:* ]]; then
+    owner_repo=$(echo "$remote_url" | sed 's/git@github.com:\(.*\)\.git/\1/')
+  # Handle HTTPS URL format: https://github.com/owner/repo.git
+  elif [[ "$remote_url" == https://github.com/* ]]; then
+    owner_repo=$(echo "$remote_url" | sed 's|https://github.com/\(.*\)\.git|\1|' | sed 's|https://github.com/\(.*\)|\1|')
+  else
+    echo "Error: Unsupported GitHub URL format: $remote_url"
+    return 1
+  fi
+  
+  # Trim any trailing .git if it exists
+  owner_repo=${owner_repo%.git}
+  
+  # Verify that we have a valid owner/repo format
+  if [[ ! "$owner_repo" =~ ^[^/]+/[^/]+$ ]]; then
+    echo "Error: Could not extract valid owner/repo from remote URL: $remote_url"
+    echo "Extracted: $owner_repo"
+    return 1
+  fi
+
+  # Get the last 10 commits with messages ending in "(#number)"
+  local commits=$(git log --pretty=format:"%h %s" -n 100 | grep -E ' \(#[0-9]+\)$' | head -n 20)
+  
+  # Check if we found any matching commits
+  if [[ -z "$commits" ]]; then
+    echo "No commits found with messages ending in '(#number)'"
+    return 1
+  fi
+  
+  # Use fzf to select a commit
+  local selected_commit=$(echo "$commits" | fzf --height 40% --reverse --preview 'git show --color=always {1}' --preview-window=right:60%)
+  
+  # Check if a commit was selected
+  if [[ -z "$selected_commit" ]]; then
+    echo "No commit selected"
+    return 0
+  fi
+  
+  # Extract the PR number from the commit message
+  local pr_number=$(echo "$selected_commit" | grep -oE '\(#[0-9]+\)$' | grep -oE '[0-9]+')
+  
+  # Check if we got a PR number
+  if [[ -z "$pr_number" ]]; then
+    echo "Could not extract PR number from commit message"
+    return 1
+  fi
+  
+  # Construct the URL using the extracted owner and repo
+  local url="https://github.com/$owner_repo/pull/$pr_number"
+  echo "Opening: $url"
+  
+  # Try to detect platform and open browser accordingly
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    open "$url"
+  elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    xdg-open "$url" &>/dev/null
+  else
+    echo "URL: $url"
+    echo "Could not automatically open the URL. Please copy and paste it into your browser."
+  fi
+}
+

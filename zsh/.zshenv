@@ -27,6 +27,10 @@ if [ -d "/opt/nvim-linux64/bin/" ]; then
     export PATH=$PATH:"/opt/nvim-linux64/bin/"
 fi
 
+if [[ -f ~/.zshenv_priv ]]; then
+  source ~/.zshenv_priv
+fi
+
 ytdlp() {
     yt-dlp $1 -o "$2 %(title)s [%(id)s].%(ext)s"
 }
@@ -35,3 +39,5 @@ ytdlp() {
 export EDITOR="vim"
 export VISUAL="code"
 . "$HOME/.cargo/env"
+
+alias assume=". assume"
