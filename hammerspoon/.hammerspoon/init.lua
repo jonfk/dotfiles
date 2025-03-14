@@ -79,7 +79,7 @@ function promptForShortcut(window)
 
 	-- Show instructions
 	hs.alert.show(
-		"Press a key (0-9, a-z) to assign as a shortcut for the selected window.\nPress Escape to cancel.",
+		"Press any key (letters, numbers, or special characters) to assign as a shortcut for the selected window.\nPress Escape to cancel.",
 		10
 	)
 
@@ -97,8 +97,81 @@ function promptForShortcut(window)
 			return true -- Consume the event
 		end
 
-		-- Only accept alphanumeric keys
-		if char and (string.match(char, "[a-z0-9]")) then
+		-- List of keys we want to exclude (modifier keys, function keys, etc.)
+		local excludedKeys = {
+			-- Function keys
+			"f1",
+			"f2",
+			"f3",
+			"f4",
+			"f5",
+			"f6",
+			"f7",
+			"f8",
+			"f9",
+			"f10",
+			"f11",
+			"f12",
+			"f13",
+			"f14",
+			"f15",
+			"f16",
+			"f17",
+			"f18",
+			"f19",
+			"f20",
+			-- Navigation keys
+			"escape",
+			"delete",
+			"help",
+			"home",
+			"pageup",
+			"forwarddelete",
+			"end",
+			"pagedown",
+			"return",
+			"tab",
+			"left",
+			"right",
+			"down",
+			"up",
+			-- Modifier keys
+			"shift",
+			"rightshift",
+			"cmd",
+			"rightcmd",
+			"alt",
+			"rightalt",
+			"ctrl",
+			"rightctrl",
+			"capslock",
+			"fn",
+			-- Media keys
+			"volumeup",
+			"volumedown",
+			"mute",
+			"play",
+			"previous",
+			"next",
+			-- Other special keys
+			"space",
+			"eject",
+			"power",
+			"brightnessup",
+			"brightnessdown",
+		}
+
+		-- Check if the key is in our excluded list
+		local isExcluded = false
+		for _, excludedKey in ipairs(excludedKeys) do
+			if char == excludedKey then
+				isExcluded = true
+				break
+			end
+		end
+
+		-- Accept any key that's not in our excluded list
+		if char and not isExcluded then
 			-- Remove any existing binding for this key
 			removeBindingForKey(char)
 
@@ -119,7 +192,7 @@ function promptForShortcut(window)
 			return true -- Consume the event
 		else
 			hs.alert.closeAll()
-			hs.alert.show("Invalid key. Please use a letter (a-z) or number (0-9).\nPress Escape to cancel.", 5)
+			hs.alert.show("Invalid key. This key cannot be used as a shortcut.\nPress Escape to cancel.", 5)
 			return true -- Consume the event
 		end
 	end)
