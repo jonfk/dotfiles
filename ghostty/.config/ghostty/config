@@ -1,4 +1,4 @@
-font-size = 14
+font-size = 15
 copy-on-select = true
 font-family = "Hack Nerd Font Mono"
 theme = "Monokai Remastered"
@@ -7,3 +7,7 @@ cursor-style-blink = true
 # alt+click on Linux and option+click on macOS to move cursor
 cursor-click-to-move = true
 macos-titlebar-style = hidden
+macos-option-as-alt = left
+
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
+
