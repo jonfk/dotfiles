@@ -1,0 +1,9 @@
+[user]
+	name = Jonathan Fok kan
+	email = jonathan@fokkan.ca
+
+[core]
+    sshCommand = ssh -i ~/.ssh/id_ed25519_jonfk
+
+[github]
+    user = jonfk

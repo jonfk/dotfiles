@@ -1,0 +1,61 @@
+[core]
+	editor = nvim
+	excludesFile = ~/.gitignore.global
+[alias]
+	review = "!f(){ git fetch $1 pull/$2/head;git checkout FETCH_HEAD;}; f"
+	shove = "!f(){ git push --force-with-lease $1 $2;}; f"
+	out = "log @{u}.."
+
+[column]
+        ui = auto
+[branch]
+        sort = -committerdate
+[tag]
+        sort = version:refname
+[init]
+        defaultBranch = main
+[diff]
+        algorithm = histogram
+        colorMoved = plain
+        mnemonicPrefix = true
+        renames = true
+[push]
+        default = simple
+        autoSetupRemote = true
+        followTags = true
+[fetch]
+        prune = true
+        pruneTags = true
+        all = true
+[help]
+        autocorrect = prompt
+[commit]
+        verbose = true
+[rerere]
+        enabled = true
+        autoupdate = true
+[rebase]
+        autoSquash = true
+        autoStash = true
+        updateRefs = true
+[pull]
+        rebase = true
+
+[core]
+	# a matter of taste (uncomment if you dare)
+	# Useful for really large repos but adds the overhead of a process per repository
+        # fsmonitor = true
+        # untrackedCache = true
+[core]
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true  # use n and N to move between diff sections
+	dark = true      # or light = true, or omit for auto-detection
+
+[merge]
+	# (just 'diff3' if git version < 2.3)
+	conflictstyle = zdiff3
