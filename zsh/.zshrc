@@ -49,6 +49,9 @@ if [ -f ~/.zsh/functions/git.zsh ]; then
 	source ~/.zsh/functions/git.zsh
 fi
 
+if command -v tell &> /dev/null; then
+	eval "$(tell env zsh)"
+fi
 # zstyle ':completion:*' accept-exact '*(N)'
 # zstyle ':completion:*' use-cache on
 
@@ -79,4 +82,3 @@ if [ -f ~/.fzf.zsh ]; then
 else
 	source <(fzf --zsh)
 fi
-
