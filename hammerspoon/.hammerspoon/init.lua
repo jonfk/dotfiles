@@ -12,7 +12,12 @@ This module provides comprehensive window management functionality:
      * If window is not focused: Focuses the window
      * If window is already focused: Moves mouse cursor to center of window
 
-2. Window Movement
+2. Window Selection
+   - Alt+Space: Opens a window selector to quickly focus any window
+   - Shows application name, window title, and any shortcuts assigned
+   - Supports searching by application name or window title
+
+3. Window Movement
    - Alt+Tab: Move focused window to next screen (cycles through available screens)
 
 Usage:
@@ -22,6 +27,8 @@ Usage:
   3. Press any character key to assign Alt+[key] as shortcut for that window
   4. Use Alt+[key] to instantly focus the window from anywhere
   5. Press Alt+[key] again when already on that window to center your mouse cursor
+
+- To quickly select and focus any window: Press Alt+Space
 
 - To view all shortcuts: Press Cmd+Alt+W
 
@@ -79,6 +86,73 @@ local MAX_TITLE_LENGTH = 40
 WindowShortcuts.bindings = {}
 WindowShortcuts.hotkeyObjects = {}
 WindowShortcuts.keyCapture = nil
+
+-- Create window selection chooser
+WindowShortcuts.windowChooser = hs.chooser.new(function(selection)
+	if not selection then
+		return
+	end
+
+	local win = selection.window
+	if win then
+		-- Focus the selected window
+		win:focus()
+	end
+end)
+
+-- Configure window selection chooser appearance
+WindowShortcuts.windowChooser:placeholderText("Select window to focus")
+WindowShortcuts.windowChooser:searchSubText(true)
+
+-- Refresh the list of windows for the window selection chooser
+function WindowShortcuts:refreshWindowSelectionList()
+	local windows = hs.window.allWindows()
+	local windowList = {}
+
+	for _, win in ipairs(windows) do
+		-- Get window information
+		local app = win:application()
+		local appName = app and app:name() or "Unknown"
+		local title = win:title()
+		local winId = win:id()
+
+		-- Skip windows without titles
+		if title and title ~= "" then
+			-- Safely get the application icon with error handling
+			local appIcon = nil
+			if app then
+				local success, icon = pcall(function()
+					return app:icon()
+				end)
+				if success and icon then
+					appIcon = icon
+				end
+			end
+
+			-- Check if this window has a shortcut assigned
+			local shortcutInfo = ""
+			for key, id in pairs(self.bindings) do
+				if id == winId then
+					shortcutInfo = " [Alt+" .. key .. "]"
+					break
+				end
+			end
+
+			-- Truncate the window title to avoid overly wide UI
+			local truncatedTitle = truncateString(title, MAX_TITLE_LENGTH)
+
+			table.insert(windowList, {
+				text = appName, -- Application name (main text)
+				subText = truncatedTitle .. shortcutInfo, -- Window title with shortcut info
+				image = appIcon, -- Application icon (safely retrieved)
+				window = win, -- Store window reference for later use
+			})
+		end
+	end
+
+	-- Update the chooser with the window list
+	self.windowChooser:choices(windowList)
+end
 
 -- Create window chooser
 WindowShortcuts.chooser = hs.chooser.new(function(selection)
@@ -375,6 +449,12 @@ function WindowShortcuts:init()
 	-- Bind shortcut for listing all shortcuts
 	hs.hotkey.bind({ "cmd", "alt" }, "w", function()
 		self:listAllShortcuts()
+	end)
+
+	-- Bind Alt+Space for window selection
+	hs.hotkey.bind({ "alt" }, "space", function()
+		self:refreshWindowSelectionList()
+		self.windowChooser:show()
 	end)
 
 	print("Window Shortcut Manager loaded!")
