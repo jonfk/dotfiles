@@ -34,6 +34,36 @@ between sessions (this could be implemented with hs.settings).
 --- Module: Window Shortcut Manager
 local WindowShortcuts = {}
 
+-- Global variables for mouse highlighting
+local mouseCircle = nil
+local mouseCircleTimer = nil
+
+-- Function to highlight mouse position with a circle
+function mouseHighlight()
+	-- Delete an existing highlight if it exists
+	if mouseCircle then
+		mouseCircle:delete()
+		if mouseCircleTimer then
+			mouseCircleTimer:stop()
+		end
+	end
+	-- Get the current co-ordinates of the mouse pointer
+	local mousepoint = hs.mouse.getAbsolutePosition()
+	-- Prepare a big red circle around the mouse pointer
+	mouseCircle = hs.drawing.circle(hs.geometry.rect(mousepoint.x - 40, mousepoint.y - 40, 80, 80))
+	mouseCircle:setStrokeColor({ ["red"] = 1, ["blue"] = 0, ["green"] = 0, ["alpha"] = 1 })
+	mouseCircle:setFill(false)
+	mouseCircle:setStrokeWidth(5)
+	mouseCircle:show()
+
+	-- Set a timer to delete the circle after 1 seconds
+	mouseCircleTimer = hs.timer.doAfter(1, function()
+		mouseCircle:delete()
+		mouseCircle = nil
+		mouseCircleTimer = nil
+	end)
+end
+
 -- Helper function to truncate long window titles
 function truncateString(str, maxLen)
 	if str and #str > maxLen then
@@ -288,8 +318,8 @@ function WindowShortcuts:createWindowShortcut(key, windowId)
 				local centerY = frame.y + frame.h / 2
 				hs.mouse.absolutePosition({ x = centerX, y = centerY })
 
-				-- Optional: small visual indicator that mouse was moved
-				hs.alert.show("Mouse centered", 0.3)
+				-- Highlight the mouse position with a circle
+				mouseHighlight()
 			end
 		else
 			hs.alert.show("Window not found! Removing shortcut Alt+" .. key)
