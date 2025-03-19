@@ -8,6 +8,9 @@ This module provides comprehensive window management functionality:
    - Assign Alt+key shortcuts to specific windows for quick access
    - Cmd+Alt+Shift+W: Opens window selector to assign shortcuts
    - Cmd+Alt+W: Displays a list of all current window shortcuts
+   - When using a window shortcut (Alt+[key]):
+     * If window is not focused: Focuses the window
+     * If window is already focused: Moves mouse cursor to center of window
 
 2. Window Movement
    - Alt+Tab: Move focused window to next screen (cycles through available screens)
@@ -18,6 +21,7 @@ Usage:
   2. Select a window from the list
   3. Press any character key to assign Alt+[key] as shortcut for that window
   4. Use Alt+[key] to instantly focus the window from anywhere
+  5. Press Alt+[key] again when already on that window to center your mouse cursor
 
 - To view all shortcuts: Press Cmd+Alt+W
 
@@ -256,7 +260,22 @@ function WindowShortcuts:createWindowShortcut(key, windowId)
 	self.hotkeyObjects[key] = hs.hotkey.bind({ "alt" }, key, function()
 		local win = hs.window.get(windowId)
 		if win then
+			local currentFocused = hs.window.focusedWindow()
+			local isAlreadyFocused = currentFocused and (currentFocused:id() == windowId)
+
+			-- Always focus the window
 			win:focus()
+
+			-- If window was already focused, move mouse to center of window
+			if isAlreadyFocused then
+				local frame = win:frame()
+				local centerX = frame.x + frame.w / 2
+				local centerY = frame.y + frame.h / 2
+				hs.mouse.absolutePosition({ x = centerX, y = centerY })
+
+				-- Optional: small visual indicator that mouse was moved
+				hs.alert.show("Mouse centered", 0.5)
+			end
 		else
 			hs.alert.show("Window not found! Removing shortcut Alt+" .. key)
 			self:removeBindingForKey(key)
