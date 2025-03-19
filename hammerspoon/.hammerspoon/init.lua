@@ -34,6 +34,17 @@ between sessions (this could be implemented with hs.settings).
 --- Module: Window Shortcut Manager
 local WindowShortcuts = {}
 
+-- Helper function to truncate long window titles
+function truncateString(str, maxLen)
+	if str and #str > maxLen then
+		return string.sub(str, 1, maxLen - 3) .. "..."
+	end
+	return str
+end
+
+-- Maximum length for window titles
+local MAX_TITLE_LENGTH = 40
+
 -- Store window ID and shortcut key mappings
 WindowShortcuts.bindings = {}
 WindowShortcuts.hotkeyObjects = {}
@@ -153,9 +164,12 @@ function WindowShortcuts:refreshWindowList()
 				end
 			end
 
+			-- Truncate the window title to avoid overly wide UI
+			local truncatedTitle = truncateString(title, MAX_TITLE_LENGTH)
+
 			table.insert(windowList, {
 				text = appName, -- Application name (main text)
-				subText = title .. " (ID: " .. winId .. ")" .. shortcutInfo, -- Window title with ID and shortcut
+				subText = truncatedTitle .. " (ID: " .. winId .. ")" .. shortcutInfo, -- Window title with ID and shortcut
 				image = appIcon, -- Application icon (safely retrieved)
 				window = win, -- Store window reference for later use
 			})
@@ -215,9 +229,10 @@ function WindowShortcuts:promptForShortcut(window)
 			-- Create a new hotkey for this binding
 			self:createWindowShortcut(char, window:id())
 
-			-- Notify the user
+			-- Truncate the window title and notify the user
+			local truncatedTitle = truncateString(window:title(), MAX_TITLE_LENGTH)
 			hs.alert.closeAll()
-			hs.alert.show("Window '" .. window:title() .. "' assigned to Alt+" .. char)
+			hs.alert.show("Window '" .. truncatedTitle .. "' assigned to Alt+" .. char)
 
 			-- Stop the event tap
 			self.keyCapture:stop()
@@ -274,7 +289,7 @@ function WindowShortcuts:createWindowShortcut(key, windowId)
 				hs.mouse.absolutePosition({ x = centerX, y = centerY })
 
 				-- Optional: small visual indicator that mouse was moved
-				hs.alert.show("Mouse centered", 0.5)
+				hs.alert.show("Mouse centered", 0.3)
 			end
 		else
 			hs.alert.show("Window not found! Removing shortcut Alt+" .. key)
@@ -293,7 +308,9 @@ function WindowShortcuts:listAllShortcuts()
 		if win then
 			local app = win:application()
 			local appName = app and app:name() or "Unknown"
-			message = message .. "Alt+" .. key .. ": " .. appName .. " - " .. win:title() .. "\n"
+			-- Truncate the window title for the alert display
+			local truncatedTitle = truncateString(win:title(), MAX_TITLE_LENGTH)
+			message = message .. "Alt+" .. key .. ": " .. appName .. " - " .. truncatedTitle .. "\n"
 			hasShortcuts = true
 		end
 	end
