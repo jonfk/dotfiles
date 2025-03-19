@@ -262,6 +262,9 @@ function init()
 		listAllShortcuts()
 	end)
 
+	-- Bind Alt+Tab to move window to next screen
+	hs.hotkey.bind({ "alt" }, "tab", moveWindowToNextScreen)
+
 	print("Advanced window switcher loaded! Press cmd+alt+shift+w to assign shortcuts, cmd+alt+w to list shortcuts")
 end
 
@@ -285,6 +288,37 @@ function listAllShortcuts()
 	end
 
 	hs.alert.show(message, 5)
+end
+
+-- Function to move the current window to the next screen
+function moveWindowToNextScreen()
+	-- Get the currently focused window
+	local win = hs.window.focusedWindow()
+
+	-- If no window is focused, do nothing
+	if not win then
+		return
+	end
+
+	-- Get all available screens
+	local screens = hs.screen.allScreens()
+
+	-- If there's only one screen, do nothing
+	if #screens <= 1 then
+		return
+	end
+
+	-- Get the current screen
+	local currentScreen = win:screen()
+
+	-- Get the next screen (screen:next() handles the cycling back to first screen)
+	local nextScreen = currentScreen:next()
+
+	-- Move the window to the next screen
+	win:moveToScreen(nextScreen)
+
+	-- Make sure the window stays focused
+	win:focus()
 end
 
 -- Run initialization
