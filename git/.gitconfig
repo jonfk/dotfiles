@@ -11,3 +11,6 @@
 
 [includeIf "gitdir:~/Developer/jonfk_code/"]
     path = ~/.gitconfig.jonfk
+
+[includeIf "gitdir:~/Developer/jonfk_notes/"]
+    path = ~/.gitconfig.jonfk
