@@ -4,3 +4,8 @@
 
 [github]
     user = jfokkan-coveo
+
+[gpg]
+	format = ssh
+[user]
+	signingkey = /Users/jfokkan/.ssh/id_ed25519.pub

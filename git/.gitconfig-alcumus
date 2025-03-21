@@ -1,6 +1,0 @@
-[user]
-name = "Jonathan Fok kan"
-email = "jonathan.fokkan@alcumus.com"
-
-[core]
-sshCommand = ssh -i ~/.ssh/id_ed25519_alcumus
