@@ -14,6 +14,7 @@ source ~/.bin/antidote/antidote.zsh
 antidote load
 
 alias tn='tmux new -s'
+alias grss='git restore --staged'
 alias ls='eza'
 if [[ ! -a /usr/bin/open ]]; then
 	alias open='wslview'
@@ -65,6 +66,8 @@ mkcdir ()
 	mkdir -p -- "$1" &&
 	cd -P -- "$1"
 }
+
+[[ -s "$HOME/.zsh/functions/git_ai.zsh" ]] && source "$HOME/.zsh/functions/git_ai.zsh"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
