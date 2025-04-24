@@ -72,9 +72,38 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 7
+vim.opt.scrolloff = 5
 
 vim.api.nvim_set_option_value("colorcolumn", "119", {})
+
+-- folds
+-- Use Tree-sitter for folding
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
+-- Fallback to indent folding when Tree-sitter is not available
+vim.api.nvim_create_autocmd("BufEnter", {
+	callback = function()
+		if not pcall(vim.treesitter.get_parser, 0) then
+			vim.opt_local.foldmethod = "indent"
+		end
+	end,
+})
+
+-- Performance: Disable folding for large files
+vim.api.nvim_create_autocmd("BufReadPre", {
+	callback = function()
+		if vim.fn.getfsize(vim.fn.expand("%")) > 1024 * 1024 then
+			vim.opt_local.foldenable = false
+		end
+	end,
+})
+
+-- Start with all folds open
+vim.opt.foldlevel = 99
+
+-- Optional: Save fold state between sessions
+vim.opt.sessionoptions:append("folds")
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -327,6 +356,26 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sn", function()
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "[S]earch [N]eovim files" })
+
+			-- Custom shortcut for searching directories and CD'ing into them
+			vim.keymap.set("n", "<leader>fd", function()
+				require("telescope.builtin").find_files({
+					prompt_title = "Find Directories",
+					find_command = { "fd", "--type", "d", "--hidden", "--exclude", ".git" },
+					attach_mappings = function(bufnr)
+						local actions = require("telescope.actions")
+						local action_state = require("telescope.actions.state")
+
+						actions.select_default:replace(function()
+							local selection = action_state.get_selected_entry()
+							actions.close(bufnr)
+							vim.cmd("cd " .. selection.path)
+							print("Changed to: " .. selection.path)
+						end)
+						return true
+					end,
+				})
+			end, { desc = "Find directories to CD" })
 		end,
 	},
 
@@ -336,7 +385,7 @@ require("lazy").setup({
 		cmd = { "ConformInfo" },
 		keys = {
 			{
-				"<leader>f",
+				"<leader>ff",
 				function()
 					require("conform").format({ async = true, lsp_format = "fallback" })
 				end,
@@ -714,6 +763,8 @@ require("lazy").setup({
 		},
 	},
 })
+
+require("custom.codecompanion_autosave")
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
