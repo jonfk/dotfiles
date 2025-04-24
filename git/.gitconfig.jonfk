@@ -7,3 +7,6 @@
 
 [github]
     user = jonfk
+
+[commit]
+	gpgsign = false

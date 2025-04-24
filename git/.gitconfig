@@ -9,8 +9,8 @@
 [includeIf "gitdir:~/dotfiles/"]
     path = ~/.gitconfig.jonfk
 
-[includeIf "gitdir:~/Developer/jonfk_code/"]
+[includeIf "gitdir:/Users/jfokkan/Developer/jonfk_code/"]
     path = ~/.gitconfig.jonfk
 
-[includeIf "gitdir:~/Developer/jonfk_notes/"]
+[includeIf "gitdir:/Users/jfokkan/Developer/jonfk_notes/"]
     path = ~/.gitconfig.jonfk
