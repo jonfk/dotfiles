@@ -50,6 +50,10 @@ if [ -f ~/.zsh/functions/git.zsh ]; then
 	source ~/.zsh/functions/git.zsh
 fi
 
+if [ -f ~/.zsh/functions/neovim.zsh ]; then 
+	source ~/.zsh/functions/neovim.zsh
+fi
+
 if command -v tell &> /dev/null; then
 	eval "$(tell env zsh)"
 fi

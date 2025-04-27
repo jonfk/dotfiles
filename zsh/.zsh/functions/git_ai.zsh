@@ -1,4 +1,8 @@
 
+
+# TODO: Add improvement to git-smart-commit to take additional prompt as argument. Also add overrides for commands after a -- 
+# For example git-smart-commit this would be an additional prompt -- -extra-flags-passed to-llm --command
+
 function git-smart-commit() {
   # Check if llm command exists
   if ! command -v llm &>/dev/null; then
