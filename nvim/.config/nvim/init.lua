@@ -11,6 +11,7 @@ if vim.g.neovide then
 	vim.o.guifont = "Hack Nerd Font:h14"
 	vim.g.neovide_position_animation_length = 0.15
 	vim.g.neovide_scroll_animation_length = 0.05
+	vim.g.neovide_input_macos_option_key_is_meta = "only_left"
 end
 
 -- [[ Setting options ]]
@@ -242,6 +243,7 @@ require("lazy").setup({
 				{ "<leader>w", group = "[W]orkspace" },
 				{ "<leader>t", group = "[T]oggle" },
 				{ "<leader>b", group = "[B]uffers" },
+				{ "<leader>we", group = "[W]orkspace S[e]ssions" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
 			})
 		end,
