@@ -93,6 +93,3 @@ function git-smart-commit() {
 }
 
 alias gai=git-smart-commit
-
-alias gai=git-smart-commit
-

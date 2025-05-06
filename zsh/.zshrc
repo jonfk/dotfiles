@@ -54,9 +54,10 @@ if [ -f ~/.zsh/functions/neovim.zsh ]; then
 	source ~/.zsh/functions/neovim.zsh
 fi
 
-if command -v tell &> /dev/null; then
-	eval "$(tell env zsh)"
+if [ -f ~/.zsh/functions/cmd_ai.zsh ]; then 
+	source ~/.zsh/functions/cmd_ai.zsh
 fi
+
 # zstyle ':completion:*' accept-exact '*(N)'
 # zstyle ':completion:*' use-cache on
 
