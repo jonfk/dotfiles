@@ -1,9 +1,58 @@
 
-
-# TODO: Add improvement to git-smart-commit to take additional prompt as argument. Also add overrides for commands after a -- 
-# For example git-smart-commit this would be an additional prompt -- -extra-flags-passed to-llm --command
-
 function git-smart-commit() {
+  local model="gemini-2.5-flash-preview-04-17"
+  local additional_prompt=""
+  local additional_flags=""
+  local help=0
+  
+  # Function to display help
+  function _show_help() {
+    echo "Usage: git-smart-commit [-m MODEL] [-h|--help] [additional prompt -- llm flags]"
+    echo ""
+    echo "Options:"
+    echo "  -m MODEL      Specify LLM model to use (default: $model)"
+    echo "  -h, --help    Show this help message"
+    echo ""
+    echo "Additional arguments:"
+    echo "  Text before -- is used as additional prompt context"
+    echo "  Arguments after -- are passed directly to the llm command"
+    echo ""
+    echo "Example:"
+    echo "  git-smart-commit -m claude-3-5-sonnet-20240307"
+    echo "  git-smart-commit focus on the security fixes -- --temperature 0.7"
+  }
+  
+  # Parse arguments
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help)
+        _show_help
+        return 0
+        ;;
+      -m)
+        if [[ -z "$2" || "$2" == -* ]]; then
+          echo "Error: -m requires a model name"
+          return 1
+        fi
+        model="$2"
+        shift 2
+        ;;
+      --)
+        shift
+        additional_flags="$*"
+        break
+        ;;
+      *)
+        if [[ -z "$additional_prompt" ]]; then
+          additional_prompt="$1"
+        else
+          additional_prompt="$additional_prompt $1"
+        fi
+        shift
+        ;;
+    esac
+  done
+
   # Check if llm command exists
   if ! command -v llm &>/dev/null; then
     echo "Error: llm command not found. Please install it first."
@@ -59,19 +108,27 @@ function git-smart-commit() {
   Use multiline format ONLY when the changes require detailed explanation.
   '
   
+  # Add additional prompt context if provided
+  if [[ -n "$additional_prompt" ]]; then
+    prompt_staged="$prompt_staged\n\nAdditional context: $additional_prompt"
+    prompt_unstaged="$prompt_unstaged\n\nAdditional context: $additional_prompt"
+  fi
+  
   local cmd=""
   
   # First check if there are staged changes
   if ! git diff --staged --quiet --exit-code; then
     # There are staged changes
     echo "Generating commit message for staged changes..."
-    cmd=$(git diff --staged | llm --extract-last "$prompt_staged")
+    echo "Using model: $model"
+    cmd=$(git diff --staged | llm -m "$model" $additional_flags --extract-last <<< "$prompt_staged")
   else
     # No staged changes, check if there are unstaged changes
     if ! git diff --quiet --exit-code; then
       # There are unstaged changes
       echo "Generating commands to stage and commit changes..."
-      cmd=$(git diff | llm --extract-last "$prompt_unstaged")
+      echo "Using model: $model"
+      cmd=$(git diff | llm -m "$model" $additional_flags --extract-last <<< "$prompt_unstaged")
     else
       # No changes at all
       echo "No changes detected in the repository"

@@ -19,6 +19,7 @@ alias ls='eza'
 if [[ ! -a /usr/bin/open ]]; then
 	alias open='wslview'
 fi
+alias llmg='llm -m gemini-2.5-pro-preview-03-25'
 
 export PATH=/usr/local/bin:$PATH
 export PATH=~/.local/bin:$PATH
