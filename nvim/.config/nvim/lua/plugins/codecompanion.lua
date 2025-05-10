@@ -25,6 +25,9 @@ return {
 			chat = {
 				show_settings = true,
 			},
+			action_palette = {
+				provider = "telescope",
+			},
 		},
 	},
 }

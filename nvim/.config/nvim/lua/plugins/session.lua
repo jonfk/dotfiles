@@ -7,7 +7,7 @@ return {
 	---@type AutoSession.Config
 	opts = {
 		suppressed_dirs = { "~/", "~/Downloads", "/" },
-		auto_create = false,
+		auto_create = true,
 		cwd_change_handling = true,
 		session_lens = {
 			mappings = {
@@ -20,6 +20,19 @@ return {
 		},
 		-- log_level = 'debug',
 	},
+	config = function(_, opts)
+		-- TODO: re-add terminal session saving with scrollback removed
+		-- local terminal_session = require("custom.terminal_session")
+
+		-- Add pre_save_cmds to the opts table
+		-- opts.pre_save_cmds = {
+		-- 	terminal_session.save_terminal_state,
+		-- 	-- Add any other pre-save commands you want here
+		-- }
+
+		-- Set up auto-session with the merged opts
+		require("auto-session").setup(opts)
+	end,
 	keys = {
 		--
 		{ "<leader>wer", "<cmd>SessionSearch<CR>", desc = "S[e]ssion sea[r]ch" },
