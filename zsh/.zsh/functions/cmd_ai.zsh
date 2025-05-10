@@ -96,3 +96,5 @@ function cmd-ai() {
   
   print -z "$cmd"
 }
+
+alias lcmd='cmd-ai'
