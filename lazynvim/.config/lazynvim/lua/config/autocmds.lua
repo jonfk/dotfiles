@@ -6,3 +6,16 @@
 --
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+--
+
+-- vim.api.nvim_create_augroup("SnacksDashboard", { clear = true })
+--
+-- vim.api.nvim_create_autocmd("User", {
+--   group = "SnacksDashboard",
+--   pattern = "*",
+--   once = true,
+--   callback = function()
+--     -- We call it here so that it uses the float style configured on the plugin in plugins/overrides.lua
+--     require("snacks.dashboard").open()
+--   end,
+-- })
