@@ -46,3 +46,7 @@ nvg() {
     fi
   fi
 }
+
+alias lazyvim='NVIM_APPNAME=lazyvim nvim'
+alias mnvim='NVIM_APPNAME=nvim \nvim'
+alias nvim='NVIM_APPNAME=kickstartnvim nvim'
