@@ -59,6 +59,10 @@ if [ -f ~/.zsh/functions/cmd_ai.zsh ]; then
 	source ~/.zsh/functions/cmd_ai.zsh
 fi
 
+if [ -f ~/.zsh/functions/tmux.zsh ]; then 
+	source ~/.zsh/functions/tmux.zsh
+fi
+
 # zstyle ':completion:*' accept-exact '*(N)'
 # zstyle ':completion:*' use-cache on
 
