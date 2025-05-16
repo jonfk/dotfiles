@@ -35,6 +35,20 @@ ytdlp() {
     yt-dlp $1 -o "$2 %(title)s [%(id)s].%(ext)s"
 }
 
+tn() {
+  echo $PATH
+  if [[ -n "$1" ]]; then
+    # If an argument is provided, use it as the session name
+    tmux new -s "$1"
+  else
+    # If no argument is provided, use cwd and up to 2 parent directories
+    local path=$(pwd)
+    local session_name=$(echo "$path" | rev | cut -d'/' -f1-3 | rev | tr '/' ':')
+    
+    tmux new -s "$session_name"
+  fi
+}
+
 
 export EDITOR="vim"
 export VISUAL="code"

@@ -13,7 +13,6 @@ fi
 source ~/.bin/antidote/antidote.zsh
 antidote load
 
-alias tn='tmux new -s'
 alias grss='git restore --staged'
 alias ls='eza'
 if [[ ! -a /usr/bin/open ]]; then
