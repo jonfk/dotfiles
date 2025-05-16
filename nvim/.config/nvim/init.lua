@@ -180,3 +180,37 @@ require("nvim-treesitter.configs").setup({
 
 	highlight = { enable = true },
 })
+
+-- [[ flash.nvim ]]
+MiniDeps.add({
+	source = "folke/flash.nvim",
+	checkout = "main",
+})
+
+MiniDeps.later(function()
+	require("flash").setup({})
+
+	local map = vim.keymap.set
+	-- Normal, Visual, and Operator-pending mode mappings
+	map({ "n", "x", "o" }, "s", function()
+		require("flash").jump()
+	end, { desc = "Flash" })
+	map({ "n", "x", "o" }, "S", function()
+		require("flash").treesitter()
+	end, { desc = "Flash Treesitter" })
+
+	-- Operator-pending mode only
+	map("o", "r", function()
+		require("flash").remote()
+	end, { desc = "Remote Flash" })
+
+	-- Operator-pending and Visual modes
+	map({ "o", "x" }, "R", function()
+		require("flash").treesitter_search()
+	end, { desc = "Treesitter Search" })
+
+	-- Command mode
+	map("c", "<c-s>", function()
+		require("flash").toggle()
+	end, { desc = "Toggle Flash Search" })
+end)
