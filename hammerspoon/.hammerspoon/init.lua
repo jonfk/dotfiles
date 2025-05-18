@@ -98,6 +98,7 @@ WindowShortcuts.windowChooser = hs.chooser.new(function(selection)
 		-- Focus the selected window
 		win:focus()
 	end
+	WindowShortcuts.windowChooser:query(nil) -- clear the chooser
 end)
 
 -- Configure window selection chooser appearance
@@ -164,6 +165,7 @@ WindowShortcuts.chooser = hs.chooser.new(function(selection)
 	if win then
 		WindowShortcuts:promptForShortcut(win)
 	end
+	WindowShortcuts.chooser:query(nil) -- clear the chooser
 end)
 
 -- Configure chooser appearance
