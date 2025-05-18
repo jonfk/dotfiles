@@ -87,6 +87,9 @@ WindowShortcuts.bindings = {}
 WindowShortcuts.hotkeyObjects = {}
 WindowShortcuts.keyCapture = nil
 
+-- Store window shortname
+WindowShortcuts.shortnameToWinID = {}
+
 -- Create window selection chooser
 WindowShortcuts.windowChooser = hs.chooser.new(function(selection)
 	if not selection then
@@ -104,6 +107,25 @@ end)
 -- Configure window selection chooser appearance
 WindowShortcuts.windowChooser:placeholderText("Select window to focus")
 WindowShortcuts.windowChooser:searchSubText(true)
+
+-- Add queryChangedCallback for shortname matching
+-- If the query matches the shortname assigned to a window, it focuses the window
+WindowShortcuts.windowChooser:queryChangedCallback(function(query)
+	-- If query matches a shortname, immediately focus the window
+	if query and WindowShortcuts.shortnameToWinID[query] then
+		local winId = WindowShortcuts.shortnameToWinID[query]
+		local win = hs.window.get(winId)
+
+		if win then
+			-- Clear query and close chooser
+			WindowShortcuts.windowChooser:query(nil)
+			WindowShortcuts.windowChooser:hide()
+
+			-- Focus the window
+			win:focus()
+		end
+	end
+end)
 
 -- Refresh the list of windows for the window selection chooser
 function WindowShortcuts:refreshWindowSelectionList()
@@ -437,6 +459,108 @@ function WindowShortcuts:loadShortcuts()
 	end
 end
 
+-- Function to export window shortcuts to JSON file
+function WindowShortcuts:exportShortcuts()
+	local exportData = {
+		description = "Hammerspoon window shortcuts configuration. Edit 'hotkey' values and import with Alt+Shift+L.",
+		windows = {},
+	}
+
+	-- Create a reverse mapping of window IDs to keys for easy lookup
+	local windowToKey = {}
+	for key, windowId in pairs(self.bindings) do
+		windowToKey[windowId] = key
+	end
+	local windowToShortname = {}
+	for shortname, windowId in pairs(self.shortnameToWinID) do
+		windowToShortname[windowId] = shortname
+	end
+
+	-- Get all windows and add them to the export
+	local windows = hs.window.allWindows()
+	for _, win in ipairs(windows) do
+		-- Skip windows without titles
+		if win:title() and win:title() ~= "" then
+			local app = win:application()
+			local appName = app and app:name() or "Unknown"
+
+			-- Create window entry
+			table.insert(exportData.windows, {
+				windowId = win:id(),
+				appName = appName,
+				windowTitle = win:title(),
+				hotkey = windowToKey[win:id()] or nil, -- Use nil for JSON null
+				shortname = windowToShortname[win:id()],
+			})
+		end
+	end
+
+	-- Convert to JSON
+	local jsonData = hs.json.encode(exportData, true)
+
+	-- Write to file
+	local filePath = os.getenv("HOME") .. "/.hammerspoon/windowshortcuts_state.json"
+	local file = io.open(filePath, "w")
+	if file then
+		file:write(jsonData)
+		file:close()
+		hs.alert.show("All window information exported to " .. filePath)
+	else
+		hs.alert.show("Failed to write window information to file!")
+	end
+end
+
+-- Function to import window shortcuts from JSON file
+function WindowShortcuts:importShortcuts()
+	local filePath = os.getenv("HOME") .. "/.hammerspoon/windowshortcuts_state.json"
+	local file = io.open(filePath, "r")
+
+	if file then
+		local jsonData = file:read("*all")
+		file:close()
+
+		local success, importData = pcall(function()
+			return hs.json.decode(jsonData)
+		end)
+
+		if success and importData and importData.windows then
+			-- Clear all existing bindings
+			for key, _ in pairs(self.bindings) do
+				self:removeBindingForKey(key)
+			end
+			self.shortnameToWinID = {}
+
+			-- Import new bindings
+			local importCount = 0
+			for _, windowInfo in ipairs(importData.windows) do
+				if
+					(windowInfo.hotkey and windowInfo.hotkey ~= "")
+					or (windowInfo.shortname and windowInfo.shortname ~= "")
+				then
+					local win = hs.window.get(windowInfo.windowId)
+					if win then
+						if windowInfo.hotkey and windowInfo.hotkey ~= "" then
+							-- Add the binding
+							self.bindings[windowInfo.hotkey] = windowInfo.windowId
+							self:createWindowShortcut(windowInfo.hotkey, windowInfo.windowId)
+						end
+						if windowInfo.shortname and windowInfo.shortname ~= "" then
+							self.shortnameToWinID[windowInfo.shortname] = windowInfo.windowId
+						end
+						importCount = importCount + 1
+					end
+				end
+			end
+
+			hs.alert.show("Imported " .. importCount .. " window shortcuts")
+		else
+			hs.alert.show("Failed to parse shortcuts file!")
+		end
+	else
+		hs.alert.show("Shortcuts file not found!")
+	end
+end
+
 -- Initialize shortcuts
 function WindowShortcuts:init()
 	-- Load any saved shortcuts
@@ -457,6 +581,16 @@ function WindowShortcuts:init()
 	hs.hotkey.bind({ "alt" }, "space", function()
 		self:refreshWindowSelectionList()
 		self.windowChooser:show()
+	end)
+
+	-- Bind Alt+L to export shortcuts
+	hs.hotkey.bind({ "alt" }, "l", function()
+		self:exportShortcuts()
+	end)
+
+	-- Bind Alt+Shift+L to import shortcuts
+	hs.hotkey.bind({ "alt", "shift" }, "l", function()
+		self:importShortcuts()
 	end)
 
 	print("Window Shortcut Manager loaded!")
