@@ -1,24 +1,25 @@
---- === WindowSwitcher ===
----
---- Advanced window switcher for Hammerspoon
----
---- This spoon provides comprehensive window management functionality:
----
---- 1. Window Shortcut Assignment
----    - Assign Alt+key shortcuts to specific windows for quick access
----    - Default hotkeys:
----      * Cmd+Alt+Shift+W: Opens window selector to assign shortcuts
----      * Cmd+Alt+W: Displays a list of all current window shortcuts
----      * Alt+[key]: Activates window shortcut
----    - When using a window shortcut (Alt+[key]):
----      * If window is not focused: Focuses the window
----      * If window is already focused: Moves mouse cursor to center of window
----
---- 2. Window Selection
----    - Default hotkey: Alt+Space: Opens a window selector to quickly focus any window
----    - Shows application name, window title, and any shortcuts assigned
----    - Supports searching by application name or window title
----
+--- WindowSwitcher - Advanced window switcher for Hammerspoon
+-- @module WindowSwitcher
+-- @author Jonathan Fok kan
+-- @copyright MIT - https://opensource.org/licenses/MIT
+-- @release 1.0
+-- @description
+-- This spoon provides comprehensive window management functionality:
+--
+-- 1. Window Shortcut Assignment
+--    - Assign Alt+key shortcuts to specific windows for quick access
+--    - Default hotkeys:
+--      * Cmd+Alt+Shift+W: Opens window selector to assign shortcuts
+--      * Cmd+Alt+W: Displays a list of all current window shortcuts
+--      * Alt+[key]: Activates window shortcut
+--    - When using a window shortcut (Alt+[key]):
+--      * If window is not focused: Focuses the window
+--      * If window is already focused: Moves mouse cursor to center of window
+--
+-- 2. Window Selection
+--    - Default hotkey: Alt+Space: Opens a window selector to quickly focus any window
+--    - Shows application name, window title, and any shortcuts assigned
+--    - Supports searching by application name or window title
 
 local obj = {}
 obj.__index = obj
@@ -26,8 +27,8 @@ obj.__index = obj
 -- Metadata
 obj.name = "WindowSwitcher"
 obj.version = "1.0"
-obj.author = "Hammerspoon Community"
-obj.homepage = "https://github.com/Hammerspoon/Spoons"
+obj.author = "Jonathan Fok kan"
+obj.homepage = "https://github.com/jonfk/dotfiles"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 obj.dependencies = {
 	{
@@ -89,7 +90,9 @@ obj.excludedKeys = {
 }
 -- stylua: ignore end
 
--- Function to highlight mouse position with a circle
+--- Highlight mouse position with a circle
+-- Creates a visual highlight around the current mouse position
+-- @function mouseHighlight
 function obj:mouseHighlight()
 	-- Delete an existing highlight if it exists
 	if self.mouseCircle then
@@ -115,7 +118,10 @@ function obj:mouseHighlight()
 	end)
 end
 
--- Helper function to truncate long window titles
+--- Truncate long strings to a maximum length
+-- @param str The string to truncate
+-- @param maxLen Maximum length of the string
+-- @return The truncated string with ellipsis if needed
 function obj:truncateString(str, maxLen)
 	if str and #str > maxLen then
 		return string.sub(str, 1, maxLen - 3) .. "..."
@@ -123,19 +129,17 @@ function obj:truncateString(str, maxLen)
 	return str
 end
 
---- Gets comprehensive information about all active windows in the system.
---- This function serves as the main abstraction for retrieving window data throughout the spoon.
---- It collects and formats all active windows with their essential properties.
---- Windows without titles are skipped, and titles are truncated according to maxTitleLength.
----
---- @function obj:getAllWindowsInfo
---- @return table[] Array of tables with window information, each containing:
----   - text (string): Application name that owns the window (displayed as main text)
----   - subText (string): Truncated window title displayed as secondary text
----   - fullTitle (string): Complete window title without truncation (used for searching)
----   - image (hs.image): Application icon from the application's bundle ID (can be nil)
----   - windowId (number): Unique identifier for the window (used to focus when selected)
---- @usage local windows = obj:getAllWindowsInfo()
+--- Gets comprehensive information about all active windows in the system
+-- This function serves as the main abstraction for retrieving window data throughout the spoon.
+-- It collects and formats all active windows with their essential properties.
+-- Windows without titles are skipped, and titles are truncated according to maxTitleLength.
+-- @return Array of tables with window information, each containing:
+--   - text: Application name that owns the window (displayed as main text)
+--   - subText: Truncated window title displayed as secondary text
+--   - fullTitle: Complete window title without truncation (used for searching)
+--   - image: Application icon from the application's bundle ID (can be nil)
+--   - windowId: Unique identifier for the window (used to focus when selected)
+-- @usage local windows = obj:getAllWindowsInfo()
 function obj:getAllWindowsInfo()
 	local windows = hs.window.allWindows()
 	local windowList = {}
@@ -170,24 +174,21 @@ function obj:getAllWindowsInfo()
 	return windowList
 end
 
---- Gets all windows with their associated keybindings and short names.
---- This function extends getAllWindowsInfo by adding keybinding and shortname arrays to each window.
----
---- @function obj:getAllWindowsWithBindings
---- @return table[] Array of tables with window information, each containing:
----   - text (string): Application name that owns the window
----   - subText (string): Truncated window title displayed as secondary text
----   - fullTitle (string): Complete window title without truncation
----   - image (hs.image): Application icon from the application's bundle ID
----   - windowId (number): Unique identifier for the window
----   - keybindings (string[]): Array of keys bound to this window
----   - shortnames (string[]): Array of short names associated with this window
---- @usage local windowsWithBindings = obj:getAllWindowsWithBindings()
----
---- Notes:
----  * A window can have multiple keybindings and/or multiple short names
----  * Windows without keybindings or short names will have empty arrays
----  * This function combines data from obj.bindings and obj.shortnameToWinID
+--- Gets all windows with their associated keybindings and short names
+-- This function extends getAllWindowsInfo by adding keybinding and shortname arrays to each window.
+-- @return Array of tables with window information, each containing:
+--   - text: Application name that owns the window
+--   - subText: Truncated window title displayed as secondary text
+--   - fullTitle: Complete window title without truncation
+--   - image: Application icon from the application's bundle ID
+--   - windowId: Unique identifier for the window
+--   - keybindings: Array of keys bound to this window
+--   - shortnames: Array of short names associated with this window
+-- @usage local windowsWithBindings = obj:getAllWindowsWithBindings()
+-- @see getAllWindowsInfo
+-- @note A window can have multiple keybindings and/or multiple short names
+-- @note Windows without keybindings or short names will have empty arrays
+-- @note This function combines data from obj.bindings and obj.shortnameToWinID
 function obj:getAllWindowsWithBindings()
 	-- Get all windows information using the existing function
 	local windowList = self:getAllWindowsInfo()
@@ -221,15 +222,8 @@ function obj:getAllWindowsWithBindings()
 	return windowList
 end
 
---- WindowSwitcher:refreshWindowSelectionList()
---- Method
 --- Refreshes the list of windows for the window selection chooser
----
---- Parameters:
----  * None
----
---- Returns:
----  * None
+-- @return nil
 function obj:refreshWindowSelectionList()
 	local windowList = self:getAllWindowsInfo()
 
@@ -237,15 +231,8 @@ function obj:refreshWindowSelectionList()
 	self.windowChooser:choices(windowList)
 end
 
---- WindowSwitcher:refreshWindowList()
---- Method
 --- Refreshes the list of windows in the chooser for shortcut assignment
----
---- Parameters:
----  * None
----
---- Returns:
----  * None
+-- @return nil
 function obj:refreshWindowList()
 	local windows = hs.window.allWindows()
 	local windowList = {}
@@ -295,15 +282,9 @@ function obj:refreshWindowList()
 	self.chooser:choices(windowList)
 end
 
---- WindowSwitcher:promptForShortcut(window)
---- Method
 --- Prompts for a shortcut key assignment for the given window
----
---- Parameters:
----  * window - A window object to assign a shortcut to
----
---- Returns:
----  * None
+-- @param window A window object to assign a shortcut to
+-- @return nil
 function obj:promptForShortcut(window)
 	-- Clear existing event tap if any
 	if self.keyCapture then
@@ -373,15 +354,9 @@ function obj:promptForShortcut(window)
 	self.keyCapture:start()
 end
 
---- WindowSwitcher:removeBindingForKey(key)
---- Method
 --- Removes an existing binding for a key
----
---- Parameters:
----  * key - The key to remove binding for
----
---- Returns:
----  * None
+-- @param key The key to remove binding for
+-- @return nil
 function obj:removeBindingForKey(key)
 	if self.bindings[key] then
 		-- Remove from our table
@@ -395,16 +370,10 @@ function obj:removeBindingForKey(key)
 	end
 end
 
---- WindowSwitcher:createWindowShortcut(key, windowId)
---- Method
 --- Creates a hotkey binding for a window
----
---- Parameters:
----  * key - The key to bind
----  * windowId - The window ID to associate with this key
----
---- Returns:
----  * None
+-- @param key The key to bind
+-- @param windowId The window ID to associate with this key
+-- @return nil
 function obj:createWindowShortcut(key, windowId)
 	-- Delete existing binding if any
 	if self.hotkeyObjects[key] then
@@ -438,15 +407,8 @@ function obj:createWindowShortcut(key, windowId)
 	end)
 end
 
---- WindowSwitcher:listAllShortcuts()
---- Method
 --- Lists all current shortcuts in an alert
----
---- Parameters:
----  * None
----
---- Returns:
----  * None
+-- @return nil
 function obj:listAllShortcuts()
 	local message = "Window Shortcuts:\n\n"
 	local hasShortcuts = false
@@ -470,15 +432,8 @@ function obj:listAllShortcuts()
 	hs.alert.show(message, 5)
 end
 
---- WindowSwitcher:loadShortcuts()
---- Method
 --- Loads existing shortcuts
----
---- Parameters:
----  * None
----
---- Returns:
----  * None
+-- @return nil
 function obj:loadShortcuts()
 	-- This would typically load from hs.settings
 	-- For now, we'll just recreate the bindings from our table
@@ -487,30 +442,21 @@ function obj:loadShortcuts()
 	end
 end
 
---- WindowSwitcher:bindHotkeys(mapping)
---- Method
 --- Binds hotkeys for WindowSwitcher
----
---- Parameters:
----  * mapping - A table containing hotkey objifier/key details for the various shortcuts
----
---- Returns:
----  * The WindowSwitcher object
----
---- Notes:
----  * The available actions are:
----    * open_window_chooser - Display the window selection chooser
----    * assign_shortcut - Display the shortcut assignment chooser
----    * list_shortcuts - Display a list of all shortcuts
----
---- Example:
---- ```lua
---- spoon.WindowSwitcher:bindHotkeys({
----    open_window_chooser = {{"alt"}, "space"},
----    assign_shortcut = {{"cmd", "alt", "shift"}, "w"},
----    list_shortcuts = {{"cmd", "alt"}, "w"},
---- })
---- ```
+-- @param mapping A table containing hotkey modifier/key details for the various shortcuts
+-- @return The WindowSwitcher object
+-- @usage
+-- ```lua
+-- spoon.WindowSwitcher:bindHotkeys({
+--    open_window_chooser = {{"alt"}, "space"},
+--    assign_shortcut = {{"cmd", "alt", "shift"}, "w"},
+--    list_shortcuts = {{"cmd", "alt"}, "w"},
+-- })
+-- ```
+-- @note The available actions are:
+--   * open_window_chooser - Display the window selection chooser
+--   * assign_shortcut - Display the shortcut assignment chooser
+--   * list_shortcuts - Display a list of all shortcuts
 function obj:bindHotkeys(mapping)
 	local spec = {
 		open_window_chooser = hs.fnutils.partial(function()
@@ -530,15 +476,8 @@ function obj:bindHotkeys(mapping)
 	return self
 end
 
---- WindowSwitcher:init()
---- Method
 --- Initializes the spoon
----
---- Parameters:
----  * None
----
---- Returns:
----  * The WindowSwitcher object
+-- @return The WindowSwitcher object
 function obj:init()
 	-- Create window selection chooser
 	self.windowChooser = hs.chooser.new(function(selection)
@@ -685,15 +624,8 @@ function obj:init()
 	return self
 end
 
---- WindowSwitcher:start()
---- Method
 --- Starts WindowSwitcher with default hotkeys
----
---- Parameters:
----  * None
----
---- Returns:
----  * The WindowSwitcher object
+-- @return The WindowSwitcher object
 function obj:start()
 	-- Check if FzfFilter spoon is loaded
 	if not spoon.FzfFilter then
@@ -728,15 +660,8 @@ function obj:start()
 	return self
 end
 
---- WindowSwitcher:stop()
---- Method
 --- Stops WindowSwitcher and unbinds all hotkeys
----
---- Parameters:
----  * None
----
---- Returns:
----  * The WindowSwitcher object
+-- @return The WindowSwitcher object
 function obj:stop()
 	-- Clean up any event taps
 	if self.keyCapture then
