@@ -29,6 +29,19 @@ obj.version = "1.0"
 obj.author = "Hammerspoon Community"
 obj.homepage = "https://github.com/Hammerspoon/Spoons"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
+obj.dependencies = {
+	{
+		["name"] = "FzfFilter",
+		["version"] = "1.0",
+	},
+}
+
+-- Configuration defaults
+obj.maxTitleLength = 40 -- Maximum length for window titles in UI
+obj.searchWindowTitles = true -- Whether to search window titles in addition to app names
+obj.maxTitleLength = 40 -- Maximum length for window titles in UI
+obj.truncateTitles = true -- Whether to truncate long window titles in UI
+obj.quickSwitchEnabled = true -- Whether to immediately switch to a window if there's only one match
 
 -- Global variables for mouse highlighting
 obj.mouseCircle = nil
@@ -42,9 +55,17 @@ obj.keyCapture = nil
 -- Store window shortname
 obj.shortnameToWinID = {}
 
+-- obj.windowChooser filter variables
+obj.fzfFilter = nil
+obj.currentFilterTask = nil
+obj.filterSequence = 0
+obj.fullWindowList = {}
+
 -- Configure window selection chooser appearance
 obj.windowChooser = nil
 obj.chooser = nil
+
+obj.logger = hs.logger.new("WindowSwitcher", "info")
 
 -- Maximum length for window titles
 local MAX_TITLE_LENGTH = 40
@@ -147,16 +168,16 @@ function obj:truncateString(str, maxLen)
 	return str
 end
 
---- WindowSwitcher:refreshWindowSelectionList()
+--- WindowSwitcher:getAllWindowsForChooserChoices()
 --- Method
---- Refreshes the list of windows for the window selection chooser
+--- Gets all windows for the chooser
 ---
 --- Parameters:
 ---  * None
 ---
 --- Returns:
----  * None
-function obj:refreshWindowSelectionList()
+---  * A table of window choices for the chooser
+function obj:getAllWindowsForChooserChoices()
 	local windows = hs.window.allWindows()
 	local windowList = {}
 
@@ -169,39 +190,40 @@ function obj:refreshWindowSelectionList()
 
 		-- Skip windows without titles
 		if title and title ~= "" then
-			-- Safely get the application icon with error handling
 			local appIcon = nil
-			if app then
-				local success, icon = pcall(function()
-					return app:icon()
-				end)
-				if success and icon then
-					appIcon = icon
-				end
+			if app and app:bundleID() then
+				appIcon = hs.image.imageFromAppBundle(app:bundleID())
 			end
 
-			-- Check if this window has a shortcut assigned
-			local shortcutInfo = ""
-			for key, id in pairs(self.bindings) do
-				if id == winId then
-					shortcutInfo = " [Alt+" .. key .. "]"
-					break
-				end
-			end
-
-			-- Truncate the window title to avoid overly wide UI
-			local truncatedTitle = self:truncateString(title, MAX_TITLE_LENGTH)
+			-- Truncate the window title for display purposes only
+			local truncatedTitle = self:truncateString(title, self.maxTitleLength)
 
 			table.insert(windowList, {
 				text = appName, -- Application name (main text)
-				subText = truncatedTitle .. shortcutInfo, -- Window title with shortcut info
-				image = appIcon, -- Application icon (safely retrieved)
-				window = win, -- Store window reference for later use
+				subText = truncatedTitle, -- Truncated window title for display
+				fullTitle = title, -- Full window title for searching
+				image = appIcon, -- Application icon
+				windowId = winId,
 			})
 		end
 	end
 
-	-- Update the chooser with the window list
+	return windowList
+end
+
+--- WindowSwitcher:refreshWindowSelectionList()
+--- Method
+--- Refreshes the list of windows for the window selection chooser
+---
+--- Parameters:
+---  * None
+---
+--- Returns:
+---  * None
+function obj:refreshWindowSelectionList()
+	local windowList = self:getAllWindowsForChooserChoices()
+
+	self.fullWindowList = windowList
 	self.windowChooser:choices(windowList)
 end
 
@@ -642,17 +664,20 @@ function obj:init()
 			return
 		end
 
-		local win = selection.window
+		self.windowChooser:query(nil) -- clear the chooser
+		local win = hs.window.get(selection.windowId)
 		if win then
 			-- Focus the selected window
 			win:focus()
 		end
-		self.windowChooser:query(nil) -- clear the chooser
 	end)
 
 	-- Configure window selection chooser appearance
 	self.windowChooser:placeholderText("Select window to focus")
 	self.windowChooser:searchSubText(true)
+	self.windowChooser:hideCallback(function()
+		self.windowChooser:query(nil) --clear the chooser query
+	end)
 
 	-- Add queryChangedCallback for shortname matching
 	-- If the query matches the shortname assigned to a window, it focuses the window
@@ -670,7 +695,89 @@ function obj:init()
 				-- Focus the window
 				win:focus()
 			end
+			return
 		end
+
+		-- Cancel any ongoing filter task
+		if self.currentFilterTask then
+			self.logger.d("Cancelling previous filter task")
+			self.currentFilterTask:terminate()
+			self.currentFilterTask = nil
+		end
+
+		-- If query is empty, show all windows
+		if not query or query == "" then
+			self.logger.d("Empty query, showing all windows")
+			self.windowChooser:choices(self.fullWindowList)
+			return
+		end
+
+		-- Increment the filter sequence
+		self.filterSequence = self.filterSequence + 1
+		local currentSequence = self.filterSequence
+
+		-- Prepare input list for fzfFilter
+		local inputList = {}
+		for i, choice in ipairs(self.fullWindowList) do
+			local searchText = choice.text
+			if self.searchWindowTitles then
+				-- Use the full title for searching, even if the displayed title is truncated
+				searchText = searchText .. " " .. (choice.fullTitle or choice.subText)
+			end
+
+			table.insert(inputList, {
+				id = tostring(i), -- Use the index as ID
+				searchText = searchText, -- Text to search
+			})
+		end
+
+		-- Use fzfFilter to filter the list
+		self.currentFilterTask = self.fzfFilter:filter(inputList, query, function(matchedIds, errorInfo)
+			self.currentFilterTask = nil
+
+			-- Only process the result if it's from the most recent filter
+			if currentSequence == self.filterSequence and matchedIds then
+				-- Check if there's exactly one match and quickSwitch is enabled
+				if #matchedIds == 1 and self.quickSwitchEnabled then
+					local index = tonumber(matchedIds[1])
+					local choice = self.fullWindowList[index]
+					local win = hs.window.get(choice.windowId)
+
+					if win then
+						-- Focus the window
+						self.logger.d(
+							"QuickSwitch: Focusing window: "
+								.. choice.text
+								.. " - "
+								.. (choice.fullTitle or choice.subText)
+						)
+						-- Clear query and close chooser
+						self.windowChooser:query(nil)
+						self.windowChooser:hide()
+
+						win:focus()
+						return
+					end
+				end
+
+				-- Create filtered list of choices
+				local filteredChoices = {}
+				for _, id in ipairs(matchedIds) do
+					local index = tonumber(id)
+					if index and self.fullWindowList[index] then
+						table.insert(filteredChoices, self.fullWindowList[index])
+					end
+				end
+
+				-- Update the chooser with filtered choices
+				self.windowChooser:choices(filteredChoices)
+			end
+
+			-- Handle error if any
+			if errorInfo then
+				self.logger.e("fzfFilter error: " .. (errorInfo.message or "Unknown error"))
+			end
+		end)
 	end)
 
 	-- Create window chooser for shortcut assignment
@@ -706,6 +813,29 @@ end
 --- Returns:
 ---  * The WindowSwitcher object
 function obj:start()
+	-- Check if FzfFilter spoon is loaded
+	if not spoon.FzfFilter then
+		self.logger.e(
+			"FzfFilter spoon is required but not loaded. Please load it first with: hs.loadSpoon('FzfFilter')"
+		)
+		return self
+	end
+
+	-- Use the FzfFilter spoon
+	self.fzfFilter = spoon.FzfFilter
+
+	-- Make sure FzfFilter is initialized
+	if not self.fzfFilter.fzfPath then
+		self.logger.i("FzfFilter not started yet, starting it now")
+		self.fzfFilter:start()
+	end
+
+	-- Check if FzfFilter is properly initialized after start
+	if not self.fzfFilter.fzfPath then
+		self.logger.e("FzfFilter could not be initialized properly. Please check its configuration.")
+		return self
+	end
+
 	-- Bind default hotkeys
 	self:bindHotkeys({
 		open_window_chooser = { { "alt" }, "space" },
