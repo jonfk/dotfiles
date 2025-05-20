@@ -123,16 +123,20 @@ function obj:truncateString(str, maxLen)
 	return str
 end
 
---- WindowSwitcher:getAllWindowsForChooserChoices()
---- Method
---- Gets all windows for the chooser
+--- Gets comprehensive information about all active windows in the system.
+--- This function serves as the main abstraction for retrieving window data throughout the spoon.
+--- It collects and formats all active windows with their essential properties.
+--- Windows without titles are skipped, and titles are truncated according to maxTitleLength.
 ---
---- Parameters:
----  * None
----
---- Returns:
----  * A table of window choices for the chooser
-function obj:getAllWindowsForChooserChoices()
+--- @function obj:getAllWindowsInfo
+--- @return table[] Array of tables with window information, each containing:
+---   - text (string): Application name that owns the window (displayed as main text)
+---   - subText (string): Truncated window title displayed as secondary text
+---   - fullTitle (string): Complete window title without truncation (used for searching)
+---   - image (hs.image): Application icon from the application's bundle ID (can be nil)
+---   - windowId (number): Unique identifier for the window (used to focus when selected)
+--- @usage local windows = obj:getAllWindowsInfo()
+function obj:getAllWindowsInfo()
 	local windows = hs.window.allWindows()
 	local windowList = {}
 
@@ -176,7 +180,7 @@ end
 --- Returns:
 ---  * None
 function obj:refreshWindowSelectionList()
-	local windowList = self:getAllWindowsForChooserChoices()
+	local windowList = self:getAllWindowsInfo()
 
 	self.fullWindowList = windowList
 	self.windowChooser:choices(windowList)
