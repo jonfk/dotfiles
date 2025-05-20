@@ -1,3 +1,4 @@
+---
 -- WindowSwitcherWebView - Web UI for WindowSwitcher Spoon
 -- @author Jonathan Fok kan
 -- @copyright MIT - https://opensource.org/licenses/MIT
@@ -250,7 +251,7 @@ function obj:createHTML()
         <div class="action-buttons">
             <button id="refreshBtn">Refresh</button>
             <button id="assignShortcutBtn">Assign Shortcut</button>
-            <button id="focusWindowBtn">Focus Window</button>
+            <button id="assignShortnameBtn">Assign Shortname</button>
             <button id="closeBtn">Close</button>
         </div>
     </div>
@@ -265,7 +266,7 @@ function obj:createHTML()
         const windowCount = document.getElementById('windowCount');
         const refreshBtn = document.getElementById('refreshBtn');
         const assignShortcutBtn = document.getElementById('assignShortcutBtn');
-        const focusWindowBtn = document.getElementById('focusWindowBtn');
+        const assignShortnameBtn = document.getElementById('assignShortnameBtn');
         const closeBtn = document.getElementById('closeBtn');
         
         // Current selected window
@@ -357,10 +358,10 @@ function obj:createHTML()
             }
         });
         
-        focusWindowBtn.addEventListener('click', () => {
+        assignShortnameBtn.addEventListener('click', () => {
             if (selectedWindowId) {
                 window.webkit.messageHandlers.windowSwitcherHandler.postMessage({
-                    action: 'focusWindow',
+                    action: 'assignShortname',
                     windowId: selectedWindowId
                 });
             } else {
@@ -480,6 +481,18 @@ function obj:handleWebviewMessage(message)
 				-- Prompt for shortcut assignment without hiding webview
 				self.windowSwitcher:promptForShortcut(win)
 				-- Update the webview after shortcut change
+				self:updateAfterShortcutChange()
+			end
+		end
+	elseif action == "assignShortname" then
+		-- Assign a shortname to a window
+		local windowId = body.windowId
+		if windowId then
+			local win = hs.window.get(windowId)
+			if win and self.windowSwitcher then
+				-- Prompt for shortname assignment without hiding webview
+				self.windowSwitcher:promptForShortname(win)
+				-- Update the webview after shortname change
 				self:updateAfterShortcutChange()
 			end
 		end

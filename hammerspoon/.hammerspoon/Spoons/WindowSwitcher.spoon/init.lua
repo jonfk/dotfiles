@@ -354,6 +354,55 @@ function obj:promptForShortcut(window)
 	self.keyCapture:start()
 end
 
+--- Prompts for a shortname assignment for the given window
+-- @param window A window object to assign a shortname to
+-- @return nil
+function obj:promptForShortname(window)
+	-- Use hs.dialog to prompt for shortname
+	local buttonPressed, shortname = hs.dialog.textPrompt(
+		"Assign Shortname",
+		"Enter a shortname for the selected window: " .. window:application():name() .. " - " .. window:title(),
+		"", -- Default text
+		"OK", -- OK button
+		"Cancel" -- Cancel button
+	)
+
+	-- Process the result
+	if buttonPressed == "OK" and shortname and shortname ~= "" then
+		-- Check if the shortname is already in use
+		if self.shortnameToWinID[shortname] then
+			local existingWin = hs.window.get(self.shortnameToWinID[shortname])
+			local appName = existingWin and existingWin:application():name() or "Unknown"
+			local title = existingWin and existingWin:title() or "Unknown"
+
+			-- Ask for confirmation to overwrite
+			local alertResult = hs.dialog.alert(
+				"Shortname Already Exists",
+				"Shortname '"
+					.. shortname
+					.. "' is already assigned to window: "
+					.. appName
+					.. " - "
+					.. self:truncateString(title, MAX_TITLE_LENGTH)
+					.. "\nDo you want to reassign it?",
+				"Reassign",
+				"Cancel"
+			)
+
+			if alertResult == "Cancel" then
+				return
+			end
+		end
+
+		-- Assign the shortname to the window ID
+		self.shortnameToWinID[shortname] = window:id()
+
+		-- Notify the user
+		local truncatedTitle = self:truncateString(window:title(), MAX_TITLE_LENGTH)
+		hs.alert.show("Window '" .. truncatedTitle .. "' assigned shortname: " .. shortname)
+	end
+end
+
 --- Removes an existing binding for a key
 -- @param key The key to remove binding for
 -- @return nil
