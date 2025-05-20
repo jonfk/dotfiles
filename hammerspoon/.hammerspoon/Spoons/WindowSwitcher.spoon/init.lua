@@ -477,124 +477,6 @@ function obj:loadShortcuts()
 	end
 end
 
---- WindowSwitcher:exportShortcuts()
---- Method
---- Exports window shortcuts to a JSON file
----
---- Parameters:
----  * None
----
---- Returns:
----  * None
-function obj:exportShortcuts()
-	local exportData = {
-		description = "Hammerspoon window shortcuts configuration. Edit 'hotkey' values and import with Alt+Shift+L.",
-		windows = {},
-	}
-
-	-- Create a reverse mapping of window IDs to keys for easy lookup
-	local windowToKey = {}
-	for key, windowId in pairs(self.bindings) do
-		windowToKey[windowId] = key
-	end
-	local windowToShortname = {}
-	for shortname, windowId in pairs(self.shortnameToWinID) do
-		windowToShortname[windowId] = shortname
-	end
-
-	-- Get all windows and add them to the export
-	local windows = hs.window.allWindows()
-	for _, win in ipairs(windows) do
-		-- Skip windows without titles
-		if win:title() and win:title() ~= "" then
-			local app = win:application()
-			local appName = app and app:name() or "Unknown"
-
-			-- Create window entry
-			table.insert(exportData.windows, {
-				windowId = win:id(),
-				appName = appName,
-				windowTitle = win:title(),
-				hotkey = windowToKey[win:id()] or nil, -- Use nil for JSON null
-				shortname = windowToShortname[win:id()],
-			})
-		end
-	end
-
-	-- Convert to JSON
-	local jsonData = hs.json.encode(exportData, true)
-
-	-- Write to file
-	local filePath = os.getenv("HOME") .. "/.hammerspoon/windowshortcuts_state.json"
-	local file = io.open(filePath, "w")
-	if file then
-		file:write(jsonData)
-		file:close()
-		hs.alert.show("All window information exported to " .. filePath)
-	else
-		hs.alert.show("Failed to write window information to file!")
-	end
-end
-
---- WindowSwitcher:importShortcuts()
---- Method
---- Imports window shortcuts from a JSON file
----
---- Parameters:
----  * None
----
---- Returns:
----  * None
-function obj:importShortcuts()
-	local filePath = os.getenv("HOME") .. "/.hammerspoon/windowshortcuts_state.json"
-	local file = io.open(filePath, "r")
-
-	if file then
-		local jsonData = file:read("*all")
-		file:close()
-
-		local success, importData = pcall(function()
-			return hs.json.decode(jsonData)
-		end)
-
-		if success and importData and importData.windows then
-			-- Clear all existing bindings
-			for key, _ in pairs(self.bindings) do
-				self:removeBindingForKey(key)
-			end
-			self.shortnameToWinID = {}
-
-			-- Import new bindings
-			local importCount = 0
-			for _, windowInfo in ipairs(importData.windows) do
-				if
-					(windowInfo.hotkey and windowInfo.hotkey ~= "")
-					or (windowInfo.shortname and windowInfo.shortname ~= "")
-				then
-					local win = hs.window.get(windowInfo.windowId)
-					if win then
-						if windowInfo.hotkey and windowInfo.hotkey ~= "" then
-							-- Add the binding
-							self.bindings[windowInfo.hotkey] = windowInfo.windowId
-							self:createWindowShortcut(windowInfo.hotkey, windowInfo.windowId)
-						end
-						if windowInfo.shortname and windowInfo.shortname ~= "" then
-							self.shortnameToWinID[windowInfo.shortname] = windowInfo.windowId
-						end
-						importCount = importCount + 1
-					end
-				end
-			end
-
-			hs.alert.show("Imported " .. importCount .. " window shortcuts")
-		else
-			hs.alert.show("Failed to parse shortcuts file!")
-		end
-	else
-		hs.alert.show("Shortcuts file not found!")
-	end
-end
-
 --- WindowSwitcher:bindHotkeys(mapping)
 --- Method
 --- Binds hotkeys for WindowSwitcher
@@ -610,8 +492,6 @@ end
 ---    * open_window_chooser - Display the window selection chooser
 ---    * assign_shortcut - Display the shortcut assignment chooser
 ---    * list_shortcuts - Display a list of all shortcuts
----    * export_shortcuts - Export shortcuts to a file
----    * import_shortcuts - Import shortcuts from a file
 ---
 --- Example:
 --- ```lua
@@ -619,8 +499,6 @@ end
 ---    open_window_chooser = {{"alt"}, "space"},
 ---    assign_shortcut = {{"cmd", "alt", "shift"}, "w"},
 ---    list_shortcuts = {{"cmd", "alt"}, "w"},
----    export_shortcuts = {{"alt"}, "l"},
----    import_shortcuts = {{"alt", "shift"}, "l"}
 --- })
 --- ```
 function obj:bindHotkeys(mapping)
@@ -635,12 +513,6 @@ function obj:bindHotkeys(mapping)
 		end),
 		list_shortcuts = hs.fnutils.partial(function()
 			self:listAllShortcuts()
-		end),
-		export_shortcuts = hs.fnutils.partial(function()
-			self:exportShortcuts()
-		end),
-		import_shortcuts = hs.fnutils.partial(function()
-			self:importShortcuts()
 		end),
 	}
 
@@ -841,8 +713,6 @@ function obj:start()
 		open_window_chooser = { { "alt" }, "space" },
 		assign_shortcut = { { "cmd", "alt", "shift" }, "w" },
 		list_shortcuts = { { "cmd", "alt" }, "w" },
-		export_shortcuts = { { "alt" }, "l" },
-		import_shortcuts = { { "alt", "shift" }, "l" },
 	})
 
 	return self
