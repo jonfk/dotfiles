@@ -170,6 +170,57 @@ function obj:getAllWindowsInfo()
 	return windowList
 end
 
+--- Gets all windows with their associated keybindings and short names.
+--- This function extends getAllWindowsInfo by adding keybinding and shortname arrays to each window.
+---
+--- @function obj:getAllWindowsWithBindings
+--- @return table[] Array of tables with window information, each containing:
+---   - text (string): Application name that owns the window
+---   - subText (string): Truncated window title displayed as secondary text
+---   - fullTitle (string): Complete window title without truncation
+---   - image (hs.image): Application icon from the application's bundle ID
+---   - windowId (number): Unique identifier for the window
+---   - keybindings (string[]): Array of keys bound to this window
+---   - shortnames (string[]): Array of short names associated with this window
+--- @usage local windowsWithBindings = obj:getAllWindowsWithBindings()
+---
+--- Notes:
+---  * A window can have multiple keybindings and/or multiple short names
+---  * Windows without keybindings or short names will have empty arrays
+---  * This function combines data from obj.bindings and obj.shortnameToWinID
+function obj:getAllWindowsWithBindings()
+	-- Get all windows information using the existing function
+	local windowList = self:getAllWindowsInfo()
+
+	-- Create a map of window IDs to their indices in the windowList for quick lookup
+	local windowIdToIndex = {}
+	for i, window in ipairs(windowList) do
+		windowIdToIndex[window.windowId] = i
+
+		-- Initialize arrays for keybindings and short names
+		window.keybindings = {}
+		window.shortnames = {}
+	end
+
+	-- Add keybindings information
+	for key, winId in pairs(self.bindings) do
+		local index = windowIdToIndex[winId]
+		if index then
+			table.insert(windowList[index].keybindings, key)
+		end
+	end
+
+	-- Add short names information
+	for shortname, winId in pairs(self.shortnameToWinID) do
+		local index = windowIdToIndex[winId]
+		if index then
+			table.insert(windowList[index].shortnames, shortname)
+		end
+	end
+
+	return windowList
+end
+
 --- WindowSwitcher:refreshWindowSelectionList()
 --- Method
 --- Refreshes the list of windows for the window selection chooser
