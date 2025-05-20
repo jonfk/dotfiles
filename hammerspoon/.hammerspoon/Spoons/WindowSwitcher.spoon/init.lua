@@ -38,7 +38,7 @@ obj.dependencies = {
 
 -- Configuration defaults
 obj.maxTitleLength = 40 -- Maximum length for window titles in UI
-obj.searchWindowTitles = true -- Whether to search window titles in addition to app names
+obj.searchWindowTitles = false -- Whether to search window titles in addition to app names
 obj.maxTitleLength = 40 -- Maximum length for window titles in UI
 obj.truncateTitles = true -- Whether to truncate long window titles in UI
 obj.quickSwitchEnabled = true -- Whether to immediately switch to a window if there's only one match
@@ -70,69 +70,24 @@ obj.logger = hs.logger.new("WindowSwitcher", "info")
 -- Maximum length for window titles
 local MAX_TITLE_LENGTH = 40
 
+-- stylua: ignore start
 -- List of keys to exclude from shortcuts
 obj.excludedKeys = {
 	-- Function keys
-	"f1",
-	"f2",
-	"f3",
-	"f4",
-	"f5",
-	"f6",
-	"f7",
-	"f8",
-	"f9",
-	"f10",
-	"f11",
-	"f12",
-	"f13",
-	"f14",
-	"f15",
-	"f16",
-	"f17",
-	"f18",
-	"f19",
-	"f20",
+	"f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12",
+	"f13", "f14", "f15", "f16", "f17", "f18", "f19", "f20",
 	-- Navigation keys
-	"escape",
-	"delete",
-	"help",
-	"home",
-	"pageup",
-	"forwarddelete",
-	"end",
-	"pagedown",
-	"return",
-	"tab",
-	"left",
-	"right",
-	"down",
-	"up",
+	"escape", "delete", "help", "home", "pageup", "forwarddelete", "end",
+	"pagedown", "return", "tab", "left", "right", "down", "up",
 	-- Modifier keys
-	"shift",
-	"rightshift",
-	"cmd",
-	"rightcmd",
-	"alt",
-	"rightalt",
-	"ctrl",
-	"rightctrl",
-	"capslock",
-	"fn",
+	"shift", "rightshift", "cmd", "rightcmd", "alt", "rightalt", "ctrl",
+	"rightctrl", "capslock", "fn",
 	-- Media keys
-	"volumeup",
-	"volumedown",
-	"mute",
-	"play",
-	"previous",
-	"next",
+	"volumeup", "volumedown", "mute", "play", "previous", "next",
 	-- Other special keys
-	"space",
-	"eject",
-	"power",
-	"brightnessup",
-	"brightnessdown",
+	"space", "eject", "power", "brightnessup", "brightnessdown",
 }
+-- stylua: ignore end
 
 -- Function to highlight mouse position with a circle
 function obj:mouseHighlight()
