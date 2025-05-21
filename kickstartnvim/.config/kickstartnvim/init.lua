@@ -825,12 +825,41 @@ require('lazy').setup({
         pattern = 'VeryLazy',
         nested = true,
         callback = function()
-          local current_path = vim.fn.getcwd()
-          local session_name = create_session_name_from_path(current_path)
-          if MiniSessions.detected and MiniSessions.detected[session_name] then
-            MiniSessions.read(session_name, { force = MiniSessions.config.force.read })
-          else
-            MiniSessions.write(session_name, { force = true })
+          -- Check if Neovim was started with file arguments
+          local should_manage_session = true
+
+          -- Get arguments passed to nvim, excluding the executable name
+          local args = vim.fn.argv()
+
+          -- If there are arguments, check if they're only the current directory
+          if #args > 0 then
+            -- We'll only load/save session if the single argument is the current directory
+            local cwd = vim.fn.getcwd()
+
+            if #args > 1 then
+              should_manage_session = false
+            else
+              -- Convert the argument to an absolute path
+              local arg_path = vim.fn.fnamemodify(args[1], ':p:h')
+              -- Convert cwd to ensure same format for comparison
+              local cwd_path = vim.fn.fnamemodify(cwd, ':p:h')
+
+              -- Only proceed if the argument resolves to the current directory
+              if arg_path ~= cwd_path then
+                should_manage_session = false
+              end
+            end
+          end
+
+          -- Only manage sessions if no files were specified or just the cwd was given
+          if should_manage_session then
+            local current_path = vim.fn.getcwd()
+            local session_name = create_session_name_from_path(current_path)
+            if MiniSessions.detected and MiniSessions.detected[session_name] then
+              MiniSessions.read(session_name, { force = MiniSessions.config.force.read })
+            else
+              MiniSessions.write(session_name, { force = true })
+            end
           end
         end,
       })
