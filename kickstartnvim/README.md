@@ -5,95 +5,125 @@ Outlines the modifications applied to `kickstart.nvim`.
 ### init.lua
 
 * `vim.g.have_nerd_font` set to `true`
-* Neovide Specific Configuration
-    ```lua
-    if vim.g.neovide then
-        require 'custom.neovide'
-    end
-    ```
+* **Neovide Specific Configuration**
+
+  ```lua
+  if vim.g.neovide then
+      require 'custom.neovide'
+  end
+  ```
 * **Option Changes:**
-    * `vim.o.relativenumber` set to `true`
-    * `vim.o.scrolloff` has been changed from `10` to `5`.
+
+  * `vim.o.relativenumber` set to `true`
+  * `vim.o.scrolloff` changed from `10` to `5`
 * **Commented-out Keymaps Removed:**
-    * The commented-out example keymaps for disabling arrow keys in normal mode have been removed.
+
+  * Removed the example of disabling arrow keys in normal mode
 * **Plugin Setup (`lazy.setup`) Comments Reduced:**
-    * A significant portion of the explanatory comments within the `require('lazy').setup` block, detailing how to add and configure plugins, has been removed. The configuration for `NMAC427/guess-indent.nvim` was also removed as part of this cleanup (it was an example).
+
+  * Stripped down the explanatory comments in the `require('lazy').setup` block
+  * Removed the `NMAC427/guess-indent.nvim` example
+* **LuaSnip Snippet Configuration:**
+
+  * Enabled `rafamadriz/friendly-snippets`, loading VSCode-style snippets lazily
+  * Added snippet navigation mappings in insert and select modes:
+
+    * `<C-L>` jumps forward
+    * `<C-J>` jumps backward
 * **`which-key` Registrations Added:**
-    * New groups for `which-key` have been added:
-        * `<leader>b` for `[B]uffer` operations.
-        * `gr` for `LSP keybinds`.
+
+  * `<leader>b` group for `[B]uffer` operations
+  * `gr` group for `LSP keybinds`
 * **Language Server Protocol (LSP) Configuration:**
-    * The following language servers are now enabled by default (uncommented) in the `servers` table for `nvim-lspconfig`:
-        * `gopls`
-        * `rust_analyzer`
-        * `ts_ls`
+
+  * Enabled by default (uncommented) in the `servers` table:
+
+    * `gopls`
+    * `rust_analyzer`
+    * `ts_ls`
 * **Formatter Configuration (`conform.nvim`):**
-    * Formatters for `rust` and `javascript` have been added:
+
+  * Added formatters for `rust` and `javascript`
 * **New `mini.nvim` Plugins Configured:**
-    * `mini.tabline`: Setup added.
-    * `mini.sessions`: Setup added, along with autocommands for automatic session loading and saving based on the current working directory. Includes a helper function `create_session_name_from_path` to generate safe session names.
-    * `mini.pairs`: Setup added for insert, command, and terminal modes.
-    * `mini.files`: Setup added with custom mappings for `go_in` (emptied), `go_out` (`H`), and `go_out_plus` (emptied). Keymaps `<leader>e` and `<leader>E` are added to open `mini.files` at the current file or project root, respectively.
+
+  * `mini.tabline`: setup added
+  * `mini.sessions`: setup added with autocommands for auto-loading/saving sessions by working directory; includes helper `create_session_name_from_path`
+  * `mini.pairs`: setup for insert, command, and terminal modes
+  * `mini.files`: setup with custom mappings (`go_out = 'H'`), and keymaps `<leader>e`/`<leader>E` to open files at current file/project root
 * **Treesitter `ensure_installed` Expanded:**
-    * The list of languages for `nvim-treesitter` to `ensure_installed` has been significantly expanded to include: `gitcommit`, `gitignore`, `git_config`, `git_rebase`, `go`, `gomod`, `ini`, `javascript`, `json`, `just`, `yaml`.
+
+  * Added languages: `gitcommit`, `gitignore`, `git_config`, `git_rebase`, `go`, `gomod`, `ini`, `javascript`, `json`, `just`, `yaml`
 * **Custom Plugins Imported:**
-    * The line `{ import = 'custom.plugins' }` has been uncommented, enabling the loading of plugins from the `lua/custom/plugins/` directory.
-* **Custom Modules Required:**
-    * The following custom modules are now required at the end of the file:
-        ```lua
-        require 'custom.keymaps'
-        require 'custom.folds'
-        ```
+
+  * Uncommented `{ import = 'custom.plugins' }` to load plugins from `lua/custom/plugins/`
+* **Custom Modules Required at End of File:**
+
+  ```lua
+  require 'custom.keymaps'
+  require 'custom.folds'
+  ```
 
 ### Custom Files
 
-* **`lua/custom/folds.lua`:**
-    * Configures folding settings.
-    * Sets `foldmethod` to `expr` and `foldexpr` to `nvim_treesitter#foldexpr()`.
-    * Includes an autocommand to fallback to `indent` folding if Treesitter is not available for the current buffer.
-    * Adds a performance optimization to disable folding for files larger than 1MB.
-    * Sets `foldlevel` to `99` to start with all folds open.
+#### `lua/custom/folds.lua`
 
-* **`lua/custom/keymaps.lua`:**
-    * Defines custom keymappings.
-    * Adds buffer navigation keymaps:
-        * `<leader>bd`: Delete buffer
-        * `<leader>bn`: Next buffer
-        * `<leader>bp`: Previous buffer
-    * Adds autocommands for `mini.files` to:
-        * Map `<esc><esc>` to close the explorer.
-        * Map `<cr>` to "go in plus" (expand directory or open file and close explorer).
+* Configures folding:
 
-* **`lua/custom/neovide.lua`:**
-    * Contains settings specific to the Neovide GUI.
-    * Sets `guifont` to `Hack Nerd Font:h14`.
-    * Configures Neovide animation lengths (`neovide_position_animation_length`, `neovide_scroll_animation_length`).
-    * Sets `neovide_input_macos_option_key_is_meta` to `only_left`.
-    * Adds various keymaps for `<D-v>` (Cmd-v on macOS) to handle pasting from the system clipboard in normal, visual, command, insert, and terminal modes.
+  * `foldmethod = 'expr'`, `foldexpr = 'nvim_treesitter#foldexpr()'`
+  * Fallback to `indent` for buffers without Treesitter
+  * Disable folding for files larger than 1MB
+  * `foldlevel = 99` to start with all folds open
 
-* **`lua/custom/plugins/clipboard.lua`:**
-    * Configures the `gbprod/yanky.nvim` plugin for enhanced yank/paste functionality.
-    * Sets up `yanky.nvim` with `sqlite.lua` for persistent yank history.
-    * Defines keymaps for opening yank history (`<leader>p`) and standard yank/put operations.
+#### `lua/custom/keymaps.lua`
 
-* **`lua/custom/plugins/codecompanion.lua`:**
-    * Configures the `olimorris/codecompanion.nvim` plugin (likely for AI-assisted coding).
-    * Sets the default adapter for chat, inline, and command strategies to `anthropic`.
-    * Enables debug logging.
-    * Configures display settings, including showing settings in chat and using `telescope` for the action palette.
+* Buffer navigation keymaps:
 
-* **`lua/custom/plugins/flash.lua`:**
-    * Configures the `folke/flash.nvim` plugin for improved cursor movement/jumping.
-    * Disables flash for search mode (`modes.search.enabled = false`).
-    * Enables jump labels for char mode.
-    * Defines keymaps for various flash functions: `s` (jump), `S` (treesitter), `r` (remote), `R` (treesitter search), and `<c-s>` (toggle flash search in command mode).
+  * `<leader>bd`: delete buffer
+  * `<leader>bn`: next buffer
+  * `<leader>bp`: previous buffer
+* `mini.files` autocommands:
 
-* **`lua/custom/plugins/terminal.lua`:**
-    * Configures `akinsho/toggleterm.nvim` for managing terminal windows.
-    * Sets toggleterm direction to `float` and the open mapping to `<C-\>`.
-    * Adds keymaps:
-        * `<leader>tt`: Toggle terminal.
-        * `<leader>tn`: Open new terminal in the current buffer's directory (or project root if buffer has no file).
-        * `<leader>tr`: Toggle/Open new terminal in Neovim's current working directory.
-        * `<leader>ts`: Select terminal.
-    * Includes `ryanmsnyder/toggleterm-manager.nvim` for enhanced terminal management, likely integrated with Telescope.
+  * `<esc><esc>` to close explorer
+  * `<cr>` to "go in plus" (expand directory/open file and close explorer)
+
+#### `lua/custom/neovide.lua`
+
+* Neovide GUI settings:
+
+  * `guifont = 'Hack Nerd Font:h14'`
+  * Animation lengths for position and scroll
+  * `macos_option_key_is_meta = 'only_left'`
+  * `<D-v>` paste mappings in normal, visual, command, insert, and terminal modes
+
+### Custom Plugin Configurations
+
+#### `lua/custom/plugins/clipboard.lua`
+
+* `gbprod/yanky.nvim` setup:
+
+  * Uses `sqlite.lua` for persistent yank history
+  * `<leader>p` to open yank history
+
+#### `lua/custom/plugins/codecompanion.lua`
+
+* `olimorris/codecompanion.nvim` setup:
+
+  * Default adapter `anthropic` for chat, inline, and command modes
+  * Debug logging enabled
+  * Action palette via `telescope`
+
+#### `lua/custom/plugins/flash.lua`
+
+* `folke/flash.nvim` customization:
+
+  * Disabled in search mode
+  * Enabled jump labels for char mode
+  * Keymaps: `s`, `S`, `r`, `R`, `<c-s>`
+
+#### `lua/custom/plugins/terminal.lua`
+
+* `akinsho/toggleterm.nvim` setup:
+
+  * Floating terminals, `<C-\>` to toggle
+  * `<leader>tt`, `<leader>tn`, `<leader>tr`, `<leader>ts` keymaps
+* `ryanmsnyder/toggleterm-manager.nvim` included for enhanced management

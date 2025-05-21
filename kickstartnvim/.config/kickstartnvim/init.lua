@@ -681,14 +681,22 @@ require('lazy').setup({
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
         },
-        opts = {},
+        config = function()
+          local ls = require 'luasnip'
+          vim.keymap.set({ 'i', 's' }, '<C-L>', function()
+            ls.jump(1)
+          end, { silent = true })
+          vim.keymap.set({ 'i', 's' }, '<C-J>', function()
+            ls.jump(-1)
+          end, { silent = true })
+        end,
       },
       'folke/lazydev.nvim',
     },
