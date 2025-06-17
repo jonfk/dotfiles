@@ -62,6 +62,10 @@ if [ -f ~/.zsh/functions/tmux.zsh ]; then
 	source ~/.zsh/functions/tmux.zsh
 fi
 
+if [ -f ~/.zsh/functions/date.zsh ]; then 
+	source ~/.zsh/functions/date.zsh
+fi
+
 # zstyle ':completion:*' accept-exact '*(N)'
 # zstyle ':completion:*' use-cache on
 
