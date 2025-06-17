@@ -30,6 +30,9 @@ Outlines the modifications applied to `kickstart.nvim`.
 
     * `<C-L>` jumps forward
     * `<C-J>` jumps backward
+* **Telescope Configuration:**
+
+  * Added `<leader>sF` keymap for searching all files including hidden and ignored ones
 * **`which-key` Registrations Added:**
 
   * `<leader>b` group for `[B]uffer` operations
@@ -53,6 +56,11 @@ Outlines the modifications applied to `kickstart.nvim`.
 * **Treesitter `ensure_installed` Expanded:**
 
   * Added languages: `gitcommit`, `gitignore`, `git_config`, `git_rebase`, `go`, `gomod`, `ini`, `javascript`, `json`, `just`, `yaml`
+* **Colorscheme Configuration:**
+
+  * Changed from `folke/tokyonight.nvim` to `EdenEast/nightfox.nvim`
+  * Randomly selects from available nightfox variants: `terafox`, `nightfox`, `duskfox`, `nordfox`, `carbonfox`
+  * Shows notification with selected colorscheme on startup
 * **Custom Plugins Imported:**
 
   * Uncommented `{ import = 'custom.plugins' }` to load plugins from `lua/custom/plugins/`

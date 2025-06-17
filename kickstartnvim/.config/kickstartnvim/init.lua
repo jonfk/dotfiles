@@ -782,7 +782,7 @@ require('lazy').setup({
         'terafox',
         'nightfox',
         'duskfox',
-        'nordfox',
+        --'nordfox',
         'carbonfox',
       }
 
