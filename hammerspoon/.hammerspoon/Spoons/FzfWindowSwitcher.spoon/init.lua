@@ -28,6 +28,7 @@ obj.maxTitleLength = 40 -- Maximum length for window titles in UI
 obj.truncateTitles = true -- Whether to truncate long window titles in UI
 obj.quickSwitchEnabled = true -- Whether to immediately switch to a window if there's only one match
 obj.hotkey = { { "ctrl" }, "space" } -- Default hotkey to activate window switcher
+obj.exclusionFilters = {} -- List of exclusion filters to hide windows that are handled by direct hotkeys
 
 -- Module variables
 obj.fzfFilter = nil
@@ -185,6 +186,95 @@ function obj:truncateString(str, maxLen)
 	return str
 end
 
+--- FzfWindowSwitcher:excludeWindows(windowList, exclusionFilters)
+--- Method
+--- Excludes windows from the list based on exclusion filters
+--- Each filter can only exclude one window (first match)
+---
+--- Parameters:
+---  * windowList - The list of windows to filter
+---  * exclusionFilters - List of filters with appName and windowTitle fields
+---
+--- Returns:
+---  * The filtered window list
+function obj:excludeWindows(windowList, exclusionFilters)
+	if not exclusionFilters or #exclusionFilters == 0 then
+		return windowList
+	end
+
+	-- Create a copy of exclusion filters to track which ones have been used
+	local unusedFilters = {}
+	for i, filter in ipairs(exclusionFilters) do
+		table.insert(unusedFilters, { index = i, filter = filter })
+	end
+
+	local filteredWindowList = {}
+
+	for _, window in ipairs(windowList) do
+		local shouldExclude = false
+
+		-- Check against unused filters
+		for i = #unusedFilters, 1, -1 do -- iterate backwards so we can remove items safely
+			local filterEntry = unusedFilters[i]
+			local filter = filterEntry.filter
+
+			-- Check if window matches this filter
+			local appMatches = string.find(string.lower(window.text), string.lower(filter.appName), 1, true) ~= nil
+			local titleMatches = (filter.windowTitle == "")
+				or (
+					string.find(
+						string.lower(window.fullTitle or window.subText),
+						string.lower(filter.windowTitle),
+						1,
+						true
+					) ~= nil
+				)
+
+			if appMatches and titleMatches then
+				-- This window matches the filter, exclude it
+				shouldExclude = true
+				-- Remove this filter from unused filters so it won't be used again
+				table.remove(unusedFilters, i)
+				self.logger.d(
+					"Excluding window: "
+						.. window.text
+						.. " - "
+						.. (window.fullTitle or window.subText)
+						.. " (matched filter: "
+						.. filter.appName
+						.. "/"
+						.. (filter.windowTitle ~= "" and filter.windowTitle or "*")
+						.. ")"
+				)
+				break
+			end
+		end
+
+		if not shouldExclude then
+			table.insert(filteredWindowList, window)
+		end
+	end
+
+	return filteredWindowList
+end
+
+--- FzfWindowSwitcher:setExclusionFilters(filters)
+--- Method
+--- Sets the exclusion filters for the window switcher
+---
+--- Parameters:
+---  * filters - A table of filters with the same format as hotkey bindings:
+---    * Each filter should have `appName` and `windowTitle` fields
+---    * `windowTitle` can be empty string to match any window title
+---
+--- Returns:
+---  * The FzfWindowSwitcher object
+function obj:setExclusionFilters(filters)
+	self.exclusionFilters = filters or {}
+	self.logger.d("Set " .. #self.exclusionFilters .. " exclusion filters")
+	return self
+end
+
 --- FzfWindowSwitcher:getAllWindowsForChooserChoices()
 --- Method
 --- Gets all windows for the chooser
@@ -225,7 +315,12 @@ function obj:getAllWindowsForChooserChoices()
 		end
 	end
 
-	self.logger.d("Found " .. #windowList .. " windows")
+	-- Apply exclusion filters
+	if #self.exclusionFilters > 0 then
+		windowList = self:excludeWindows(windowList, self.exclusionFilters)
+	end
+
+	self.logger.d("Found " .. #windowList .. " windows after filtering")
 	return windowList
 end
 

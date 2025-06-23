@@ -36,7 +36,6 @@ hs.loadSpoon("WindowSwitcherHotkeys")
 hs.loadSpoon("FzfWindowSwitcher")
 
 spoon.FzfFilter:start()
-spoon.FzfWindowSwitcher:start()
 
 local customBindings = {
 	{
@@ -74,7 +73,17 @@ local customBindings = {
 		windowTitle = "",
 		description = "Claude",
 	},
+	{
+		modifiers = { "alt", "ctrl", "cmd" },
+		key = "3",
+		appName = "intellij idea",
+		windowTitle = "",
+		description = "IntelliJ IDEA",
+	},
 }
+
+spoon.FzfWindowSwitcher:setExclusionFilters(customBindings)
+spoon.FzfWindowSwitcher:start()
 
 spoon.WindowSwitcherHotkeys:setHotKeyBindings(customBindings)
 spoon.WindowSwitcherHotkeys:start()
