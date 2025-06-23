@@ -27,7 +27,7 @@ obj.searchWindowTitles = true -- Whether to search window titles in addition to 
 obj.maxTitleLength = 40 -- Maximum length for window titles in UI
 obj.truncateTitles = true -- Whether to truncate long window titles in UI
 obj.quickSwitchEnabled = true -- Whether to immediately switch to a window if there's only one match
-obj.hotkey = { { "alt" }, "space" } -- Default hotkey to activate window switcher
+obj.hotkey = { { "ctrl" }, "space" } -- Default hotkey to activate window switcher
 
 -- Module variables
 obj.fzfFilter = nil
@@ -48,7 +48,6 @@ obj.logger = hs.logger.new("FzfWindowSwitcher", "info")
 --- Returns:
 ---  * The FzfWindowSwitcher object
 function obj:init()
-	print("hello jonfk")
 	self.logger.i("Initializing FzfWindowSwitcher")
 
 	-- Create window chooser

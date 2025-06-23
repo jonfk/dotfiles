@@ -1,13 +1,11 @@
 -- Load the spoons
 --
--- hs.loadSpoon("FzfFilter")
 -- hs.loadSpoon("WindowSwitcher")
 -- hs.loadSpoon("WindowSwitcherWebView")
 -- hs.loadSpoon("ScreenManager")
 --
 -- -- Start the spoons with default settings
 --
--- spoon.FzfFilter:start()
 -- spoon.WindowSwitcher:start()
 -- spoon.ScreenManager:start()
 --
@@ -33,7 +31,12 @@ spoon.ScreenManager:bindHotkeys({
 })
 --]]
 
+hs.loadSpoon("FzfFilter")
 hs.loadSpoon("WindowSwitcherHotkeys")
+hs.loadSpoon("FzfWindowSwitcher")
+
+spoon.FzfFilter:start()
+spoon.FzfWindowSwitcher:start()
 
 local customBindings = {
 	{
