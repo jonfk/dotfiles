@@ -1,6 +1,6 @@
 
 function git-smart-commit() {
-  local model="gemini-2.5-flash-preview-04-17"
+  local model="gemini-2.5-flash"
   local additional_prompt=""
   local additional_flags=""
   local help=0

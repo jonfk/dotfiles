@@ -66,6 +66,10 @@ if [ -f ~/.zsh/functions/date.zsh ]; then
 	source ~/.zsh/functions/date.zsh
 fi
 
+if [ -f ~/.zsh/functions/rg.zsh ]; then 
+	source ~/.zsh/functions/rg.zsh
+fi
+
 # zstyle ':completion:*' accept-exact '*(N)'
 # zstyle ':completion:*' use-cache on
 
