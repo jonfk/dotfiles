@@ -822,66 +822,66 @@ require('lazy').setup({
 
       require('mini.tabline').setup()
 
-      local MiniSessions = require 'mini.sessions'
-      MiniSessions.setup()
-
-      local session_management_group = vim.api.nvim_create_augroup('UserMiniSessionsMgmt', { clear = true })
-      -- Helper function to create a safe session name from a full path
-      local function create_session_name_from_path(path)
-        if not path or path == '' then
-          return nil
-        end
-        -- Replace path separators with double underscores.
-        -- For Windows, also replace backslashes and colons (e.g., C:\ -> C___)
-        local session_name = path:gsub('[/\\]', '__'):gsub(':', '___')
-        -- Remove leading/trailing underscores that might result from the substitution
-        session_name = session_name:gsub('^__+', ''):gsub('__+$', '')
-        return session_name
-      end
-
-      vim.api.nvim_create_autocmd('User', {
-        group = session_management_group,
-        pattern = 'VeryLazy',
-        nested = true,
-        callback = function()
-          -- Check if Neovim was started with file arguments
-          local should_manage_session = true
-
-          -- Get arguments passed to nvim, excluding the executable name
-          local args = vim.fn.argv()
-
-          -- If there are arguments, check if they're only the current directory
-          if #args > 0 then
-            -- We'll only load/save session if the single argument is the current directory
-            local cwd = vim.fn.getcwd()
-
-            if #args > 1 then
-              should_manage_session = false
-            else
-              -- Convert the argument to an absolute path
-              local arg_path = vim.fn.fnamemodify(args[1], ':p:h')
-              -- Convert cwd to ensure same format for comparison
-              local cwd_path = vim.fn.fnamemodify(cwd, ':p:h')
-
-              -- Only proceed if the argument resolves to the current directory
-              if arg_path ~= cwd_path then
-                should_manage_session = false
-              end
-            end
-          end
-
-          -- Only manage sessions if no files were specified or just the cwd was given
-          if should_manage_session then
-            local current_path = vim.fn.getcwd()
-            local session_name = create_session_name_from_path(current_path)
-            if MiniSessions.detected and MiniSessions.detected[session_name] then
-              MiniSessions.read(session_name, { force = MiniSessions.config.force.read })
-            else
-              MiniSessions.write(session_name, { force = true })
-            end
-          end
-        end,
-      })
+      -- local MiniSessions = require 'mini.sessions'
+      -- MiniSessions.setup()
+      --
+      -- local session_management_group = vim.api.nvim_create_augroup('UserMiniSessionsMgmt', { clear = true })
+      -- -- Helper function to create a safe session name from a full path
+      -- local function create_session_name_from_path(path)
+      --   if not path or path == '' then
+      --     return nil
+      --   end
+      --   -- Replace path separators with double underscores.
+      --   -- For Windows, also replace backslashes and colons (e.g., C:\ -> C___)
+      --   local session_name = path:gsub('[/\\]', '__'):gsub(':', '___')
+      --   -- Remove leading/trailing underscores that might result from the substitution
+      --   session_name = session_name:gsub('^__+', ''):gsub('__+$', '')
+      --   return session_name
+      -- end
+      --
+      -- vim.api.nvim_create_autocmd('User', {
+      --   group = session_management_group,
+      --   pattern = 'VeryLazy',
+      --   nested = true,
+      --   callback = function()
+      --     -- Check if Neovim was started with file arguments
+      --     local should_manage_session = true
+      --
+      --     -- Get arguments passed to nvim, excluding the executable name
+      --     local args = vim.fn.argv()
+      --
+      --     -- If there are arguments, check if they're only the current directory
+      --     if #args > 0 then
+      --       -- We'll only load/save session if the single argument is the current directory
+      --       local cwd = vim.fn.getcwd()
+      --
+      --       if #args > 1 then
+      --         should_manage_session = false
+      --       else
+      --         -- Convert the argument to an absolute path
+      --         local arg_path = vim.fn.fnamemodify(args[1], ':p:h')
+      --         -- Convert cwd to ensure same format for comparison
+      --         local cwd_path = vim.fn.fnamemodify(cwd, ':p:h')
+      --
+      --         -- Only proceed if the argument resolves to the current directory
+      --         if arg_path ~= cwd_path then
+      --           should_manage_session = false
+      --         end
+      --       end
+      --     end
+      --
+      --     -- Only manage sessions if no files were specified or just the cwd was given
+      --     if should_manage_session then
+      --       local current_path = vim.fn.getcwd()
+      --       local session_name = create_session_name_from_path(current_path)
+      --       if MiniSessions.detected and MiniSessions.detected[session_name] then
+      --         MiniSessions.read(session_name, { force = MiniSessions.config.force.read })
+      --       else
+      --         MiniSessions.write(session_name, { force = true })
+      --       end
+      --     end
+      --   end,
+      -- })
 
       require('mini.pairs').setup { modes = { insert = true, command = true, terminal = true } }
 
