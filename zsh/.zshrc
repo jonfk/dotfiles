@@ -5,6 +5,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+ZVM_INIT_MODE=sourcing
+
 # Clone antidote if necessary.
 if [[ ! -e "$HOME/.bin/antidote" ]]; then
   mkdir -p "$HOME/.bin/antidote" && git clone https://github.com/mattmc3/antidote.git "$HOME/.bin/antidote"
