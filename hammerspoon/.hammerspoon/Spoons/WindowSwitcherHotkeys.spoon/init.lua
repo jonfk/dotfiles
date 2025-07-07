@@ -56,9 +56,11 @@ function obj:focusWindowBySelector(appName, windowTitle)
 	local targetAppName = string.lower(appName)
 	local targetWindowTitle = string.lower(windowTitle)
 
-	-- Get all windows
+	-- Get all windows and sort by windowId for consistent ordering
 	local allWindows = hs.window.allWindows()
-	local targetWindow = nil
+	table.sort(allWindows, function(a, b)
+		return a:id() < b:id()
+	end)
 
 	-- Find the target window
 	for _, window in ipairs(allWindows) do

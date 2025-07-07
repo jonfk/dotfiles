@@ -80,6 +80,20 @@ local customBindings = {
 		windowTitle = "",
 		description = "IntelliJ IDEA",
 	},
+	{
+		modifiers = { "alt", "ctrl", "cmd" },
+		key = "o",
+		appName = "microsoft outlook",
+		windowTitle = "",
+		description = "Microsoft Outlook",
+	},
+	{
+		modifiers = { "alt", "ctrl", "cmd" },
+		key = "e",
+		appName = "obsidian",
+		windowTitle = "coveo-work-notes",
+		description = "Obsidian coveo-work-notes",
+	},
 }
 
 spoon.FzfWindowSwitcher:setExclusionFilters(customBindings)

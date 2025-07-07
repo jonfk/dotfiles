@@ -286,6 +286,12 @@ end
 ---  * A table of window choices for the chooser
 function obj:getAllWindowsForChooserChoices()
 	local windows = hs.window.allWindows()
+
+	-- Sort windows by windowId for consistent ordering (oldest first)
+	table.sort(windows, function(a, b)
+		return a:id() < b:id()
+	end)
+
 	local windowList = {}
 
 	for _, win in ipairs(windows) do
