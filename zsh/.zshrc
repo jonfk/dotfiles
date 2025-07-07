@@ -106,3 +106,5 @@ if [ -f ~/.fzf.zsh ]; then
 else
 	source <(fzf --zsh)
 fi
+
+eval "$(zoxide init zsh)"
