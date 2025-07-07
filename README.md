@@ -37,6 +37,7 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
     - on Ubuntu: sudo apt install bat && ln -s /usr/bin/batcat ~/.local/bin/bat
 - llmcat
 - [delta](https://dandavison.github.io/delta/introduction.html)
+- zoxide for quick cd with `z` and `zi`
 
 #### Tmux
 
