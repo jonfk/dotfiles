@@ -25,6 +25,8 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 
 - [Antidote](https://github.com/mattmc3/antidote): zsh plugin manager
 - tmux
+- mroth/evalcache: zsh plugin to cache cmd output for eval
+    - By default the cache is in `~/.zsh-evalcache`, can be configured with `$ZSH_EVALCACHE_DIR`
 
 ### CLI Utilities
 

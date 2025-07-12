@@ -43,10 +43,12 @@ bindkey "^E" end-of-line
 
 # https://github.com/Schniz/fnm
 if command -v fnm &> /dev/null; then
-	eval "$(fnm env --use-on-cd)"
+	# Cannot be cached because each fnm can have a different node version used
+        eval "$(fnm env --use-on-cd)"
 fi
 
 if command -v mise &> /dev/null; then
+	# Cannot be cached because each instance can have a different node version used
 	eval "$(mise activate zsh)"
 fi
 
@@ -107,4 +109,4 @@ else
 	source <(fzf --zsh)
 fi
 
-eval "$(zoxide init zsh)"
+_evalcache zoxide init zsh

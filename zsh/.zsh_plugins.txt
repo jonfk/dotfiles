@@ -6,6 +6,7 @@ ohmyzsh/ohmyzsh path:lib            # load OMZ's library
 ohmyzsh/ohmyzsh path:plugins/git    # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
 
 jeffreytse/zsh-vi-mode
+mroth/evalcache
 
 # completion plugins
 zsh-users/zsh-autosuggestions
