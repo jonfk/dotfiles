@@ -37,58 +37,61 @@ hs.loadSpoon("FzfWindowSwitcher")
 
 spoon.FzfFilter:start()
 
+-- local mods = { "alt" }
+local mods = { "alt", "ctrl", "cmd" }
+
 local customBindings = {
 	{
-		modifiers = { "alt", "ctrl", "cmd" },
+		modifiers = mods,
 		key = ",",
 		appName = "chrome",
 		windowTitle = "personal",
 		description = "Chrome Personal",
 	},
 	{
-		modifiers = { "alt", "ctrl", "cmd" },
+		modifiers = mods,
 		key = "1",
 		appName = "chrome",
 		windowTitle = "(coveo)",
 		description = "Chrome Work",
 	},
 	{
-		modifiers = { "alt", "ctrl", "cmd" },
+		modifiers = mods,
 		key = "a",
 		appName = "slack",
 		windowTitle = "",
 		description = "Slack",
 	},
 	{
-		modifiers = { "alt", "ctrl", "cmd" },
+		modifiers = mods,
 		key = "2",
 		appName = "ghostty",
 		windowTitle = "",
 		description = "Ghostty Terminal",
 	},
 	{
-		modifiers = { "alt", "ctrl", "cmd" },
+		modifiers = mods,
 		key = "'",
 		appName = "claude",
 		windowTitle = "",
 		description = "Claude",
 	},
 	{
-		modifiers = { "alt", "ctrl", "cmd" },
+		modifiers = mods,
 		key = "3",
 		appName = "intellij idea",
 		windowTitle = "",
 		description = "IntelliJ IDEA",
 	},
 	{
-		modifiers = { "alt", "ctrl", "cmd" },
+		modifiers = mods,
 		key = "o",
 		appName = "microsoft outlook",
 		windowTitle = "",
 		description = "Microsoft Outlook",
 	},
 	{
-		modifiers = { "alt", "ctrl", "cmd" },
+		modifiers = mods,
 		key = "e",
 		appName = "obsidian",
 		windowTitle = "coveo-work-notes",
