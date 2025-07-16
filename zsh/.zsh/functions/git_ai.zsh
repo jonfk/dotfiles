@@ -1,4 +1,3 @@
-
 function git-smart-commit() {
   local model="gemini-2.5-flash"
   local additional_prompt=""
@@ -16,6 +15,9 @@ function git-smart-commit() {
     echo "Additional arguments:"
     echo "  Text before -- is used as additional prompt context"
     echo "  Arguments after -- are passed directly to the llm command"
+    echo ""
+    echo "Context files:"
+    echo "  .git-commit-ai-prompt.txt - Additional project-specific commit instructions"
     echo ""
     echo "Example:"
     echo "  git-smart-commit -m claude-3-5-sonnet-20240307"
@@ -59,94 +61,233 @@ function git-smart-commit() {
     return 1
   fi
   
+  # Check if jq command exists
+  if ! command -v jq &>/dev/null; then
+    echo "Error: jq command not found. Please install it first."
+    return 1
+  fi
+  
   # Check if in a git repository
   if ! git rev-parse --is-inside-work-tree &>/dev/null; then
     echo "Error: Not in a git repository"
     return 1
   fi
   
-  local prompt_staged='
-  Use the provided diff and changes to create git commands.
+  # Gather context information
+  local context_info=""
+  
+  # Get recent commit history for context
+  local recent_commits
+  if recent_commits=$(git log --oneline -5 2>/dev/null); then
+    context_info="Recent commits in this project:\n$recent_commits\n\n"
+  fi
+  
+  # Read project-specific prompt file if it exists
+  local project_prompt=""
+  if [[ -f ".git-commit-ai-prompt.txt" ]]; then
+    project_prompt=$(cat ".git-commit-ai-prompt.txt" 2>/dev/null)
+    if [[ -n "$project_prompt" ]]; then
+      context_info="${context_info}Project-specific commit guidelines:\n$project_prompt\n\n"
+    fi
+  fi
+  
+  # Base prompt with AI assistant context
+  local base_prompt="You are an AI engineering assistant helping with git commit creation. 
 
-  CRITICAL: Return ONLY the git commit command with NO explanation, NO markdown, NO preamble, NO backticks, NO fenced code blocks, and NO postscript.
-  IMPORTANT: Your entire response will be executed on the command line.
-  
-  Your response must be a valid git commit command.
-  
-  Analyze the staged diff for RELATED changes. Create a conventional commit message that describes the PRIMARY purpose of these changes.
-  
-  For simple commit messages use: git commit -m "type(scope): description"
-  
-  For multiline commit messages, use embedded newlines with ANSI-C quoting like this:
-  git commit -m $'"'"'type(scope): short description\n\n- Detail point 1\n- Detail point 2'"'"'
-  
-  Use multiline format ONLY when the changes require detailed explanation.
-  
-  Common types: feat, fix, docs, style, refactor, test, chore, perf
-  '
-  
-  local prompt_unstaged='
-  Use the provided diff and changes to create git commands.
+${context_info}Create a conventional commit message that describes the PRIMARY purpose of these changes.
 
-  CRITICAL: Return ONLY git commands with NO explanation, NO markdown, NO preamble, NO backticks, NO fenced code blocks, and NO postscript.
-  IMPORTANT: Your entire response will be executed on the command line.
+Use conventional commit format with types like: feat, fix, docs, style, refactor, test, chore, perf, ci, build
+
+Guidelines:
+- Keep the main message concise and under 50 characters when possible  
+- Use imperative mood (\"add\" not \"added\" or \"adds\")
+- Include scope in parentheses when appropriate: type(scope): description
+- Only use body lines for complex changes that need detailed explanation
+- Focus on WHAT changed and WHY, not HOW"
   
-  Your response must start and end with git commands.
+  # Define full JSON schemas for structured output
+  local staged_schema='{
+    "type": "object",
+    "properties": {
+      "message": {
+        "type": "string",
+        "description": "Concise conventional commit message under 50 characters when possible",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "body": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": "Array of detailed explanation lines, only include if changes need detailed explanation"
+      }
+    },
+    "required": ["message"],
+    "additionalProperties": false
+  }'
   
-  Analyze the diff and identify ONLY RELATED changes that should be committed together.
-  DO NOT add all changed files - only select files that contain related changes with a common purpose.
-  
-  The response should be git commands to:
-  1. Stage only the related files (not all files)
-  2. Create a conventional commit with an appropriate message
-  
-  For simple commits use: git add path/to/file1.js && git commit -m "type(scope): description"
-  
-  For multiline commit messages, use embedded newlines with ANSI-C quoting like this:
-  git add path/to/file1.js path/to/file2.js && git commit -m $'"'"'type(scope): short description\n\n- Detail point 1\n- Detail point 2'"'"'
-  
-  Use multiline format ONLY when the changes require detailed explanation.
-  '
+  local unstaged_schema='{
+    "type": "object", 
+    "properties": {
+      "files": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        },
+        "minItems": 1,
+        "description": "Array of file paths to stage together - only include related files that serve a common purpose"
+      },
+      "message": {
+        "type": "string",
+        "description": "Concise conventional commit message under 50 characters when possible",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "body": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1 
+        },
+        "description": "Array of detailed explanation lines, only include if changes need detailed explanation"
+      }
+    },
+    "required": ["files", "message"],
+    "additionalProperties": false
+  }'
   
   # Add additional prompt context if provided
   if [[ -n "$additional_prompt" ]]; then
-    prompt_staged="$prompt_staged\n\nAdditional context: $additional_prompt"
-    prompt_unstaged="$prompt_unstaged\n\nAdditional context: $additional_prompt"
+    base_prompt="$base_prompt\n\nAdditional context: $additional_prompt"
   fi
   
-  local cmd=""
+  local json_response=""
+  local temp_commit_file=""
   
   # First check if there are staged changes
   if ! git diff --staged --quiet --exit-code; then
     # There are staged changes
     echo "Generating commit message for staged changes..."
     echo "Using model: $model"
-    cmd=$(git diff --staged | llm -m "$model" $additional_flags --extract-last <<< "$prompt_staged")
+    
+    local full_prompt="$base_prompt\n\nAnalyze the following staged diff:"
+    json_response=$(git diff --staged | llm -m "$model" $additional_flags --schema "$staged_schema" <<< "$full_prompt")
+    
+  elif ! git diff --quiet --exit-code; then
+    # There are unstaged changes
+    echo "Generating commands to stage and commit changes..."
+    echo "Using model: $model"
+    
+    local full_prompt="$base_prompt\n\nAnalyze the following diff and identify ONLY RELATED changes that should be committed together. DO NOT add all files - select only files with related changes that serve a common purpose.\n\nDiff:"
+    json_response=$(git diff | llm -m "$model" $additional_flags --schema "$unstaged_schema" <<< "$full_prompt")
+    
   else
-    # No staged changes, check if there are unstaged changes
-    if ! git diff --quiet --exit-code; then
-      # There are unstaged changes
-      echo "Generating commands to stage and commit changes..."
-      echo "Using model: $model"
-      cmd=$(git diff | llm -m "$model" $additional_flags --extract-last <<< "$prompt_unstaged")
+    # No changes at all
+    echo "No changes detected in the repository"
+    return 0
+  fi
+  
+  if [[ -z "$json_response" ]]; then
+    echo "Error: Failed to generate commit information"
+    return 1
+  fi
+  
+  echo "Generated response:"
+  echo "$json_response" | jq .
+  
+  # Extract information using jq with proper error handling
+  local commit_message files_to_stage body_lines
+  
+  commit_message=$(echo "$json_response" | jq -r '.message // empty' 2>/dev/null)
+  if [[ -z "$commit_message" ]]; then
+    echo "Error: Could not extract commit message from response"
+    return 1
+  fi
+  
+  # Extract body lines (if any)
+  body_lines=$(echo "$json_response" | jq -r '.body[]? // empty' 2>/dev/null)
+  
+  # For unstaged changes, extract files to stage
+  if git diff --staged --quiet --exit-code; then
+    files_to_stage=$(echo "$json_response" | jq -r '.files[]? // empty' 2>/dev/null)
+    
+    if [[ -n "$files_to_stage" ]]; then
+      echo "Staging files:"
+      echo "$files_to_stage"
+      
+      # Stage the files with proper shell escaping
+      local files_array=()
+      while IFS= read -r file; do
+        if [[ -n "$file" ]]; then
+          # Verify file exists and has changes
+          if git diff --name-only | grep -Fxq "$file"; then
+            files_array+=("$file")
+          else
+            echo "Warning: File '$file' not found in changes or already staged"
+          fi
+        fi
+      done <<< "$files_to_stage"
+      
+      if [[ ${#files_array[@]} -eq 0 ]]; then
+        echo "Error: No valid files to stage"
+        return 1
+      fi
+      
+      # Stage files using git add with proper quoting
+      if ! git add "${files_array[@]}"; then
+        echo "Error: Failed to stage files"
+        return 1
+      fi
     else
-      # No changes at all
-      echo "No changes detected in the repository"
-      return 0
+      echo "Error: No files specified for staging"
+      return 1
     fi
   fi
   
-  if [ -z "$cmd" ]; then
-    echo "Error: Failed to generate git commands"
-    return 1
+  # Create commit
+  if [[ -n "$body_lines" ]]; then
+    # Multi-line commit using temp file
+    temp_commit_file=$(mktemp)
+    
+    # Write commit message to temp file
+    printf '%s\n' "$commit_message" > "$temp_commit_file"
+    printf '\n' >> "$temp_commit_file"
+    
+    # Add body lines
+    while IFS= read -r line; do
+      if [[ -n "$line" ]]; then
+        printf '%s\n' "$line" >> "$temp_commit_file"
+      fi
+    done <<< "$body_lines"
+    
+    echo "Commit message preview:"
+    echo "----------------------"
+    cat "$temp_commit_file"
+    echo "----------------------"
+    
+    # Prepare the commit command
+    local cmd="git commit -F $(printf %q "$temp_commit_file")"
+    
+  else
+    # Simple single-line commit
+    echo "Commit message: $commit_message"
+    local cmd="git commit -m $(printf %q "$commit_message")"
   fi
   
   echo "Generated command:"
   echo "$cmd"
   
-  # No need to check for heredocs anymore since we're using embedded newlines
-  # Simply use print -z to put the command in the buffer
+  # Put command in zsh buffer for user to execute
   print -z "$cmd"
+  
+  # Cleanup temp file if created
+  if [[ -n "$temp_commit_file" ]]; then
+    # Schedule cleanup after command execution
+    trap "rm -f '$temp_commit_file'" EXIT
+  fi
 }
 
 alias gai=git-smart-commit
