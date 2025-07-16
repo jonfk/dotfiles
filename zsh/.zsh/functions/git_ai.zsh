@@ -121,7 +121,7 @@ Guidelines:
           "type": "string",
           "minLength": 1
         },
-        "description": "Array of detailed explanation lines, only include if changes need detailed explanation"
+        "description": "Array of detailed explanation lines. Each item in the array is a line in the commit body. Only include if changes need detailed explanation"
       }
     },
     "required": ["message"],
@@ -152,7 +152,7 @@ Guidelines:
           "type": "string",
           "minLength": 1 
         },
-        "description": "Array of detailed explanation lines, only include if changes need detailed explanation"
+        "description": "Array of detailed explanation lines. Each item in the array is a line in the commit body. Only include if changes need detailed explanation"
       }
     },
     "required": ["files", "message"],
@@ -274,7 +274,7 @@ Guidelines:
   else
     # Simple single-line commit
     echo "Commit message: $commit_message"
-    local cmd="git commit -m $(printf %q "$commit_message")"
+    local cmd="git commit -m \"$(printf %q "$commit_message")\""
   fi
   
   echo "Generated command:"
@@ -282,12 +282,6 @@ Guidelines:
   
   # Put command in zsh buffer for user to execute
   print -z "$cmd"
-  
-  # Cleanup temp file if created
-  if [[ -n "$temp_commit_file" ]]; then
-    # Schedule cleanup after command execution
-    trap "rm -f '$temp_commit_file'" EXIT
-  fi
 }
 
 alias gai=git-smart-commit
