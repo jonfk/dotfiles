@@ -270,7 +270,9 @@ Guidelines:
     
     # Prepare the commit command
     local cmd="git commit -F $(printf %q "$temp_commit_file")"
-    
+
+    # First push an editor invocation so you can “↑” into the temp file…
+    print -z "$EDITOR $(printf %q "$temp_commit_file")"
   else
     # Simple single-line commit
     echo "Commit message: $commit_message"
