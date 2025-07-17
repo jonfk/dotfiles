@@ -271,19 +271,19 @@ Guidelines:
     # Prepare the commit command
     local cmd="git commit -F $(printf %q "$temp_commit_file")"
 
-    # First push an editor invocation so you can “↑” into the temp file…
-    print -z "$EDITOR $(printf %q "$temp_commit_file")"
+    # Invoke the git commit editor with the tempfile
+    git commit --edit --template="$temp_commit_file"
   else
     # Simple single-line commit
     echo "Commit message: $commit_message"
     local cmd="git commit -m \"$(printf %q "$commit_message")\""
+
+    echo "Generated command:"
+    echo "$cmd"
+  
+    # Put command in zsh buffer for user to execute
+    print -z "$cmd"
   fi
-  
-  echo "Generated command:"
-  echo "$cmd"
-  
-  # Put command in zsh buffer for user to execute
-  print -z "$cmd"
 }
 
 alias gai=git-smart-commit
