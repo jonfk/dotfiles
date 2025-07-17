@@ -272,7 +272,10 @@ Guidelines:
     local cmd="git commit -F $(printf %q "$temp_commit_file")"
 
     # Invoke the git commit editor with the tempfile
-    git commit --edit --template="$temp_commit_file"
+    git commit --edit --template="$temp_commit_file" \
+      || \
+    # if it aborts because you didn't change anything, just commit with -F
+    print -z "git commit -F \"$(printf %q "$commit_message")\""
   else
     # Simple single-line commit
     echo "Commit message: $commit_message"
