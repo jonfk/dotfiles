@@ -1,3 +1,5 @@
+[core]
+	excludesFile = ~/.gitignore.work.global
 [user]
 	name = Jonathan Fok kan
 	email = jfokkan@coveo.com
