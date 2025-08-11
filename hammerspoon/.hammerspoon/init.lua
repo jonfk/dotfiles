@@ -50,6 +50,13 @@ local customBindings = {
 	},
 	{
 		modifiers = mods,
+		key = "p",
+		appName = "chrome",
+		windowTitle = "private",
+		description = "Chrome Private",
+	},
+	{
+		modifiers = mods,
 		key = "1",
 		appName = "chrome",
 		windowTitle = "(coveo)",
