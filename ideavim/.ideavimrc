@@ -1,2 +1,5 @@
 
 set clipboard+=unnamedplus
+
+nnoremap grrn :action RenameElement<CR>
+
