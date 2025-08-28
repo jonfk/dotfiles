@@ -31,6 +31,10 @@ if [ -d "/opt/nvim-linux64/bin/" ]; then
     export PATH=$PATH:"/opt/nvim-linux64/bin/"
 fi
 
+if [ -d "/Users/jfokkan/Library/Application Support/Coursier/bin" ]; then
+    export PATH=$PATH:"/Users/jfokkan/Library/Application Support/Coursier/bin"
+fi
+
 if [[ -f ~/.zshenv_priv ]]; then
   source ~/.zshenv_priv
 fi
@@ -59,3 +63,5 @@ export VISUAL="code"
 . "$HOME/.cargo/env"
 
 alias assume=". assume"
+
+export BAT_THEME="TwoDark"
