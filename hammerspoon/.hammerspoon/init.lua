@@ -85,6 +85,13 @@ local customBindings = {
 	},
 	{
 		modifiers = mods,
+		key = ".",
+		appName = "chatgpt",
+		windowTitle = "",
+		description = "ChatGPT",
+	},
+	{
+		modifiers = mods,
 		key = "3",
 		appName = "intellij idea",
 		windowTitle = "",
@@ -103,6 +110,13 @@ local customBindings = {
 		appName = "obsidian",
 		windowTitle = "coveo-work-notes",
 		description = "Obsidian coveo-work-notes",
+	},
+	{
+		modifiers = mods,
+		key = "j",
+		appName = "code",
+		windowTitle = "",
+		description = "VS Code",
 	},
 }
 
