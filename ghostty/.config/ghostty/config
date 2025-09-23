@@ -13,3 +13,4 @@ custom-shader = shaders/cursor/cursor_smear_fade.glsl
 
 # keybind = global:ctrl+grave_accent=toggle_quick_terminal
 
+keybind = shift+enter=text:\x1b\r
