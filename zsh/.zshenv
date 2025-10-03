@@ -35,6 +35,14 @@ if [ -d "/Users/jfokkan/Library/Application Support/Coursier/bin" ]; then
     export PATH=$PATH:"/Users/jfokkan/Library/Application Support/Coursier/bin"
 fi
 
+# Add icu4c bin to PATH without overwritting base libraries from macOS
+if command -v brew >/dev/null 2>&1; then
+  icu_prefix="$(brew --prefix icu4c 2>/dev/null)"
+  if [[ -n "$icu_prefix" && -d "$icu_prefix/bin" ]]; then
+    export PATH="$icu_prefix/bin:$PATH"
+  fi
+fi
+
 if [[ -f ~/.zshenv_priv ]]; then
   source ~/.zshenv_priv
 fi

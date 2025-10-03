@@ -1,4 +1,4 @@
-function git-smart-commit() {
+function git-smart-commit-old() {
   local model="gemini-2.5-flash"
   local additional_prompt=""
   local additional_flags=""
@@ -289,4 +289,77 @@ Guidelines:
   fi
 }
 
-alias gai=git-smart-commit
+function git-ai-commit() {
+  local model="openrouter/openai/gpt-5-mini"
+  local additional_prompt=""
+
+  # Parse arguments
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -m|--model)
+        if [[ -z "$2" || "$2" == -* ]]; then
+          echo "Error: -m/--model requires a model name"
+          return 1
+        fi
+        model="$2"
+        shift 2
+        ;;
+      *)
+        if [[ -z "$additional_prompt" ]]; then
+          additional_prompt="$1"
+        else
+          additional_prompt="$additional_prompt $1"
+        fi
+        shift
+        ;;
+    esac
+  done
+
+  # Build the prompt
+  local prompt="Create a git commit"
+  if [[ -n "$additional_prompt" ]]; then
+    prompt="$prompt. $additional_prompt"
+  fi
+
+  # Call opencode
+  opencode -m "$model" --agent git-commit-crafter run "$prompt"
+}
+
+function git-ai-commit-interactive() {
+  local model="openrouter/openai/gpt-5-mini"
+  local additional_prompt=""
+
+  # Parse arguments
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -m|--model)
+        if [[ -z "$2" || "$2" == -* ]]; then
+          echo "Error: -m/--model requires a model name"
+          return 1
+        fi
+        model="$2"
+        shift 2
+        ;;
+      *)
+        if [[ -z "$additional_prompt" ]]; then
+          additional_prompt="$1"
+        else
+          additional_prompt="$additional_prompt $1"
+        fi
+        shift
+        ;;
+    esac
+  done
+
+  # Build the prompt
+  local prompt="Create a git commit"
+  if [[ -n "$additional_prompt" ]]; then
+    prompt="$prompt. $additional_prompt"
+  fi
+
+  # Call opencode in interactive mode
+  opencode -m "$model" --agent git-commit-crafter --prompt "$prompt"
+}
+
+alias gai=git-ai-commit
+alias gaii=git-ai-commit-interactive
