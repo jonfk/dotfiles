@@ -227,6 +227,7 @@ require('lazy').setup({
         { '<leader>b', group = '[B]uffer' },
         { 'gr', group = 'LSP keybinds' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>c', group = '[C]odeCompanion' },
       },
     },
   },
@@ -657,6 +658,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         rust = { 'rustfmt', lsp_format = 'fallback' },
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'prettierd', 'prettier', stop_after_first = true },
         json = { 'prettierd', 'prettier', stop_after_first = true },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
@@ -778,6 +780,12 @@ require('lazy').setup({
     'EdenEast/nightfox.nvim',
     priority = 1000,
     config = function()
+      -- Uses the brighter sel1 palette color
+      -- Inverts the color for visual selection to make it more visible
+      require('nightfox').setup {
+        groups = { all = { Visual = { bg = 'palette.sel1' } } },
+        options = { inverse = { visual = true } },
+      }
       -- Define the available nightfox colorschemes I want to use
       local colorschemes = {
         'terafox',
@@ -819,7 +827,7 @@ require('lazy').setup({
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
+      -- require('mini.surround').setup()
 
       require('mini.tabline').setup()
 
