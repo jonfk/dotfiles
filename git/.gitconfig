@@ -12,5 +12,5 @@
 [includeIf "gitdir:/Users/jfokkan/Developer/jonfk_code/"]
     path = ~/.gitconfig.jonfk
 
-[includeIf "gitdir:/Users/jfokkan/Developer/jonfk_notes/"]
+[includeIf "gitdir:/Users/jfokkan/Developer/notes/"]
     path = ~/.gitconfig.jonfk
