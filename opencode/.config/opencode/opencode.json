@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "openrouter": {
+      "models": {
+        "thedrummer/anubis-pro-105b-v1": {
+          "reasoning": false,
+          "tool_call": false
+        }
+      }
+    }
+  }
+}
