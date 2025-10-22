@@ -139,6 +139,42 @@ end
 
 require("mini.deps").setup({ path = { package = path_package } })
 
+-- [[ mini.files ]]
+require("mini.files").setup({
+	mappings = {
+		go_in = "",
+		go_out = "H",
+		go_out_plus = "",
+	},
+})
+
+-- Add keymaps for mini.files
+vim.keymap.set("n", "<leader>e", function()
+	-- Open explorer focused on the current file
+	MiniFiles.open(vim.api.nvim_buf_get_name(0))
+end, { desc = "Open mini.files at current file" })
+
+vim.keymap.set("n", "<leader>E", function()
+	-- Open explorer at the project root (cwd)
+	MiniFiles.open(vim.fn.getcwd(), false)
+end, { desc = "Open mini.files at project root" })
+
+-- mini.files keymaps
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'MiniFilesBufferCreate',
+  callback = function(args)
+    local buf_id = args.data.buf_id
+
+    -- Map <esc><esc> to close explorer (same as 'q')
+    vim.keymap.set('n', '<esc><esc>', MiniFiles.close, { buffer = buf_id })
+
+    -- Map <cr> to do the same as go_in_plus (expand and close on file)
+    vim.keymap.set('n', '<cr>', function()
+      MiniFiles.go_in { close_on_file = true }
+    end, { buffer = buf_id })
+  end,
+})
+
 MiniDeps.add({
 	source = "nvim-treesitter/nvim-treesitter",
 	-- Use 'master' while monitoring updates in 'main'
