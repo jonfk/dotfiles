@@ -1,4 +1,6 @@
 
+alias gci='git checkout $(git branch | fzf)'
+
 function ghpr() {
   if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     echo "Usage: ghpr"
@@ -104,4 +106,3 @@ function ghpr() {
     echo "Could not automatically open the URL. Please copy and paste it into your browser."
   fi
 }
-
