@@ -2,7 +2,7 @@
     path = ~/.gitconfig.common
 
 # Default to work settings on work computer
-[include]
+[includeIf "gitdir:~/Developer/Coveo_code/"]
     path = ~/.gitconfig.work
 
 # Use personal settings for specific directories

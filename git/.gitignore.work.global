@@ -3,3 +3,7 @@
 CRUSH.md
 CLAUDE.md
 AGENTS.md
+.DS_Store
+
+.bloop
+.metals
