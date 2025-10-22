@@ -160,20 +160,32 @@ vim.keymap.set("n", "<leader>E", function()
 end, { desc = "Open mini.files at project root" })
 
 -- mini.files keymaps
-vim.api.nvim_create_autocmd('User', {
-  pattern = 'MiniFilesBufferCreate',
-  callback = function(args)
-    local buf_id = args.data.buf_id
+vim.api.nvim_create_autocmd("User", {
+	pattern = "MiniFilesBufferCreate",
+	callback = function(args)
+		local buf_id = args.data.buf_id
 
-    -- Map <esc><esc> to close explorer (same as 'q')
-    vim.keymap.set('n', '<esc><esc>', MiniFiles.close, { buffer = buf_id })
+		-- Map <esc><esc> to close explorer (same as 'q')
+		vim.keymap.set("n", "<esc><esc>", MiniFiles.close, { buffer = buf_id })
 
-    -- Map <cr> to do the same as go_in_plus (expand and close on file)
-    vim.keymap.set('n', '<cr>', function()
-      MiniFiles.go_in { close_on_file = true }
-    end, { buffer = buf_id })
-  end,
+		-- Map <cr> to do the same as go_in_plus (expand and close on file)
+		vim.keymap.set("n", "<cr>", function()
+			MiniFiles.go_in({ close_on_file = true })
+		end, { buffer = buf_id })
+	end,
 })
+
+-- [[ mini.pick ]]
+local mini_pick = require("mini.pick")
+mini_pick.setup()
+
+vim.keymap.set("n", "<leader>sf", function()
+	mini_pick.builtin.files()
+end, { desc = "Pick files" })
+
+vim.keymap.set("n", "<leader><space>", function()
+	mini_pick.builtin.buffers()
+end, { desc = "Pick buffers" })
 
 MiniDeps.add({
 	source = "nvim-treesitter/nvim-treesitter",
@@ -187,6 +199,21 @@ MiniDeps.add({
 		end,
 	},
 })
+
+local mini_extra = require("mini.extra")
+mini_extra.setup()
+
+local extra_pickers = mini_extra.pickers
+
+vim.keymap.set("n", "<leader>sd", extra_pickers.diagnostic, { desc = "Pick diagnostics" })
+vim.keymap.set("n", "<leader>se", extra_pickers.explorer, { desc = "Pick file explorer" })
+vim.keymap.set("n", "<leader>sg", function()
+	extra_pickers.git_commits({ path = "%" })
+end, { desc = "Pick git commits for buffer" })
+vim.keymap.set("n", "<leader>sl", function()
+	extra_pickers.lsp({ scope = "document_symbols" })
+end, { desc = "Pick document symbols" })
+
 -- Possible to immediately execute code which depends on the added plugin
 require("nvim-treesitter.configs").setup({
 	ensure_installed = {
