@@ -55,6 +55,7 @@
 [delta]
 	navigate = true  # use n and N to move between diff sections
 	dark = true      # or light = true, or omit for auto-detection
+	line-numbers = true
 
 [merge]
 	# (just 'diff3' if git version < 2.3)

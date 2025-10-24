@@ -1,0 +1,16 @@
+{
+  "$schema": "https://charm.land/crush.json",
+  "lsp": {
+    "go": {
+      "command": "gopls"
+    },
+    "typescript": {
+      "command": "typescript-language-server",
+      "args": ["--stdio"]
+    },
+    "scala": {
+      "command": "/Users/jfokkan/Library/Application Support/Coursier/bin/metals",
+      "args": ["--stdio"]
+    }
+  }
+}

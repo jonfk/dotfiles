@@ -33,13 +33,18 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 - fzf
 - fd
 - ripgrep
-- fnm
+- mise: language package manager. Use for managing:
+    - python
+    - node
+    - pnpm
 - eza: ls replacement `cargo install eza`
 - bat
     - on Ubuntu: sudo apt install bat && ln -s /usr/bin/batcat ~/.local/bin/bat
 - llmcat
 - [delta](https://dandavison.github.io/delta/introduction.html)
 - zoxide for quick cd with `z` and `zi`
+- gron
+- jless: json viewer designed for exploring and searching
 
 #### Tmux
 

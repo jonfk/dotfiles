@@ -51,5 +51,6 @@ alias lazyvim='NVIM_APPNAME=lazyvim nvim'
 alias mnvim='NVIM_APPNAME=nvim \nvim'
 alias nvim='NVIM_APPNAME=kickstartnvim nvim'
 alias oldnvim='NVIM_APPNAME=old_nvim nvim'
+alias astrovide='NVIM_APPNAME="astronvim" neovide --fork'
 
 MANPAGER="\nvim -c 'Man!'" 
