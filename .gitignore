@@ -15,3 +15,10 @@ cabal.sandbox.config
 *.hp
 .stack-work/
 astronvim
+
+openai-codex/.codex/auth.json
+openai-codex/.codex/internal_storage.json
+openai-codex/.codex/history.jsonl
+openai-codex/.codex/log/
+openai-codex/.codex/sessions/
+openai-codex/.codex/version.json
