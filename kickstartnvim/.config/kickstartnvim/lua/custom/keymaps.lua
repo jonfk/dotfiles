@@ -25,7 +25,7 @@ local builtin = require 'telescope.builtin'
 local themes = require 'telescope.themes'
 
 vim.keymap.set('n', '<leader>sl', function()
-  builtin.find_files(themes.get_ivy {
+  builtin.find_files {
     hidden = true,
     no_ignore = true,
     attach_mappings = function(prompt_bufnr, _)
@@ -41,5 +41,5 @@ vim.keymap.set('n', '<leader>sl', function()
       end)
       return true
     end,
-  })
+  }
 end, { desc = '[S]earch fi[L]e path (insert)' })
