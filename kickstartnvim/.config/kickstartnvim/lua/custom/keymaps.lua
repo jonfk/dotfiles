@@ -18,3 +18,28 @@ vim.api.nvim_create_autocmd('User', {
     end, { buffer = buf_id })
   end,
 })
+
+local actions = require 'telescope.actions'
+local action_state = require 'telescope.actions.state'
+local builtin = require 'telescope.builtin'
+local themes = require 'telescope.themes'
+
+vim.keymap.set('n', '<leader>sl', function()
+  builtin.find_files(themes.get_ivy {
+    hidden = true,
+    no_ignore = true,
+    attach_mappings = function(prompt_bufnr, _)
+      actions.select_default:replace(function()
+        local entry = action_state.get_selected_entry()
+        actions.close(prompt_bufnr)
+        if not entry then
+          return
+        end
+        local path = entry.path or entry.value
+        path = vim.fn.fnamemodify(path, ':.') -- make path relative to the current cwd
+        vim.api.nvim_put({ path }, '', true, true)
+      end)
+      return true
+    end,
+  })
+end, { desc = '[S]earch fi[L]e path (insert)' })
