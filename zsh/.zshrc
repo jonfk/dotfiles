@@ -83,10 +83,11 @@ fi
 # zstyle ':completion:*' accept-exact '*(N)'
 # zstyle ':completion:*' use-cache on
 
-precmd() {
-	# sets the tab title to current dir
-	echo -ne "\e]1;${PWD##*/}\a"
-}
+# Commented out to allow tmux to control terminal title
+# precmd() {
+# 	# sets the tab title to current dir
+# 	echo -ne "\e]1;${PWD##*/}\a"
+# }
 
 mkcdir ()
 {
