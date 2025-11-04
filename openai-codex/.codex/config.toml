@@ -3,6 +3,9 @@ model_verbosity = "low"
 model = "gpt-5-codex"
 model_reasoning_effort = "medium"
 
+[features]
+web_search_request = true
+
 [projects."/Users/jfokkan/Developer/notes/coveo-work-notes"]
 trust_level = "trusted"
 
@@ -28,4 +31,13 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/jfokkan/Developer/jonfk_code/recipes"]
+trust_level = "trusted"
+
+[projects."/Users/jfokkan/Developer/Coveo_code/search-usage-metrics"]
+trust_level = "trusted"
+
+[projects."/Users/jfokkan/Developer/Coveo_code/coveo-scala-commons"]
+trust_level = "trusted"
+
+[projects."/Users/jfokkan/Developer/Coveo_code/innovate/relevance-debugger"]
 trust_level = "trusted"
