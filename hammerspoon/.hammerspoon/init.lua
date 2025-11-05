@@ -37,82 +37,68 @@ hs.loadSpoon("FzfWindowSwitcher")
 
 spoon.FzfFilter:start()
 
--- local mods = { "alt" }
-local mods = { "alt", "ctrl", "cmd" }
-
-local customBindings = {
+local baseBindingTemplates = {
 	{
-		modifiers = mods,
 		key = ",",
 		appName = "chrome",
 		windowTitle = "personal",
 		description = "Chrome Personal",
 	},
 	{
-		modifiers = mods,
 		key = "p",
 		appName = "chrome",
 		windowTitle = "private",
 		description = "Chrome Private",
 	},
 	{
-		modifiers = mods,
 		key = "1",
 		appName = "chrome",
 		windowTitle = "(coveo)",
 		description = "Chrome Work",
 	},
 	{
-		modifiers = mods,
 		key = "a",
 		appName = "slack",
 		windowTitle = "",
 		description = "Slack",
 	},
 	{
-		modifiers = mods,
 		key = "2",
 		appName = "ghostty",
 		windowTitle = "",
 		description = "Ghostty Terminal",
 	},
 	{
-		modifiers = mods,
 		key = "'",
 		appName = "claude",
 		windowTitle = "",
 		description = "Claude",
 	},
 	{
-		modifiers = mods,
 		key = ".",
 		appName = "chatgpt",
 		windowTitle = "",
 		description = "ChatGPT",
 	},
 	{
-		modifiers = mods,
 		key = "3",
 		appName = "intellij idea",
 		windowTitle = "",
 		description = "IntelliJ IDEA",
 	},
 	{
-		modifiers = mods,
 		key = "o",
 		appName = "microsoft outlook",
 		windowTitle = "",
 		description = "Microsoft Outlook",
 	},
 	{
-		modifiers = mods,
 		key = "e",
 		appName = "obsidian",
 		windowTitle = "coveo-work-notes",
 		description = "Obsidian coveo-work-notes",
 	},
 	{
-		modifiers = mods,
 		key = "j",
 		appName = "code",
 		windowTitle = "",
@@ -120,11 +106,66 @@ local customBindings = {
 	},
 }
 
-spoon.FzfWindowSwitcher:setExclusionFilters(customBindings)
+local layoutModifiersMap = {
+	["com.apple.keylayout.Dvorak"] = { "alt" },
+	["com.apple.keylayout.ABC"] = { "alt", "ctrl", "cmd" },
+}
+
+local fallbackModifiers = layoutModifiersMap["com.apple.keylayout.ABC"]
+
+local function cloneList(list)
+	local copy = {}
+	for index, value in ipairs(list) do
+		copy[index] = value
+	end
+	return copy
+end
+
+local function buildBindingsWithModifiers(modifiers)
+	local bindings = {}
+	for _, template in ipairs(baseBindingTemplates) do
+		local binding = {}
+		for key, value in pairs(template) do
+			binding[key] = value
+		end
+		binding.modifiers = cloneList(modifiers)
+		table.insert(bindings, binding)
+	end
+	return bindings
+end
+
+local function modifiersForSource(sourceID)
+	return cloneList(layoutModifiersMap[sourceID] or fallbackModifiers)
+end
+
+local function signature(modifiers)
+	return table.concat(modifiers, "-")
+end
+
+local activeModifierSignature = nil
+
+local function applyBindingsForModifiers(modifiers)
+	local bindings = buildBindingsWithModifiers(modifiers)
+	spoon.FzfWindowSwitcher:setExclusionFilters(bindings)
+	spoon.WindowSwitcherHotkeys:setModifiers(bindings)
+	activeModifierSignature = signature(modifiers)
+end
+
+local currentSourceID = hs.keycodes.currentSourceID()
+applyBindingsForModifiers(modifiersForSource(currentSourceID))
+
 spoon.FzfWindowSwitcher:start()
 
-spoon.WindowSwitcherHotkeys:setHotKeyBindings(customBindings)
 spoon.WindowSwitcherHotkeys:start()
+
+-- Keep watcher reference to prevent garbage collection
+windowSwitcherLayoutWatcher = hs.keycodes.inputSourceChanged(function()
+	local newModifiers = modifiersForSource(hs.keycodes.currentSourceID())
+	local newSignature = signature(newModifiers)
+	if newSignature ~= activeModifierSignature then
+		applyBindingsForModifiers(newModifiers)
+	end
+end)
 
 -- Display a notification that the configuration is loaded
 hs.alert.show("Hammerspoon configuration loaded!")

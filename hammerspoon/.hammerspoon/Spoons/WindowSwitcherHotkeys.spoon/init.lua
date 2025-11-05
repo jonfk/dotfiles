@@ -32,8 +32,34 @@ obj.hotKeyBindings = {}
 --- Default value: 5
 obj.maxFocusAttempts = 5
 
--- Internal variables
 obj._hotkeys = {}
+obj._isRunning = false
+
+local function deleteHotkeys(self)
+	for _, hotkey in ipairs(self._hotkeys) do
+		hotkey:delete()
+	end
+	self._hotkeys = {}
+end
+
+local function createHotkeys(self)
+	deleteHotkeys(self)
+
+	for _, binding in ipairs(self.hotKeyBindings) do
+		local hotkey = hs.hotkey.bind(binding.modifiers, binding.key, function()
+			self.logger.d(
+				string.format(
+					"Hotkey pressed: %s+%s (%s)",
+					table.concat(binding.modifiers, "+"),
+					binding.key,
+					binding.description or ""
+				)
+			)
+			self:focusWindowBySelector(binding.appName, binding.windowTitle)
+		end)
+		table.insert(self._hotkeys, hotkey)
+	end
+end
 
 --- WindowSwitcherHotkeys:focusWindowBySelector(appName, windowTitle)
 --- Method
@@ -141,7 +167,10 @@ end
 ---  * Hotkey bindings must be configured using setHotKeyBindings() before calling start()
 ---  * If no hotkey bindings are configured, a warning will be logged and no hotkeys will be created
 function obj:start()
-	self:stop() -- Clean up any existing hotkeys
+	if self._isRunning then
+		self:stop()
+	end
+
 	self.logger.setLogLevel("info")
 
 	-- Check if hotkey bindings are configured
@@ -153,20 +182,7 @@ function obj:start()
 	end
 
 	-- Create hotkey bindings from the table
-	for _, binding in ipairs(self.hotKeyBindings) do
-		local hotkey = hs.hotkey.bind(binding.modifiers, binding.key, function()
-			self.logger.d(
-				string.format(
-					"Hotkey pressed: %s+%s (%s)",
-					table.concat(binding.modifiers, "+"),
-					binding.key,
-					binding.description or ""
-				)
-			)
-			self:focusWindowBySelector(binding.appName, binding.windowTitle)
-		end)
-		table.insert(self._hotkeys, hotkey)
-	end
+	createHotkeys(self)
 
 	-- Print all configured hotkeys for reference
 	self.logger.i("Configured hotkeys:")
@@ -183,6 +199,8 @@ function obj:start()
 		)
 	end
 
+	self._isRunning = true
+
 	return self
 end
 
@@ -196,11 +214,15 @@ end
 --- Returns:
 ---  * The WindowSwitcherHotkeys object
 function obj:stop()
-	for _, hotkey in ipairs(self._hotkeys) do
-		hotkey:delete()
+	if #self._hotkeys > 0 then
+		deleteHotkeys(self)
 	end
-	self._hotkeys = {}
-	self.logger.i("WindowSwitcherHotkeys stopped")
+
+	if self._isRunning then
+		self.logger.i("WindowSwitcherHotkeys stopped")
+	end
+
+	self._isRunning = false
 	return self
 end
 
@@ -242,9 +264,34 @@ function obj:setHotKeyBindings(bindings)
 		return self
 	end
 
+	local wasRunning = self._isRunning
+
+	if wasRunning then
+		deleteHotkeys(self)
+	end
+
 	self.hotKeyBindings = bindings
 	self.logger.i("Hotkey bindings updated")
+
+	if wasRunning then
+		createHotkeys(self)
+		self._isRunning = true
+	end
+
 	return self
+end
+
+--- WindowSwitcherHotkeys:setModifiers(bindings)
+--- Method
+--- Replace current hotkey bindings with a new table and refresh active hotkeys if needed
+---
+--- Parameters:
+---  * bindings - Table containing complete binding definitions with modifiers applied
+---
+--- Returns:
+---  * The WindowSwitcherHotkeys object
+function obj:setModifiers(bindings)
+	return self:setHotKeyBindings(bindings)
 end
 
 return obj
