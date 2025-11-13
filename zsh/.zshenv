@@ -66,3 +66,6 @@ export VISUAL="code"
 alias assume=". assume"
 
 export BAT_THEME="TwoDark"
+
+export GIT_WORKTREE_ADMIN_ROOT=~/Developer/worktrees-admin
+export GIT_WORKTREE_ROOT=~/Developer/worktrees
