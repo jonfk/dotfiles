@@ -44,11 +44,17 @@ local baseBindingTemplates = {
 		windowTitle = "personal",
 		description = "Chrome Personal",
 	},
+	-- {
+	-- 	key = "p",
+	-- 	appName = "chrome",
+	-- 	windowTitle = "private",
+	-- 	description = "Chrome Private",
+	-- },
 	{
 		key = "p",
-		appName = "chrome",
-		windowTitle = "private",
-		description = "Chrome Private",
+		appName = "brave",
+		windowTitle = "",
+		description = "Brave",
 	},
 	{
 		key = "1",
