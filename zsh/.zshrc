@@ -52,10 +52,6 @@ if command -v mise &> /dev/null; then
 	eval "$(mise activate zsh)"
 fi
 
-if [ -f ~/.zsh/functions/git.zsh ]; then 
-	source ~/.zsh/functions/git.zsh
-fi
-
 if [ -f ~/.zsh/functions/neovim.zsh ]; then 
 	source ~/.zsh/functions/neovim.zsh
 fi
@@ -107,6 +103,11 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 autoload -Uz compinit && compinit
+
+# Source git functions last to ensure custom aliases override plugin aliases
+if [ -f ~/.zsh/functions/git.zsh ]; then
+	source ~/.zsh/functions/git.zsh
+fi
 
 if [ -f ~/.fzf.zsh ]; then 
 	source ~/.fzf.zsh
