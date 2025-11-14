@@ -5,6 +5,12 @@
 [includeIf "gitdir:~/Developer/Coveo_code/"]
     path = ~/.gitconfig.work
 
+[includeIf "gitdir:~/Developer/worktrees/github.com/coveo-platform/"]
+    path = ~/.gitconfig.work
+
+[includeIf "gitdir:~/Developer/worktrees-admin/github.com/coveo-platform/"]
+    path = ~/.gitconfig.work
+
 # Use personal settings for specific directories
 [includeIf "gitdir:~/dotfiles/"]
     path = ~/.gitconfig.jonfk
