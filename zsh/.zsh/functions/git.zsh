@@ -1,5 +1,5 @@
 # Unset conflicting git aliases from ohmyzsh plugin
-unalias gco gp grss 2>/dev/null
+unalias gco grss 2>/dev/null
 
 # Git-related aliases and helpers
 _git_log_medium_format='%C(bold)Commit:%C(reset) %C(green)%H%C(red)%d%n%C(bold)Author:%C(reset) %C(cyan)%an <%ae>%n%C(bold)Date:%C(reset)   %C(blue)%ai (%ar)%C(reset)%n%+B'
