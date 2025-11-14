@@ -13,53 +13,6 @@ alias grss='git restore --staged'
 alias gls="git log --topo-order --stat --pretty=format:\"${_git_log_medium_format}\""
 alias delta-full='delta --diff-args=-U9999'
 
-# Push wrapper that copies and opens GitHub PR links when offered by remote.
-function gp() {
-  setopt localoptions pipefail
-
-  local tmpfile
-  tmpfile=$(mktemp 2>/dev/null)
-  if [[ -z "$tmpfile" ]]; then
-    echo "gp: failed to create temp file" >&2
-    return 1
-  fi
-
-  command git push "$@" | tee "$tmpfile"
-  local push_status=${pipestatus[1]:-0}
-
-  local pr_url
-  pr_url=$(grep -Eo 'https://github\.com/[^[:space:]]+/pull/new/[^[:space:]]+' "$tmpfile" | head -n1)
-  rm -f "$tmpfile"
-
-  if [[ -n "$pr_url" ]]; then
-    pr_url=${pr_url//$'\r'/}
-    echo "Detected GitHub PR URL: $pr_url"
-
-    if command -v pbcopy >/dev/null 2>&1; then
-      printf '%s' "$pr_url" | pbcopy
-      echo "Copied PR URL to clipboard."
-    elif command -v wl-copy >/dev/null 2>&1; then
-      printf '%s' "$pr_url" | wl-copy
-      echo "Copied PR URL to clipboard."
-    elif command -v xclip >/dev/null 2>&1; then
-      printf '%s' "$pr_url" | xclip -selection clipboard
-      echo "Copied PR URL to clipboard."
-    else
-      echo "Warning: no clipboard tool found; URL not copied."
-    fi
-
-    if command -v open >/dev/null 2>&1; then
-      open "$pr_url" >/dev/null 2>&1
-    elif command -v xdg-open >/dev/null 2>&1; then
-      xdg-open "$pr_url" >/dev/null 2>&1
-    else
-      echo "Warning: could not auto-open browser for PR URL."
-    fi
-  fi
-
-  return $push_status
-}
-
 function ghpr() {
   if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     echo "Usage: ghpr"

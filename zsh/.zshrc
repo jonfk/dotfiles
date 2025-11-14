@@ -76,6 +76,10 @@ if [ -f ~/.zsh/functions/work.zsh ]; then
 	source ~/.zsh/functions/work.zsh
 fi
 
+if [ -f ~/.zsh/functions/git-worktree.zsh ]; then 
+	source ~/.zsh/functions/git-worktree.zsh
+fi
+
 # zstyle ':completion:*' accept-exact '*(N)'
 # zstyle ':completion:*' use-cache on
 
