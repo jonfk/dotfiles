@@ -59,7 +59,7 @@ tn() {
 }
 
 
-export EDITOR="vim"
+export EDITOR="nvim"
 export VISUAL="code"
 . "$HOME/.cargo/env"
 
