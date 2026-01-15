@@ -18,10 +18,10 @@ tell application "Google Chrome"
 		set tabIndex to 0
 		repeat with t in (tabs of w)
 			set tabIndex to tabIndex + 1
+			if tabIndex > 10 then exit repeat
 			set theURL to (URL of t)
 			if theURL is not missing value then
 				if theURL starts with targetPrefix then
-					set active tab index of w to tabIndex
 					set index of w to 1 -- bring window to front
 					activate
 					return
