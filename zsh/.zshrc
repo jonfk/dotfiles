@@ -47,11 +47,6 @@ if command -v fnm &> /dev/null; then
         eval "$(fnm env --use-on-cd)"
 fi
 
-if command -v mise &> /dev/null; then
-	# Cannot be cached because each instance can have a different node version used
-	eval "$(mise activate zsh)"
-fi
-
 if [ -f ~/.zsh/functions/neovim.zsh ]; then 
 	source ~/.zsh/functions/neovim.zsh
 fi

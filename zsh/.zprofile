@@ -7,3 +7,9 @@ fi
 if [ -f "~/.orbstack/shell/init.zsh" ]; then 
 	source ~/.orbstack/shell/init.zsh 2>/dev/null || :
 fi
+
+if command -v mise &> /dev/null; then
+	# Cannot be cached because each instance can have a different node version used
+	eval "$(mise activate zsh)"
+fi
+
