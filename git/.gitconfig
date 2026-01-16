@@ -5,6 +5,9 @@
 [includeIf "gitdir:~/Developer/Coveo_code/"]
     path = ~/.gitconfig.work
 
+[includeIf "gitdir:~/Developer/coveo_external/"]
+    path = ~/.gitconfig.work
+
 [includeIf "gitdir:~/Developer/worktrees/github.com/coveo-platform/"]
     path = ~/.gitconfig.work
 
