@@ -1,4 +1,5 @@
 alias tcd='cd "$(tmux display-message -p "#{session_path}")"'
+alias tmux-cd-session-to-cwd='if [[ -n "$TMUX" ]]; then tmux attach-session -t . -c "$PWD"; else :; fi'
 
 function tn() {
   # Find the full path to tmux to avoid any PATH issues
