@@ -63,6 +63,10 @@ if [ -f ~/.zsh/functions/date.zsh ]; then
 	source ~/.zsh/functions/date.zsh
 fi
 
+if [ -f ~/.zsh/functions/yt-transcript.zsh ]; then 
+	source ~/.zsh/functions/yt-transcript.zsh
+fi
+
 if [ -f ~/.zsh/functions/rg.zsh ]; then 
 	source ~/.zsh/functions/rg.zsh
 fi
@@ -119,4 +123,3 @@ _evalcache zoxide init zsh
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/jfokkan/.lmstudio/bin"
 # End of LM Studio CLI section
-
