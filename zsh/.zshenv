@@ -28,6 +28,10 @@ if [ -d "/Users/jfokkan/Library/Application Support/Coursier/bin" ]; then
     export PATH=$PATH:"/Users/jfokkan/Library/Application Support/Coursier/bin"
 fi
 
+if [ -d "$HOME/.local/share/mise/shims" ]; then
+    export PATH="$PATH:$HOME/.local/share/mise/shims"
+fi
+
 # Add icu4c bin to PATH without overwritting base libraries from macOS
 if command -v brew >/dev/null 2>&1; then
   icu_prefix="$(brew --prefix icu4c 2>/dev/null)"

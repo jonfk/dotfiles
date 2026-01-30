@@ -27,6 +27,11 @@ alias llmg='llm -m gemini-2.5-pro-preview-03-25'
 export PATH=/usr/local/bin:$PATH
 export PATH=~/.local/bin:$PATH
 
+# mise
+if command -v mise >/dev/null; then
+  eval "$(mise activate zsh)"
+fi
+
 # zsh-autosuggest
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
@@ -123,3 +128,10 @@ _evalcache zoxide init zsh
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/jfokkan/.lmstudio/bin"
 # End of LM Studio CLI section
+
+# bun completions
+[ -s "/Users/jfokkan/.bun/_bun" ] && source "/Users/jfokkan/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

@@ -10,6 +10,6 @@ fi
 
 if command -v mise &> /dev/null; then
 	# Cannot be cached because each instance can have a different node version used
-	eval "$(mise activate zsh)"
+	eval "$(mise activate zsh --shims)"
 fi
 
