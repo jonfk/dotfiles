@@ -23,3 +23,6 @@
 
 [includeIf "gitdir:/Users/jfokkan/Developer/notes/"]
     path = ~/.gitconfig.jonfk
+
+[includeIf "gitdir:/Users/jfokkan/Developer/VendoredCode/"]
+    path = ~/.gitconfig.jonfk
