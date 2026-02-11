@@ -1,0 +1,5 @@
+interface:
+  display_name: "Showboat Rodney Demo Docs"
+  short_description: "Create feature demo docs with showboat/rodney"
+  default_prompt: "Use $showboat-rodney-demo-docs to create a demo document for a requested feature."
+
