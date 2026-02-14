@@ -1,0 +1,9 @@
+[user]
+	name = Jonathan Fok kan
+	email = jonathan@fokkan.ca
+
+[github]
+    user = jonfk
+
+[commit]
+	gpgsign = false

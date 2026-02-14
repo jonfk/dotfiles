@@ -1,0 +1,5 @@
+[include]
+    path = ~/.gitconfig.common
+
+[include]
+    path = ~/.gitconfig.jonfk
