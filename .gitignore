@@ -22,3 +22,4 @@ openai-codex/.codex/history.jsonl
 openai-codex/.codex/log/
 openai-codex/.codex/sessions/
 openai-codex/.codex/version.json
+__pycache__
