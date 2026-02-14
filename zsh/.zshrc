@@ -18,6 +18,7 @@ source ~/.bin/antidote/antidote.zsh
 antidote load
 
 alias grss='git restore --staged'
+alias gp='git-smart-push'
 alias ls='eza'
 if [[ ! -a /usr/bin/open ]]; then
 	alias open='wslview'
@@ -66,10 +67,6 @@ fi
 
 if [ -f ~/.zsh/functions/date.zsh ]; then 
 	source ~/.zsh/functions/date.zsh
-fi
-
-if [ -f ~/.zsh/functions/yt-transcript.zsh ]; then 
-	source ~/.zsh/functions/yt-transcript.zsh
 fi
 
 if [ -f ~/.zsh/functions/rg.zsh ]; then 
