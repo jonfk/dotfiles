@@ -18,3 +18,8 @@ keybind = shift+enter=text:\x1b\r
 # Shell integration - disable title setting to allow tmux to control it
 shell-integration = detect
 shell-integration-features = "no-title,cursor,sudo"
+
+# To prevent the Authorize Clipboard Access dialog whenever I am using nvim remotely.
+# https://github.com/ghostty-org/ghostty/discussions/6763
+clipboard-read = allow
+clipboard-write = allow
