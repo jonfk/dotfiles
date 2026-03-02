@@ -25,7 +25,16 @@ Create Conventional Commit messages grounded in actual code changes.
   - Run `git diff --staged` and understand the behavioral impact.
   - Choose a Conventional Commit type and optional scope from the actual changes, informed by prompt intent.
   - Write the commit subject and optional body using prompt context when accurate.
-  - Commit staged changes with `git commit -m "<subject>"` (add a second `-m` for body if needed).
+  - Commit staged changes with `git commit -m "<subject>"` (add additional `-m` flags for body paragraphs when needed).
+  - Do not use `\n` escape sequences inside `-m` strings. They will be committed literally.
+  - For multiline messages, prefer one `-m` per paragraph. Example: `git commit -m "feat(scope): subject" -m "Body paragraph 1." -m "Body paragraph 2."`
+  - If the body is long or needs exact formatting, use stdin with a heredoc so literal newlines are preserved:
+    `git commit -F- <<'EOF'
+    feat(scope): subject
+
+    Body paragraph 1.
+    Body paragraph 2.
+    EOF`
   - Avoid including unstaged changes in this commit.
   - You can proceed to commit these staged changes without approval.
 
