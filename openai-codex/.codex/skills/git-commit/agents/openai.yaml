@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Commit"
+  short_description: "Create conventional commits from diffs and prompt intent"
+  default_prompt: "Use $git-commit to inspect the last 10 commits, review staged changes first, and create a Conventional Commit that reflects both the diffs and the user's prompt intent if provided."
