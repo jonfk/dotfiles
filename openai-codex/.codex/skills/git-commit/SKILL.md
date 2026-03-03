@@ -39,11 +39,11 @@ Create Conventional Commit messages grounded in actual code changes.
   - You can proceed to commit these staged changes without approval.
 
 4. If no files are staged, propose staging and commit plan.
-- Run `git status --short` and `git diff`.
-- If useful, inspect per-file diffs with `git diff -- <file>`.
-- Propose a focused set of files to stage and one or more Conventional Commit messages aligned to prompt intent and actual diffs.
-- Provide explicit commands to stage and commit.
-- Avoid staging or committing automatically unless explicitly requested.
+- Use `git status` and `git diff` to figure out what are the changes.
+- Inspect per-file diffs with `git diff -- <file>`, if necessary.
+- Propose a focused set of files to stage and a Commit for that set that is aligned to prompt intent and actual diffs.
+- If there is only 1 set of files and they make sense to commit together, stage them and create the commit without requiring approval.
+- If there are multiple options, or the sets are ambiguous, state the options but don't stage or commit.
 
 ## Quality Bar
 
