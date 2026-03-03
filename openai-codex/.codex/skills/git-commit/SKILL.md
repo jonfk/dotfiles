@@ -8,6 +8,7 @@ description: Create Git commits using conventions of the repo and Conventional C
 Create Conventional Commit messages grounded in actual code changes.
 
 ## Workflow
+When creating git commits, if there is only 1 unambiguous commit to create. No need to plan or approval of the plan. Assume pre-approval and commit.
 
 1. Inspect repository context.
 - Run `git status --short`.
