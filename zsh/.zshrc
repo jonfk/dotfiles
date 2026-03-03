@@ -28,6 +28,12 @@ alias llmg='llm -m gemini-2.5-pro-preview-03-25'
 export PATH=/usr/local/bin:$PATH
 export PATH=~/.local/bin:$PATH
 
+# Pager defaults: enable mouse + wheel scrolling across tools (less, bat, delta, etc.).
+export PAGER="less"
+export LESS="-R --mouse --wheel-lines=3"
+export BAT_PAGER="less --mouse --wheel-lines=3 -R"
+export DELTA_PAGER="less --mouse --wheel-lines=3 -R"
+
 # mise
 if command -v mise >/dev/null; then
   eval "$(mise activate zsh)"
