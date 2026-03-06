@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub PR Description"
+  short_description: "Draft concise GitHub pull request descriptions"
+  default_prompt: "Use $github-pr-description to draft a concise GitHub pull request description from the current diff."
