@@ -40,3 +40,4 @@ Draft PR descriptions that stay short, factual, and easy to scan.
 - Avoid fluff, marketing, and phrases like `this PR aims to`.
 - Use simple English. Keep one idea per bullet.
 - State intent and impact, not step-by-step implementation.
+- Use verbatim names from the code whenever possible.
