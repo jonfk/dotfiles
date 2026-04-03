@@ -20,8 +20,9 @@ antidote load
 alias grss='git restore --staged'
 alias gp='git-smart-push'
 alias ls='eza'
-alias ccc='codex --yolo'
-alias qcc='codex --yolo -c model_reasoning_effort="low"'
+alias codex='codex --yolo'
+alias qcodex='codex --yolo -c model_reasoning_effort="low"'
+alias copilot='copilot --yolo --disable-mcp-server github-mcp-server'
 if [[ ! -a /usr/bin/open ]]; then
 	alias open='wslview'
 fi
