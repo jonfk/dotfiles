@@ -8,15 +8,6 @@ function _codex_commit_cleanup() {
   fi
 }
 
-function _codex_commit_print_log_tail() {
-  local log_file=$1
-
-  if [[ -f "$log_file" ]]; then
-    printf 'codex-commit: Codex output (tail)\n' >&2
-    tail -n 40 "$log_file" >&2
-  fi
-}
-
 function _codex_commit_schema_path() {
   local function_file dotfiles_root
 
@@ -130,6 +121,7 @@ function codex-commit() {
 
   local prompt skill_path skill_text
   local repo_root schema_path tmpdir output_file message_file log_file proposal_status action editor
+  local codex_status
   local -a stage_paths current_staged
   local current_sorted proposed_sorted
 
@@ -179,9 +171,10 @@ function codex-commit() {
     -o "$output_file" \
     "$prompt" \
     </dev/null \
-    >"$log_file" 2>&1
-  if [[ $? -ne 0 ]]; then
-    _codex_commit_print_log_tail "$log_file"
+    > >(tee "$log_file") \
+    2> >(tee -a "$log_file" >&2)
+  codex_status=$?
+  if [[ $codex_status -ne 0 ]]; then
     _codex_commit_cleanup "$tmpdir"
     return 1
   fi
@@ -189,7 +182,6 @@ function codex-commit() {
   proposal_status=$(jq -er '.status' "$output_file" 2>/dev/null)
   if [[ $? -ne 0 ]]; then
     echo "codex-commit: invalid proposal output" >&2
-    _codex_commit_print_log_tail "$log_file"
     _codex_commit_cleanup "$tmpdir"
     return 1
   fi
