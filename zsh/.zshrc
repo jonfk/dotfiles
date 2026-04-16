@@ -49,10 +49,19 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 # Allows zsh completion to fix case and allow case-insensitive matching
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
+ghostty_session_manager_switch() {
+  zle push-line
+  BUFFER='ghostty-session-manager switch'
+  zle accept-line
+}
+zle -N ghostty_session_manager_switch
+
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 bindkey "^A" beginning-of-line
 bindkey "^E" end-of-line
+bindkey -M main "^[t" ghostty_session_manager_switch
+bindkey -M viins "^[t" ghostty_session_manager_switch
 
 [[ -s "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
