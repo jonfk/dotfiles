@@ -45,6 +45,7 @@ So my dotfiles setup assumes this repo is located in the root of your home direc
 - zoxide for quick cd with `z` and `zi`
 - gron
 - jless: json viewer designed for exploring and searching
+- [zmx](https://github.com/neurosnap/zmx): Session persistence for terminal processes using libghostty
 
 #### Tmux
 
