@@ -31,11 +31,11 @@ alias llmg='llm -m gemini-2.5-pro-preview-03-25'
 export PATH=/usr/local/bin:$PATH
 export PATH=~/.local/bin:$PATH
 
-# Pager defaults: enable mouse + wheel scrolling across tools (less, bat, delta, etc.).
+# Pager defaults: keep color + wheel scrolling without mouse capture.
 export PAGER="less"
-export LESS="-R --mouse --wheel-lines=3"
-export BAT_PAGER="less --mouse --wheel-lines=3 -R"
-export DELTA_PAGER="less --mouse --wheel-lines=3 -R"
+export LESS="-R --wheel-lines=3"
+export BAT_PAGER="less --wheel-lines=3 -R"
+export DELTA_PAGER="less --wheel-lines=3 -R"
 
 # mise
 if command -v mise >/dev/null; then
@@ -64,12 +64,6 @@ bindkey -M main "^[t" ghostty_session_manager_switch
 bindkey -M viins "^[t" ghostty_session_manager_switch
 
 [[ -s "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
-
-# https://github.com/Schniz/fnm
-if command -v fnm &> /dev/null; then
-	# Cannot be cached because each fnm can have a different node version used
-        eval "$(fnm env --use-on-cd)"
-fi
 
 if [ -f ~/.zsh/functions/neovim.zsh ]; then 
 	source ~/.zsh/functions/neovim.zsh
