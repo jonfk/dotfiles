@@ -20,7 +20,10 @@ antidote load
 alias grss='git restore --staged'
 alias gp='git-smart-push'
 alias ls='eza'
+alias pcodex='CODEX_HOME="$HOME/.local/share/codex-personal" codex'
 alias codex='codex --yolo'
+alias gaic='codex-commit'
+alias ghp='GH_CONFIG_DIR="$HOME/.config/gh-jonfk" gh'
 alias qcodex='codex --yolo -c model_reasoning_effort="low"'
 alias copilot='copilot --yolo --disable-mcp-server github-mcp-server'
 if [[ ! -a /usr/bin/open ]]; then
@@ -108,7 +111,7 @@ mkcdir ()
 	cd -P -- "$1"
 }
 
-[[ -s "$HOME/.zsh/functions/git_ai.zsh" ]] && source "$HOME/.zsh/functions/git_ai.zsh"
+# [[ -s "$HOME/.zsh/functions/git_ai.zsh" ]] && source "$HOME/.zsh/functions/git_ai.zsh"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
